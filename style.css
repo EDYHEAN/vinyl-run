@@ -1,0 +1,595 @@
+/* ═══════════════════════════════════════════
+   VINYL RUN — style.css
+   Palette : crème #FFF9BF · bleu #3B67ED · rouge #E8321A · noir #1A1A1A
+   Fonts   : Bodoni Moda (titres) · Poppins (corps)
+═══════════════════════════════════════════ */
+
+/* ── Tokens ─────────────────────────────── */
+:root {
+  --cream:  #FFF9BF;
+  --blue:   #3B67ED;
+  --red:    #E8321A;
+  --black:  #1A1A1A;
+  --white:  #FFFFFF;
+  --cobalt: #3F5BF6;
+  --gray:   #555;
+  --gray-lt:#f5f5f5;
+
+  --serif: 'Bodoni Moda', Georgia, serif;
+  --sans:  'Poppins', system-ui, sans-serif;
+
+  --max-w: 1200px;
+  --pad:   clamp(1.5rem, 5vw, 5rem);
+}
+
+/* ── Reset ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--black); overflow-x: hidden; }
+img  { display: block; }
+ul   { list-style: none; }
+a    { text-decoration: none; color: inherit; }
+
+/* ── Label partagé (Bodoni) ─────────────── */
+.label {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: .4rem;
+}
+.label--light { color: var(--white); }
+.label--dark  { color: var(--black); }
+
+/* ═══════════════════════════════════════════
+   NAV FIXE
+═══════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: transparent;
+  transition: background .3s, box-shadow .3s;
+}
+
+.nav--scrolled {
+  background: var(--white);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+
+.nav__logo-img {
+  height: 44px;
+  width: auto;
+  filter: invert(0);
+}
+
+.nav__links {
+  display: flex;
+  gap: 2.25rem;
+}
+
+.nav__links a {
+  font-family: var(--sans);
+  font-size: .9375rem;
+  font-weight: 500;
+  color: var(--black);
+  transition: opacity .2s;
+}
+.nav__links a:hover { opacity: .55; }
+
+/* ═══════════════════════════════════════════
+   HERO (crème · 900px)
+═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  background: var(--cream);
+  height: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Contour île — centré, pleine hauteur, opacity 0.25 */
+.hero__deco {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: auto;
+  opacity: .25;
+  pointer-events: none;
+}
+
+/* Bloc centré */
+.hero__center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.75rem;
+}
+
+.hero__logo {
+  width: 281px;
+  height: auto;
+}
+
+.hero__tagline {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--black);
+}
+
+/* Bouton CTA selon specs */
+.btn-cta {
+  display: inline-block;
+  border: 1.5px solid var(--black);
+  background: transparent;
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 36px;
+  letter-spacing: .02em;
+  transition: background .2s, color .2s;
+}
+.btn-cta:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ═══════════════════════════════════════════
+   NOTRE UNIVERS (bleu)
+═══════════════════════════════════════════ */
+.univers {
+  position: relative;
+  background: var(--blue);
+  color: var(--white);
+  padding: 4rem var(--pad) 5rem;
+  overflow: hidden;
+}
+
+/* Vinyl — position absolute, bas gauche */
+.univers__vinyl {
+  position: absolute;
+  bottom: -30px;
+  left: 3rem;
+  width: 260px;
+  height: 260px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Header centré */
+.univers__top {
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.univers__heading {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.univers__sub {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255,255,255,.88);
+}
+
+/* 3 cartes — grid 3 colonnes, gap 16px */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.cat-card {
+  background: var(--red);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  /* même hauteur via grid */
+}
+
+.cat-card__num {
+  font-family: var(--sans);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .6rem;
+}
+
+.cat-card__line {
+  border: none;
+  border-top: 1.5px solid rgba(255,255,255,.45);
+  margin-bottom: .6rem;
+}
+
+.cat-card__title {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: .6rem;
+}
+
+.cat-card__desc {
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255,255,255,.85);
+  margin-top: auto;
+}
+
+/* ═══════════════════════════════════════════
+   LA BOUTIQUE (blanc)
+═══════════════════════════════════════════ */
+.boutique {
+  background: var(--white);
+  display: grid;
+  grid-template-columns: 445px 1fr;
+  gap: 4rem;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 5rem var(--pad);
+  align-items: stretch;
+}
+
+/* Photos gauche — colonne pleine hauteur */
+.boutique__photos {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 8px;
+  height: 100%;
+}
+
+.photo { width: 100%; object-fit: cover; display: block; }
+
+/* Photo principale : height 100% de la colonne */
+.photo--main {
+  height: 100%;
+  min-height: 240px;
+}
+
+/* 2 petites : ratio 16/9 */
+.photo-row {
+  display: flex;
+  gap: 8px;
+}
+.photo--sm {
+  flex: 1;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* Texte droite */
+.boutique__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+}
+
+.boutique__heading {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 1.25rem;
+}
+
+.boutique__intro {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--black);
+  margin-bottom: 2rem;
+}
+
+/* Features */
+.features { display: flex; flex-direction: column; }
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.125rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.feature:first-child { border-top: 1px solid rgba(0,0,0,.1); }
+
+/* Dot cobalt selon specs */
+.feature__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  margin-top: .4rem;
+}
+
+.feature p { font-size: 1rem; line-height: 1.6; color: var(--black); }
+.feature p strong { font-weight: 600; }
+
+/* ═══════════════════════════════════════════
+   GALERIE
+═══════════════════════════════════════════ */
+.galerie {
+  background: var(--gray-lt);
+  padding: 5rem var(--pad);
+}
+
+.galerie__header {
+  max-width: var(--max-w);
+  margin: 0 auto 2.5rem;
+}
+
+.galerie__heading {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.galerie__grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 260px 260px;
+  gap: 12px;
+}
+
+.galerie__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Première image prend 2 colonnes */
+.galerie__img--wide {
+  grid-column: span 2;
+}
+
+/* Image vinyle : fond sombre pour contraste */
+.galerie__img--vinyl {
+  background: #111;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+/* ═══════════════════════════════════════════
+   AVIS
+═══════════════════════════════════════════ */
+.avis {
+  background: var(--blue);
+  padding: 5rem var(--pad);
+}
+
+.avis__header {
+  max-width: var(--max-w);
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.avis__heading {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.avis__grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.avis-card {
+  background: var(--white);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.avis-card__stars {
+  color: #F5A623;
+  font-size: 1.125rem;
+  letter-spacing: .1em;
+}
+
+.avis-card__text {
+  font-size: .9375rem;
+  line-height: 1.7;
+  color: var(--black);
+  font-style: italic;
+  flex: 1;
+}
+
+.avis-card__author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding-top: .75rem;
+}
+
+.avis-card__name {
+  font-weight: 600;
+  font-size: .875rem;
+}
+
+.avis-card__source {
+  font-size: .75rem;
+  color: var(--gray);
+  border: 1px solid #ddd;
+  padding: .2rem .5rem;
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact {
+  background: var(--white);
+  padding: 5rem var(--pad);
+}
+
+.contact__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.contact__heading {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.contact__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.contact__icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .1rem; }
+
+.contact__item a {
+  color: var(--blue);
+  font-weight: 500;
+}
+.contact__item a:hover { text-decoration: underline; }
+
+/* Horaires */
+.contact__hours-title {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--black);
+}
+
+.hours-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hours-table td {
+  padding: .65rem 0;
+  font-size: .9375rem;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+
+.hours-table__val {
+  text-align: right;
+  font-weight: 500;
+}
+
+.hours-table__val--closed {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.footer {
+  background: var(--black);
+  padding: 2rem 2.5rem;
+}
+
+.footer__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.footer__logo {
+  height: 36px;
+  width: auto;
+  filter: invert(1);
+}
+
+.footer__copy {
+  font-size: .8125rem;
+  color: rgba(255,255,255,.5);
+  text-align: center;
+}
+
+.footer__socials {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
+}
+
+.footer__socials a {
+  color: rgba(255,255,255,.6);
+  transition: color .2s;
+}
+.footer__socials a:hover { color: var(--white); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .boutique { grid-template-columns: 1fr; }
+  .boutique__photos { height: 500px; grid-template-rows: 1fr auto; }
+  .avis__grid { grid-template-columns: 1fr; gap: 1rem; }
+  .contact__inner { grid-template-columns: 1fr; gap: 3rem; }
+  .galerie__grid { grid-template-columns: repeat(2, 1fr); }
+  .galerie__img--wide { grid-column: span 2; }
+}
+
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .hero { height: auto; padding: 6rem 1.5rem 4rem; }
+  .hero__logo { width: 200px; }
+  .hero__tagline { font-size: 1.25rem; }
+  .univers__vinyl { display: none; }
+  .categories { grid-template-columns: 1fr; }
+  .galerie__grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .galerie__img--wide { grid-column: span 1; }
+  .footer__inner { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+  .footer__logo { margin: 0 auto; }
+  .footer__socials { justify-content: center; }
+}

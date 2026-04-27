@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VINYL RUN — Disquaire indépendant · Saint-Pierre, La Réunion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── 0. NAV SPECTRUM ────────────────────────────────────────── */
+    .nav__links a {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-spectrum {
+      display: block;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      width: 100%;
+      height: 14px;
+    }
+    .nav__links a:hover .nav-spectrum { opacity: 1; }
+
+    /* Nav — non sticky, aéré */
+    .nav {
+      position: static;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 3rem 0;
+      height: auto;
+      background: #FFF9BF;
+    }
+    .nav--scrolled { background: #FFF9BF; box-shadow: none; }
+
+    /* ── 1. HERO ANIMATIONS ─────────────────────────────────────── */
+
+    /* SVG île — contenu dans le hero */
+    .hero__deco {
+      width: 80vw;
+      height: 90vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero { overflow: hidden; position: relative; z-index: 1; }
+
+    /* Logo reveal + rotation idle */
+    .hero__logo {
+      clip-path: inset(100% 0 0 0);
+      animation: revealLogo 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 0.6s;
+    }
+    @keyframes revealLogo {
+      to { clip-path: inset(0% 0 0 0); }
+    }
+
+    /* Tagline mot par mot */
+    .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: wordIn 0.5s ease forwards;
+    }
+    .word:nth-child(1) { animation-delay: 1.2s; }
+    .word:nth-child(2) { animation-delay: 1.35s; }
+    .word:nth-child(3) { animation-delay: 1.5s; }
+    .word:nth-child(4) { animation-delay: 1.65s; }
+    .word:nth-child(5) { animation-delay: 1.8s; }
+    .word:nth-child(6) { animation-delay: 1.95s; }
+    .word:nth-child(7) { animation-delay: 2.1s; }
+    .word:nth-child(8) { animation-delay: 2.25s; }
+    .word:nth-child(9) { animation-delay: 2.4s; }
+    @keyframes wordIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CTA pulse */
+    .btn-cta {
+      animation: ctaPulse 3s ease-in-out infinite;
+      animation-delay: 3s;
+    }
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
+      50%       { box-shadow: 0 0 0 6px rgba(26, 26, 26, 0.08); }
+    }
+
+    /* ── 2. VINYL PAR CARTE — 35% visible au hover ──────────────
+       top: -90px + translateY(90px) par défaut = caché
+       hover : translateY(0) → 90px sortent au-dessus de la carte  */
+    .cat-card-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* overflow visible pour que le vinyl sorte de la section */
+    .univers { overflow: visible; }
+
+    @keyframes vinyl-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Wrapper gère le slide Y — transition smooth en entrée ET sortie */
+    .cat-vinyl-slider {
+      position: absolute;
+      top: -170px;
+      left: 50%;
+      width: 102%;
+      transform: translateX(-50%) translateY(170px);
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 0;
+    }
+
+    .cat-card-wrap:hover .cat-vinyl-slider {
+      transform: translateX(-50%) translateY(0px);
+    }
+
+    /* L'img gère uniquement la rotation */
+    .cat-vinyl {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .cat-card-wrap:hover .cat-vinyl {
+      animation: vinyl-spin 3s linear infinite;
+    }
+
+    .cat-card {
+      position: relative;
+      z-index: 1;
+      aspect-ratio: 1 / 1.05;
+      width: 100%;
+      padding: 24px 28px 32px 28px;
+      border-radius: 10px;
+      transition: box-shadow 0.25s ease;
+    }
+
+    .cat-card-wrap:hover .cat-card {
+      box-shadow: 0 0 0 3px #EDF10C;
+    }
+
+    /* Descendre le bloc cartes pour dégager le texte blanc */
+    .categories {
+      margin-top: 80px;
+    }
+
+    .cat-card__desc {
+      font-size: 16px;
+    }
+
+    /* ── 3. BOUTIQUE — layout + photos + animations ─────────────── */
+
+    /* Zone photos 55%, contenu 40% */
+    .boutique { display: flex; }
+    .boutique__photos { flex: 0 0 55%; max-width: 55%; }
+    .boutique__content { flex: 0 0 40%; max-width: 40%; }
+
+    /* Corner radius */
+    .boutique__photos .photo { border-radius: 10px; }
+
+    /* Tailles photos */
+    .photo--main {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .photo-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .photo--sm {
+      height: 260px;
+      width: calc(50% - 4px);
+      object-fit: cover;
+      aspect-ratio: unset;
+      flex: unset;
+    }
+
+    /* Entrée photos au scroll */
+    .photo {
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .photo--main      { transition-delay: 0s; }
+    .photo--sm:first-child { transition-delay: 0.15s; }
+    .photo--sm:last-child  { transition-delay: 0.3s; }
+    .photo.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Bullet points pulsés */
+    .feature__dot {
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    .feature:nth-child(2) .feature__dot { animation-delay: 0.4s; }
+    .feature:nth-child(3) .feature__dot { animation-delay: 0.8s; }
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.6); opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAV FIXE
+  ══════════════════════════════════════ -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav__logo">
+      <img src="assets/logo-vinyl-run.png" alt="Vinyl Run" class="nav__logo-img" />
+    </a>
+    <ul class="nav__links">
+      <li><a href="#notre-univers">Notre univers<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
+      <li><a href="#la-boutique">La boutique<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
+      <li><a href="#galerie">Galerie<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
+      <li><a href="#contact">Contact<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
+    </ul>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="hero">
+    <svg class="hero__deco" width="1205" height="1074" viewBox="0 0 1205 1074" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <filter id="filter0_g_57_161" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+          <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="3" seed="2">
+            <animate attributeName="baseFrequency" values="0.008 0.012; 0.012 0.008; 0.006 0.015; 0.010 0.010; 0.008 0.012" dur="6s" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+
+        <filter id="filter-ring2" x="-8%" y="-8%" width="116%" height="116%" filterUnits="userSpaceOnUse">
+          <feTurbulence type="fractalNoise" baseFrequency="0.007 0.011" numOctaves="3" seed="7">
+            <animate attributeName="baseFrequency" values="0.007 0.011; 0.011 0.007; 0.009 0.013; 0.007 0.011" dur="9s" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+
+        <filter id="filter-ring3" x="-12%" y="-12%" width="124%" height="124%" filterUnits="userSpaceOnUse">
+          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="3" seed="13">
+            <animate attributeName="baseFrequency" values="0.010 0.006; 0.006 0.012; 0.008 0.008; 0.010 0.006" dur="12s" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="36" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+
+        <filter id="filter-ring4" x="-16%" y="-16%" width="132%" height="132%" filterUnits="userSpaceOnUse">
+          <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="3" seed="21">
+            <animate attributeName="baseFrequency" values="0.009 0.005; 0.005 0.011; 0.007 0.009; 0.009 0.005" dur="15s" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="48" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+
+      <!-- Calque 1 : path animé, avec filtre -->
+      <path class="island-draw" filter="url(#filter0_g_57_161)"
+        d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z"
+        fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+
+      <!-- Calque 2 : même path avec texture, opacity basse -->
+      <g filter="url(#filter0_g_57_161)" opacity="0.4">
+        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      </g>
+
+      <!-- Ring 2 — 110% taille, opacity 0.18 -->
+      <g filter="url(#filter-ring2)" opacity="0.18" transform="translate(602.5, 537) scale(1.10) translate(-602.5, -537)">
+        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="1.2"/>
+      </g>
+
+      <!-- Ring 3 — 122% taille, opacity 0.10 -->
+      <g filter="url(#filter-ring3)" opacity="0.10" transform="translate(602.5, 537) scale(1.22) translate(-602.5, -537)">
+        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="0.9"/>
+      </g>
+
+      <!-- Ring 4 — 136% taille, opacity 0.05 -->
+      <g filter="url(#filter-ring4)" opacity="0.05" transform="translate(602.5, 537) scale(1.36) translate(-602.5, -537)">
+        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="0.7"/>
+      </g>
+    </svg>
+    <div class="hero__center">
+      <img class="hero__logo" src="assets/logo-vinyl-run.png" alt="Vinyl Run" />
+      <p class="hero__tagline">
+        <span class="word">Disquaire</span>
+        <span class="word">indépendant</span>
+        <br>
+        <span class="word">Saint-Pierre,</span>
+        <span class="word">La</span>
+        <span class="word">Réunion</span>
+        <span class="word">·</span>
+        <span class="word">Depuis</span>
+        <span class="word">2016</span>
+      </p>
+      <a href="#notre-univers" class="btn-cta">Découvrir le shop</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       NOTRE UNIVERS
+  ══════════════════════════════════════ -->
+  <section class="univers" id="notre-univers">
+    <div class="univers__top">
+      <p class="label label--light">Notre univers</p>
+      <h2 class="univers__heading">Ce qu'on trouve chez VINYL RUN</h2>
+      <p class="univers__sub">
+        Un espace pensé pour les amoureux du son analogique. Pas un supermarché —
+        une sélection, une passion, une conversation.
+      </p>
+    </div>
+
+    <div class="categories">
+      <div class="cat-card-wrap">
+        <div class="cat-vinyl-slider">
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
+        </div>
+        <div class="cat-card">
+          <span class="cat-card__num">01</span>
+          <hr class="cat-card__line" />
+          <h3 class="cat-card__title">Vinyles Neufs</h3>
+          <p class="cat-card__desc">Les grandes sorties, les rééditions essentielles. Du rock au jazz, du reggae à l'électronique — sélectionnés à la main.</p>
+        </div>
+      </div>
+      <div class="cat-card-wrap">
+        <div class="cat-vinyl-slider">
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
+        </div>
+        <div class="cat-card">
+          <span class="cat-card__num">02</span>
+          <hr class="cat-card__line" />
+          <h3 class="cat-card__title">Occasions & Raretés</h3>
+          <p class="cat-card__desc">Des pressings introuvables, des pépites de collection. Le fond de caisse qui change chaque semaine.</p>
+        </div>
+      </div>
+      <div class="cat-card-wrap">
+        <div class="cat-vinyl-slider">
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
+        </div>
+        <div class="cat-card">
+          <span class="cat-card__num">03</span>
+          <hr class="cat-card__line" />
+          <h3 class="cat-card__title">Imports & Exclusivités</h3>
+          <p class="cat-card__desc">Des éditions limitées, des imports directs. Ce qu'on ne trouve nulle part ailleurs sur l'île.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       LA BOUTIQUE
+  ══════════════════════════════════════ -->
+  <section class="boutique" id="la-boutique">
+    <div class="boutique__photos">
+      <img class="photo photo--main" src="assets/shop-main.png" alt="Devanture Vinyl Run" />
+      <div class="photo-row">
+        <img class="photo photo--sm" src="assets/shop-2.png" alt="Intérieur de la boutique" />
+        <img class="photo photo--sm" src="assets/shop-3.png" alt="DJ Vinyl Run" />
+      </div>
+    </div>
+
+    <div class="boutique__content">
+      <p class="label label--dark">La boutique</p>
+      <h2 class="boutique__heading">L'expérience en magasin</h2>
+      <p class="boutique__intro">
+        Vinyl Run ce n'est pas juste acheter un disque. C'est une heure passée à fouiller,
+        écouter, découvrir. Notre équipe connaît chaque sillon.
+      </p>
+      <ul class="features">
+        <li class="feature">
+          <span class="feature__dot"></span>
+          <p><strong>Station d'écoute</strong> — Testez avant d'acheter. Platine disponible en boutique.</p>
+        </li>
+        <li class="feature">
+          <span class="feature__dot"></span>
+          <p><strong>Conseil personnalisé</strong> — Dites-nous ce que vous aimez, on trouve.</p>
+        </li>
+        <li class="feature">
+          <span class="feature__dot"></span>
+          <p><strong>Commande spéciale</strong> — Un vinyle introuvable ? On s'en occupe.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GALERIE
+  ══════════════════════════════════════ -->
+  <section class="galerie" id="galerie">
+    <div class="galerie__header">
+      <p class="label label--dark">Galerie</p>
+      <h2 class="galerie__heading">Le shop en images</h2>
+    </div>
+    <div class="galerie__grid">
+      <img src="assets/shop-main.png" alt="Devanture Vinyl Run" class="galerie__img galerie__img--wide" />
+      <img src="assets/shop-2.png"    alt="Intérieur boutique"   class="galerie__img" />
+      <img src="assets/shop-3.png"    alt="DJ Vinyl Run"         class="galerie__img" />
+      <img src="assets/vinyl-record.png" alt="Vinyle"            class="galerie__img galerie__img--vinyl" />
+      <img src="assets/shop-2.png"    alt="Rayons vinyles"       class="galerie__img" />
+      <img src="assets/shop-main.png" alt="Entrée boutique"      class="galerie__img" />
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       AVIS
+  ══════════════════════════════════════ -->
+  <section class="avis" id="avis">
+    <div class="avis__header">
+      <p class="label label--light">Ils en parlent</p>
+      <h2 class="avis__heading">Avis clients</h2>
+    </div>
+    <div class="avis__grid">
+      <div class="avis-card">
+        <div class="avis-card__stars">★★★★★</div>
+        <p class="avis-card__text">
+          "Le meilleur disquaire de l'île, sans hésitation. Une sélection incroyable et des conseils au top. On y revient toujours !"
+        </p>
+        <div class="avis-card__author">
+          <span class="avis-card__name">Marie-Hélène R.</span>
+          <span class="avis-card__source">Google</span>
+        </div>
+      </div>
+      <div class="avis-card">
+        <div class="avis-card__stars">★★★★★</div>
+        <p class="avis-card__text">
+          "J'ai trouvé un pressing introuvable que je cherchais depuis des années. L'équipe connaît vraiment son affaire."
+        </p>
+        <div class="avis-card__author">
+          <span class="avis-card__name">Théo M.</span>
+          <span class="avis-card__source">Google</span>
+        </div>
+      </div>
+      <div class="avis-card">
+        <div class="avis-card__stars">★★★★★</div>
+        <p class="avis-card__text">
+          "Ambiance unique, sélection pointue et la station d'écoute c'est un vrai plus. Vinyl Run c'est une institution."
+        </p>
+        <div class="avis-card__author">
+          <span class="avis-card__name">Julien C.</span>
+          <span class="avis-card__source">Google</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section class="contact" id="contact">
+    <div class="contact__inner">
+      <div class="contact__info">
+        <p class="label label--dark">Contact</p>
+        <h2 class="contact__heading">Venir nous voir</h2>
+
+        <ul class="contact__list">
+          <li class="contact__item">
+            <span class="contact__icon">📍</span>
+            <span>45 bis rue du four à chaux<br>Saint-Pierre 97410, La Réunion</span>
+          </li>
+          <li class="contact__item">
+            <span class="contact__icon">📞</span>
+            <a href="tel:+262692441388">+262 692 44 13 88</a>
+          </li>
+          <li class="contact__item">
+            <span class="contact__icon">✉️</span>
+            <a href="mailto:vinylrun974@gmail.com">vinylrun974@gmail.com</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact__hours">
+        <h3 class="contact__hours-title">Horaires d'ouverture</h3>
+        <table class="hours-table">
+          <tbody>
+            <tr>
+              <td>Lundi</td>
+              <td class="hours-table__val hours-table__val--closed">Fermé</td>
+            </tr>
+            <tr>
+              <td>Mardi – Vendredi</td>
+              <td class="hours-table__val">10h–13h &nbsp;·&nbsp; 14h–18h</td>
+            </tr>
+            <tr>
+              <td>Samedi</td>
+              <td class="hours-table__val">10h–18h</td>
+            </tr>
+            <tr>
+              <td>Dimanche</td>
+              <td class="hours-table__val hours-table__val--closed">Fermé</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <img src="assets/logo-vinyl-run.png" alt="Vinyl Run" class="footer__logo" />
+      <p class="footer__copy">© 2024 Vinyl Run · Saint-Pierre, La Réunion</p>
+      <div class="footer__socials">
+        <a href="#" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav : transparent → blanc au scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = document.querySelector('.island-draw');
+      if (!path) { console.error('PATH NON TROUVÉ'); return; }
+
+      const len = path.getTotalLength();
+      console.log('Longueur path:', len);
+
+      path.setAttribute('stroke-dasharray', len);
+      path.setAttribute('stroke-dashoffset', len);
+
+      setTimeout(() => {
+        path.style.transition = 'stroke-dashoffset 3s ease';
+        path.setAttribute('stroke-dashoffset', '0');
+      }, 500);
+    });
+
+    // Photos boutique — fade + slide depuis la gauche au scroll
+    const photoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          photoObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.boutique__photos .photo')
+      .forEach(p => photoObserver.observe(p));
+
+    // Respiration organique du contour de l'île (après le draw)
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = document.querySelector('.island-draw');
+      if (!path) return;
+
+      setTimeout(() => {
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const TRAIL = 8;
+        const dots = [];
+
+        for (let i = 0; i < TRAIL; i++) {
+          const d = document.createElementNS(svgNS, 'circle');
+          const scale = 1 - i / TRAIL;
+          d.setAttribute('r', 3 * scale);
+          d.setAttribute('fill', '#1a1a1a');
+          d.setAttribute('opacity', (0.7 * scale).toFixed(2));
+          path.parentNode.appendChild(d);
+          dots.push(d);
+        }
+
+        const DURATION = 10000;
+        let start = null;
+
+        function moveDots(ts) {
+          if (!start) start = ts;
+          const elapsed = (ts - start) % DURATION;
+          const len = path.getTotalLength();
+
+          dots.forEach((d, i) => {
+            const lag = i * (len / (TRAIL * 12));
+            const dist = ((elapsed / DURATION) * len - lag + len) % len;
+            const pt = path.getPointAtLength(dist);
+            d.setAttribute('cx', pt.x);
+            d.setAttribute('cy', pt.y);
+          });
+
+          requestAnimationFrame(moveDots);
+        }
+
+        requestAnimationFrame(moveDots);
+      }, 3500);
+    });
+
+    // Nav spectrum — mini visualiseur sous chaque lien au hover
+    document.querySelectorAll('.nav-spectrum').forEach(canvas => {
+      const ctx = canvas.getContext('2d');
+      const COUNT = 10;
+      const bars = Array.from({ length: COUNT }, () => ({
+        speed:  Math.random() * 0.004 + 0.002,
+        offset: Math.random() * Math.PI * 2,
+        height: Math.random() * 0.5 + 0.3
+      }));
+
+      const link = canvas.closest('a');
+      canvas.width  = link.offsetWidth || 80;
+      canvas.height = 14;
+
+      function draw(t) {
+        const W = canvas.width;
+        const H = canvas.height;
+        const bw = W / COUNT;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#1a1a1a';
+        bars.forEach((b, i) => {
+          const h = (Math.sin(t * b.speed + b.offset) * 0.45 + 0.55) * b.height * H;
+          ctx.fillRect(i * bw + 1, H - h, bw - 2, h);
+        });
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    });
+
+    // Grain canvas — plus fiable que SVG data URI en background-image
+    (function () {
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const img = ctx.createImageData(size, size);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = (Math.random() * 255) | 0;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+        img.data[i + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+
+      const grain = document.createElement('div');
+      grain.style.cssText = [
+        'position:fixed', 'inset:0', 'pointer-events:none', 'z-index:9999',
+        'opacity:0.07',
+        'background-image:url(' + canvas.toDataURL() + ')',
+        'background-repeat:repeat',
+        'background-size:' + size + 'px ' + size + 'px'
+      ].join(';');
+      document.body.appendChild(grain);
+    })();
+  </script>
+
+</body>
+</html>
