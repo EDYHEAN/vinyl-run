@@ -338,7 +338,7 @@ a    { text-decoration: none; color: inherit; }
    AVIS
 ═══════════════════════════════════════════ */
 .avis {
-  background: var(--blue);
+  background: linear-gradient(135deg, #1a3fc4 0%, #3B67ED 50%, #5f9bff 100%);
   padding: 5rem var(--pad);
 }
 
@@ -369,6 +369,13 @@ a    { text-decoration: none; color: inherit; }
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border-radius: 10px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.avis-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .15);
 }
 
 .avis-card__stars {
