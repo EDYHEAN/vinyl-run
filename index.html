@@ -6,322 +6,95 @@
   <title>VINYL RUN — Disquaire indépendant · Saint-Pierre, La Réunion</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%231a1a1a'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23333' stroke-width='1'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23444' stroke-width='1'/><circle cx='16' cy='16' r='3' fill='%23EDF10C'/><circle cx='16' cy='16' r='1.2' fill='%231a1a1a'/></svg>" />
-  <style>
-
-    /* ── 0. NAV SPECTRUM ────────────────────────────────────────── */
-    .nav__links a {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-    .nav-spectrum {
-      display: block;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      width: 100%;
-      height: 14px;
-    }
-    .nav__links a:hover .nav-spectrum { opacity: 1; }
-
-    /* Nav — non sticky, aéré */
-    .nav {
-      position: static;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2rem 3rem 0;
-      height: auto;
-      background: #FFF9BF;
-    }
-    .nav--scrolled { background: #FFF9BF; box-shadow: none; }
-
-    /* ── 1. HERO ANIMATIONS ─────────────────────────────────────── */
-
-    /* SVG île — contenu dans le hero */
-    .hero__deco {
-      width: 80vw;
-      height: 90vh;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .hero { overflow: hidden; position: relative; z-index: 1; }
-
-    /* Logo reveal + rotation idle */
-    .hero__logo {
-      clip-path: inset(100% 0 0 0);
-      animation: revealLogo 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.6s;
-    }
-    @keyframes revealLogo {
-      to { clip-path: inset(0% 0 0 0); }
-    }
-
-    /* Tagline mot par mot */
-    .word {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: wordIn 0.5s ease forwards;
-    }
-    .word:nth-child(1) { animation-delay: 1.2s; }
-    .word:nth-child(2) { animation-delay: 1.35s; }
-    .word:nth-child(3) { animation-delay: 1.5s; }
-    .word:nth-child(4) { animation-delay: 1.65s; }
-    .word:nth-child(5) { animation-delay: 1.8s; }
-    .word:nth-child(6) { animation-delay: 1.95s; }
-    .word:nth-child(7) { animation-delay: 2.1s; }
-    .word:nth-child(8) { animation-delay: 2.25s; }
-    .word:nth-child(9) { animation-delay: 2.4s; }
-    @keyframes wordIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* CTA pulse */
-    .btn-cta {
-      animation: ctaPulse 3s ease-in-out infinite;
-      animation-delay: 3s;
-    }
-    @keyframes ctaPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
-      50%       { box-shadow: 0 0 0 6px rgba(26, 26, 26, 0.08); }
-    }
-
-    /* ── 2. VINYL PAR CARTE — 35% visible au hover ──────────────
-       top: -90px + translateY(90px) par défaut = caché
-       hover : translateY(0) → 90px sortent au-dessus de la carte  */
-    .cat-card-wrap {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* overflow visible pour que le vinyl sorte de la section */
-    .univers { overflow: visible; }
-
-    @keyframes vinyl-spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    /* Wrapper gère le slide Y — transition smooth en entrée ET sortie */
-    .cat-vinyl-slider {
-      position: absolute;
-      top: -170px;
-      left: 50%;
-      width: 102%;
-      transform: translateX(-50%) translateY(170px);
-      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      z-index: 0;
-    }
-
-    .cat-card-wrap:hover .cat-vinyl-slider {
-      transform: translateX(-50%) translateY(0px);
-    }
-
-    /* L'img gère uniquement la rotation */
-    .cat-vinyl {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 1;
-      object-fit: contain;
-    }
-
-    .cat-card-wrap:hover .cat-vinyl {
-      animation: vinyl-spin 3s linear infinite;
-    }
-
-    .cat-card {
-      position: relative;
-      z-index: 1;
-      aspect-ratio: 1 / 1.05;
-      width: 100%;
-      padding: 24px 28px 32px 28px;
-      border-radius: 10px;
-      transition: box-shadow 0.25s ease;
-    }
-
-    /* ── NOTRE UNIVERS — accents Réunion ────── */
-    /* Numéros */
-    .categories > .cat-card-wrap:nth-child(1) .cat-card__num { color: rgba(232, 67, 26, 0.75); }
-    .categories > .cat-card-wrap:nth-child(2) .cat-card__num { color: rgba(45, 125, 79, 0.75); }
-    .categories > .cat-card-wrap:nth-child(3) .cat-card__num { color: rgba(27, 111, 168, 0.75); }
-
-    /* Lignes dégradé */
-    .categories > .cat-card-wrap:nth-child(1) .cat-card__line { background: linear-gradient(to right, #EDF10C, #E8431A); }
-    .categories > .cat-card-wrap:nth-child(2) .cat-card__line { background: linear-gradient(to right, #EDF10C, #2D7D4F); }
-    .categories > .cat-card-wrap:nth-child(3) .cat-card__line { background: linear-gradient(to right, #EDF10C, #1B6FA8); }
-
-    /* Hover glow par carte */
-    .categories > .cat-card-wrap:nth-child(1):hover .cat-card { box-shadow: 0 0 0 3px #EDF10C; }
-    .categories > .cat-card-wrap:nth-child(2):hover .cat-card { box-shadow: 0 0 0 3px #2D7D4F; }
-    .categories > .cat-card-wrap:nth-child(3):hover .cat-card { box-shadow: 0 0 0 3px #1B6FA8; }
-
-    /* Descendre le bloc cartes pour dégager le texte blanc */
-    .categories {
-      margin-top: 80px;
-    }
-
-    .cat-card__desc {
-      font-size: 16px;
-    }
-
-    /* ── 3. BOUTIQUE — layout + photos + animations ─────────────── */
-
-    /* Zone photos 55%, contenu 40% */
-    .boutique { display: flex; }
-    .boutique__photos { flex: 0 0 55%; max-width: 55%; }
-    .boutique__content { flex: 0 0 40%; max-width: 40%; }
-
-    /* Corner radius */
-    .boutique__photos .photo { border-radius: 10px; }
-
-    /* Tailles photos */
-    .photo--main {
-      width: 100%;
-      height: 420px;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .photo-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .photo--sm {
-      height: 260px;
-      width: calc(50% - 4px);
-      object-fit: cover;
-      aspect-ratio: unset;
-      flex: unset;
-    }
-
-    /* Entrée photos au scroll */
-    .photo {
-      opacity: 0;
-      transform: translateX(-24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .photo--main      { transition-delay: 0s; }
-    .photo--sm:first-child { transition-delay: 0.15s; }
-    .photo--sm:last-child  { transition-delay: 0.3s; }
-    .photo.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Bullet points pulsés */
-    .feature__dot {
-      animation: dotPulse 2s ease-in-out infinite;
-    }
-    .feature:nth-child(2) .feature__dot { animation-delay: 0.4s; }
-    .feature:nth-child(3) .feature__dot { animation-delay: 0.8s; }
-    @keyframes dotPulse {
-      0%, 100% { transform: scale(1);   opacity: 1; }
-      50%       { transform: scale(1.6); opacity: 0.5; }
-    }
-  </style>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23111110'/><circle cx='16' cy='16' r='10' fill='none' stroke='rgba(240,237,230,0.15)' stroke-width='1'/><circle cx='16' cy='16' r='6' fill='none' stroke='rgba(240,237,230,0.1)' stroke-width='1'/><circle cx='16' cy='16' r='3' fill='%23EDF10C'/><circle cx='16' cy='16' r='1.2' fill='%23111110'/></svg>" />
 </head>
 <body>
 
   <!-- ══════════════════════════════════════
-       NAV FIXE
+       NAV
   ══════════════════════════════════════ -->
   <nav class="nav" id="nav">
-    <a href="#" class="nav__logo">
-      <img src="assets/logo-vinyl-run.png" alt="Vinyl Run" class="nav__logo-img" />
-    </a>
+    <a href="#" class="nav__logo">VINYL RUN</a>
     <ul class="nav__links">
-      <li><a href="#notre-univers">Notre univers<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
-      <li><a href="#la-boutique">La boutique<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
-
-      <li><a href="#contact">Contact<canvas class="nav-spectrum" width="80" height="16"></canvas></a></li>
+      <li><a href="#notre-univers">Notre univers</a></li>
+      <li><a href="#la-boutique">La boutique</a></li>
+      <li><a href="#avis">Avis</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
+    <a href="#la-boutique" class="nav__cta">La boutique ↗</a>
   </nav>
 
   <!-- ══════════════════════════════════════
        HERO
   ══════════════════════════════════════ -->
-  <section class="hero">
-    <svg class="hero__deco" width="1205" height="1074" viewBox="0 0 1205 1074" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <filter id="filter0_g_57_161" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
-          <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="3" seed="2">
-            <animate attributeName="baseFrequency" values="0.008 0.012; 0.012 0.008; 0.006 0.015; 0.010 0.010; 0.008 0.012" dur="6s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-
-        <filter id="filter-ring2" x="-8%" y="-8%" width="116%" height="116%" filterUnits="userSpaceOnUse">
-          <feTurbulence type="fractalNoise" baseFrequency="0.007 0.011" numOctaves="3" seed="7">
-            <animate attributeName="baseFrequency" values="0.007 0.011; 0.011 0.007; 0.009 0.013; 0.007 0.011" dur="9s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-
-        <filter id="filter-ring3" x="-12%" y="-12%" width="124%" height="124%" filterUnits="userSpaceOnUse">
-          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="3" seed="13">
-            <animate attributeName="baseFrequency" values="0.010 0.006; 0.006 0.012; 0.008 0.008; 0.010 0.006" dur="12s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="36" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-
-        <filter id="filter-ring4" x="-16%" y="-16%" width="132%" height="132%" filterUnits="userSpaceOnUse">
-          <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="3" seed="21">
-            <animate attributeName="baseFrequency" values="0.009 0.005; 0.005 0.011; 0.007 0.009; 0.009 0.005" dur="15s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="48" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-      </defs>
-
-      <!-- Calque 1 : path animé, avec filtre -->
-      <path class="island-draw" filter="url(#filter0_g_57_161)"
-        d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z"
-        fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-
-      <!-- Calque 2 : même path avec texture, opacity basse -->
-      <g filter="url(#filter0_g_57_161)" opacity="0.7">
-        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-      </g>
-
-      <!-- Ring 2 — 110% taille, opacity 0.18 -->
-      <g filter="url(#filter-ring2)" opacity="0.40" transform="translate(602.5, 537) scale(1.10) translate(-602.5, -537)">
-        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="1.2"/>
-      </g>
-
-      <!-- Ring 3 — 122% taille, opacity 0.10 -->
-      <g filter="url(#filter-ring3)" opacity="0.25" transform="translate(602.5, 537) scale(1.22) translate(-602.5, -537)">
-        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="0.9"/>
-      </g>
-
-      <!-- Ring 4 — 136% taille, opacity 0.05 -->
-      <g filter="url(#filter-ring4)" opacity="0.14" transform="translate(602.5, 537) scale(1.36) translate(-602.5, -537)">
-        <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="#1a1a1a" stroke-width="0.7"/>
-      </g>
-    </svg>
-    <div class="hero__center">
-      <img class="hero__logo" src="assets/logo-vinyl-run.png" alt="Vinyl Run" />
-      <p class="hero__tagline">
-        <span class="word">Disquaire</span>
-        <span class="word">indépendant</span>
-        <br>
-        <span class="word">Saint-Pierre,</span>
-        <span class="word">La</span>
-        <span class="word">Réunion</span>
-        <span class="word">·</span>
-        <span class="word">Depuis</span>
-        <span class="word">2016</span>
+  <section class="hero" id="hero">
+    <div class="hero__left">
+      <p class="hero__eyebrow">Disquaire indépendant · Saint-Pierre, La Réunion</p>
+      <h1 class="hero__title">
+        <span class="hero__title-line">VINYL</span>
+        <span class="hero__title-line hero__title-line--accent">RUN</span>
+      </h1>
+      <p class="hero__sub">
+        Vinyles neufs, occasions &amp; raretés.<br>
+        Une sélection à la main depuis 2016.
       </p>
-      <a href="#notre-univers" class="btn-cta">Découvrir le shop</a>
+      <div class="hero__actions">
+        <a href="#notre-univers" class="btn btn--fill">Explorer le shop</a>
+        <a href="#contact" class="btn btn--ghost">Nous trouver</a>
+      </div>
+    </div>
+
+    <div class="hero__right">
+      <svg class="hero__deco" viewBox="0 0 1205 1074" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <filter id="filter0_g_57_161" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="3" seed="2">
+              <animate attributeName="baseFrequency" values="0.008 0.012; 0.012 0.008; 0.006 0.015; 0.010 0.010; 0.008 0.012" dur="6s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <filter id="filter-ring2" x="-8%" y="-8%" width="116%" height="116%" filterUnits="userSpaceOnUse">
+            <feTurbulence type="fractalNoise" baseFrequency="0.007 0.011" numOctaves="3" seed="7">
+              <animate attributeName="baseFrequency" values="0.007 0.011; 0.011 0.007; 0.009 0.013; 0.007 0.011" dur="9s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <filter id="filter-ring3" x="-12%" y="-12%" width="124%" height="124%" filterUnits="userSpaceOnUse">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="3" seed="13">
+              <animate attributeName="baseFrequency" values="0.010 0.006; 0.006 0.012; 0.008 0.008; 0.010 0.006" dur="12s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="36" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <filter id="filter-ring4" x="-16%" y="-16%" width="132%" height="132%" filterUnits="userSpaceOnUse">
+            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="3" seed="21">
+              <animate attributeName="baseFrequency" values="0.009 0.005; 0.005 0.011; 0.007 0.009; 0.009 0.005" dur="15s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="48" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+
+        <path class="island-draw" filter="url(#filter0_g_57_161)"
+          d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z"
+          fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+
+        <g filter="url(#filter0_g_57_161)" opacity="0.7">
+          <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        </g>
+
+        <g filter="url(#filter-ring2)" opacity="0.55" transform="translate(602.5, 537) scale(1.10) translate(-602.5, -537)">
+          <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.1"/>
+        </g>
+
+        <g filter="url(#filter-ring3)" opacity="0.32" transform="translate(602.5, 537) scale(1.22) translate(-602.5, -537)">
+          <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="0.85"/>
+        </g>
+
+        <g filter="url(#filter-ring4)" opacity="0.18" transform="translate(602.5, 537) scale(1.36) translate(-602.5, -537)">
+          <path d="M237.822 102.106C195.267 148.204 170.443 109.198 132.616 102.106C99.5175 134.02 147.983 175.39 116.067 243.945C84.1501 312.501 -3.32482 330.231 4.94983 402.333C13.2245 474.435 142.073 503.984 116.067 550.082C90.0605 596.18 163.35 790.027 202.359 818.395C241.368 846.763 331.208 800.665 366.67 905.863C402.133 1011.06 670.468 1040.61 798.134 1065.43C925.801 1090.25 1168.13 996.876 1145.67 963.781C1123.21 930.685 1122.03 765.205 1177.59 691.922C1233.14 618.638 1177.59 525.26 1122.03 520.532C1066.47 515.804 955.353 424.791 942.35 278.223C929.347 131.656 854.875 53.6442 798.134 70.1922C741.394 86.7401 465.966 13.4565 412.772 5.18248C359.578 -3.09148 280.378 56.0083 237.822 102.106Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="0.65"/>
+        </g>
+      </svg>
     </div>
   </section>
 
@@ -330,16 +103,16 @@
   ══════════════════════════════════════ -->
   <section class="univers" id="notre-univers">
     <div class="univers__top">
-      <p class="label label--dark">Notre univers</p>
-      <h2 class="univers__heading">Ce qu'on trouve chez VINYL RUN</h2>
-      <p class="univers__sub">
+      <p class="section-label" data-reveal>Notre univers</p>
+      <h2 class="univers__heading" data-reveal>Ce qu'on trouve chez VINYL RUN</h2>
+      <p class="univers__sub" data-reveal>
         Un espace pensé pour les amoureux du son analogique. Pas un supermarché —
         une sélection, une passion, une conversation.
       </p>
     </div>
 
-    <div class="categories">
-      <div class="cat-card-wrap">
+    <div class="categories" data-reveal-group>
+      <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
           <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
         </div>
@@ -350,25 +123,25 @@
           <p class="cat-card__desc">Les grandes sorties, les rééditions essentielles. Du rock au jazz, du reggae à l'électronique — sélectionnés à la main.</p>
         </div>
       </div>
-      <div class="cat-card-wrap">
+      <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
           <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">02</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Occasions & Raretés</h3>
+          <h3 class="cat-card__title">Occasions &amp; Raretés</h3>
           <p class="cat-card__desc">Des pressings introuvables, des pépites de collection. Le fond de caisse qui change chaque semaine.</p>
         </div>
       </div>
-      <div class="cat-card-wrap">
+      <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
           <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">03</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Imports & Exclusivités</h3>
+          <h3 class="cat-card__title">Imports &amp; Exclusivités</h3>
           <p class="cat-card__desc">Des éditions limitées, des imports directs. Ce qu'on ne trouve nulle part ailleurs sur l'île.</p>
         </div>
       </div>
@@ -388,22 +161,22 @@
     </div>
 
     <div class="boutique__content">
-      <p class="label label--dark">La boutique</p>
-      <h2 class="boutique__heading">L'expérience en magasin</h2>
-      <p class="boutique__intro">
+      <p class="section-label" data-reveal>La boutique</p>
+      <h2 class="boutique__heading" data-reveal>L'expérience en magasin</h2>
+      <p class="boutique__intro" data-reveal>
         Vinyl Run ce n'est pas juste acheter un disque. C'est une heure passée à fouiller,
         écouter, découvrir. Notre équipe connaît chaque sillon.
       </p>
       <ul class="features">
-        <li class="feature">
+        <li class="feature" data-reveal>
           <span class="feature__dot"></span>
           <p><strong>Station d'écoute</strong> — Testez avant d'acheter. Platine disponible en boutique.</p>
         </li>
-        <li class="feature">
+        <li class="feature" data-reveal>
           <span class="feature__dot"></span>
           <p><strong>Conseil personnalisé</strong> — Dites-nous ce que vous aimez, on trouve.</p>
         </li>
-        <li class="feature">
+        <li class="feature" data-reveal>
           <span class="feature__dot"></span>
           <p><strong>Commande spéciale</strong> — Un vinyle introuvable ? On s'en occupe.</p>
         </li>
@@ -411,18 +184,17 @@
     </div>
   </section>
 
-
   <!-- ══════════════════════════════════════
        AVIS
   ══════════════════════════════════════ -->
   <section class="avis" id="avis">
     <div class="avis__header">
-      <p class="label label--light">Ils en parlent</p>
-      <h2 class="avis__heading">Avis clients</h2>
+      <p class="section-label" data-reveal>Ils en parlent</p>
+      <h2 class="avis__heading" data-reveal>Avis clients</h2>
     </div>
-    <div class="avis__grid">
-      <div class="avis-card">
-        <div class="avis-card__stars">★★★★★</div>
+    <div class="avis__grid" data-reveal-group>
+      <div class="avis-card" data-reveal>
+        <div class="avis-card__stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
         <p class="avis-card__text">
           "Une institution. Un joli choix de vinyle, de platines et d'ampli vintage. De l'occasion et du neuf. Des arrivages toutes les semaines ou presque. Un magasin de passionnés pour passionnés. C'est vraiment une adresse incontournable sur Saint-Pierre (et à la réunion en général) pour tout amateur de musique à écouter chez soi."
         </p>
@@ -431,8 +203,8 @@
           <span class="avis-card__source">Google</span>
         </div>
       </div>
-      <div class="avis-card">
-        <div class="avis-card__stars">★★★★★</div>
+      <div class="avis-card" data-reveal>
+        <div class="avis-card__stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
         <p class="avis-card__text">
           "J'ai été super bien accueilli les deux fois où j'y suis allé. J'ai également passé une commande pour deux vinyles que j'ai reçu rapidement et en très bon état, ma femme était ravie 😁 Merci à eux pour leur gentillesse et leur professionnalisme, je reviendrai et je vous recommande fortement d'aller y faire un tour 🫰🏻"
         </p>
@@ -441,8 +213,8 @@
           <span class="avis-card__source">Google</span>
         </div>
       </div>
-      <div class="avis-card">
-        <div class="avis-card__stars">★★★★★</div>
+      <div class="avis-card" data-reveal>
+        <div class="avis-card__stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
         <p class="avis-card__text">
           "Je suis très très satisfait de mon passage au sein de ce magasin. Les gérants sont vraiment très agréable et à l'écoute concernant nos questions. Il y a un large choix en terme de vinyles mais pas que ! Il y avait également des CD et des cassettes ! Les prix sont très attractifs ! C'est sûr que j'y retournerai !"
         </p>
@@ -458,132 +230,187 @@
        CONTACT
   ══════════════════════════════════════ -->
   <section class="contact" id="contact">
+    <div class="contact__inner">
+      <p class="section-label" data-reveal>Contact</p>
+      <div class="contact__card" data-reveal>
 
-    <!-- Carte Google Maps — edge-to-edge gauche -->
-    <div class="contact__map">
-      <iframe
-        src="https://www.google.com/maps?q=45+bis+rue+du+four+%C3%A0+chaux,+Saint-Pierre+97410,+La+R%C3%A9union&output=embed"
-        width="100%" height="100%"
-        style="border:0; display:block;"
-        allowfullscreen loading="lazy"
-        title="Vinyl Run — 45 bis rue du four à chaux, Saint-Pierre">
-      </iframe>
-    </div>
-
-    <!-- Infos + réseaux -->
-    <div class="contact__content">
-      <p class="contact__label">Contact</p>
-      <h2 class="contact__heading">Venir nous voir</h2>
-
-      <ul class="contact__list">
-        <li class="contact__item">
-          <svg class="contact__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.5C6.5 1.5 4.5 3.5 4.5 6c0 3.5 4.5 10.5 4.5 10.5S13.5 9.5 13.5 6c0-2.5-2-4.5-4.5-4.5z"/><circle cx="9" cy="6" r="1.5"/></svg>
-          <span>45 bis rue du four à chaux<br>Saint-Pierre 97410, La Réunion</span>
-        </li>
-        <li class="contact__item">
-          <svg class="contact__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h3.5l1.5 3.5-2 1.5a9 9 0 0 0 3.5 3.5l1.5-2L14.5 11V14.5A1.5 1.5 0 0 1 13 16C7 16 2 11 2 5a1.5 1.5 0 0 1 1.5-1.5H3z"/></svg>
-          <a href="tel:+262692441388">+262 692 44 13 88</a>
-        </li>
-        <li class="contact__item">
-          <svg class="contact__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M2 5l7 5 7-5"/></svg>
-          <a href="mailto:vinylrun974@gmail.com">vinylrun974@gmail.com</a>
-        </li>
-      </ul>
-
-      <div class="contact__hours">
-        <h3 class="contact__hours-title">Horaires d'ouverture</h3>
-        <table class="hours-table">
-          <tbody>
-            <tr>
-              <td>Lundi</td>
-              <td class="hours-table__val hours-table__val--closed">Fermé</td>
-            </tr>
-            <tr>
-              <td>Mardi – Vendredi</td>
-              <td class="hours-table__val">10h–13h &nbsp;·&nbsp; 14h–18h</td>
-            </tr>
-            <tr>
-              <td>Samedi</td>
-              <td class="hours-table__val">10h–18h</td>
-            </tr>
-            <tr>
-              <td>Dimanche</td>
-              <td class="hours-table__val hours-table__val--closed">Fermé</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="contact__socials">
-        <p class="contact__socials-title">Retrouvez-nous</p>
-        <div class="social-links">
-
-          <a href="https://www.instagram.com/vinylrun974/" class="social-link" target="_blank" rel="noopener noreferrer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            <span>@vinylrun974</span>
-          </a>
-
-          <a href="https://www.facebook.com/vinylrun/" class="social-link" target="_blank" rel="noopener noreferrer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            <span>Vinyl Run</span>
-          </a>
-
-          <div class="social-discogs">
-            <a href="https://www.discogs.com/seller/Vinylrun974/profile" class="social-link social-link--discogs" target="_blank" rel="noopener noreferrer">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
-              <span>Vinylrun974 sur Discogs</span>
-            </a>
-            <p class="social-discogs__sub">Achetez &amp; vendez en ligne</p>
+        <div class="contact__info">
+          <div class="contact__block">
+            <h4 class="contact__block-label">Adresse</h4>
+            <p>45 bis rue du four à chaux<br>Saint-Pierre 97410, La Réunion</p>
           </div>
-
+          <div class="contact__block">
+            <h4 class="contact__block-label">Horaires d'écoute</h4>
+            <p>Mar – Ven : 10h–13h · 14h–18h<br>Samedi : 10h–18h<br><span style="color:var(--ink-muted)">Dim &amp; Lun : Fermé</span></p>
+          </div>
+          <div class="contact__block">
+            <h4 class="contact__block-label">Nous joindre</h4>
+            <a href="tel:+262692441388" class="contact__link">+262 692 44 13 88</a>
+            <a href="mailto:vinylrun974@gmail.com" class="contact__link">vinylrun974@gmail.com</a>
+          </div>
+          <div class="contact__block">
+            <h4 class="contact__block-label">Retrouvez-nous</h4>
+            <div style="display:flex;gap:14px;margin-top:4px;">
+              <a href="https://www.instagram.com/vinylrun974/" class="contact__social" target="_blank" rel="noopener">Instagram</a>
+              <a href="https://www.facebook.com/vinylrun/" class="contact__social" target="_blank" rel="noopener">Facebook</a>
+              <a href="https://www.discogs.com/seller/Vinylrun974/profile" class="contact__social" target="_blank" rel="noopener">Discogs</a>
+            </div>
+          </div>
         </div>
+
+        <div class="contact__map">
+          <iframe
+            src="https://www.google.com/maps?q=45+bis+rue+du+four+%C3%A0+chaux,+Saint-Pierre+97410,+La+R%C3%A9union&output=embed"
+            width="100%" height="100%"
+            style="border:0; display:block;"
+            allowfullscreen loading="lazy"
+            title="Vinyl Run — 45 bis rue du four à chaux, Saint-Pierre">
+          </iframe>
+          <div class="contact__map-overlay"></div>
+        </div>
+
       </div>
     </div>
-
   </section>
 
   <!-- ══════════════════════════════════════
        FOOTER
   ══════════════════════════════════════ -->
   <footer class="footer">
-    <div class="footer__inner">
-      <img src="assets/logo-vinyl-run.png" alt="Vinyl Run" class="footer__logo" />
-      <p class="footer__copy">© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
-      <div class="footer__socials">
-        <a href="#" aria-label="Instagram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href="#" aria-label="Facebook">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-      </div>
+    <span class="footer__logo">VINYL RUN</span>
+    <p>© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
+    <div class="footer__socials">
+      <a href="https://www.instagram.com/vinylrun974/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+      <a href="https://www.facebook.com/vinylrun/" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+      <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener" aria-label="Discogs">Discogs</a>
     </div>
   </footer>
 
+  <!-- ══════════════════════════════════════
+       PLAYER
+  ══════════════════════════════════════ -->
+  <div class="player" id="player" aria-label="Lecteur audio">
+    <div class="player__track-info">
+      <div class="player__cover" id="playerCover">
+        <svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
+          <circle cx="22" cy="22" r="21" fill="#1a1a18" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+          <circle cx="22" cy="22" r="14" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+          <circle cx="22" cy="22" r="8"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+          <circle cx="22" cy="22" r="3"  fill="#EDF10C"/>
+          <circle cx="22" cy="22" r="1.2" fill="#111"/>
+        </svg>
+      </div>
+      <div class="player__meta">
+        <span class="player__title" id="playerTitle">Danyèl Waro</span>
+        <span class="player__artist" id="playerArtist">Tinn Tout</span>
+      </div>
+    </div>
+
+    <div class="player__center">
+      <div class="player__controls">
+        <button class="player__btn" id="btnShuffle" aria-label="Aléatoire">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 3 21 3 21 8"/><polyline points="16 21 21 21 21 16"/>
+            <line x1="4" y1="20" x2="21" y2="3"/><line x1="21" y1="21" x2="14" y2="14"/>
+            <line x1="4" y1="4" x2="9" y2="9"/>
+          </svg>
+        </button>
+        <button class="player__btn" id="btnPrev" aria-label="Précédent">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+        </button>
+        <button class="player__btn player__btn--play" id="btnPlay" aria-label="Lecture">
+          <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="player__btn" id="btnNext" aria-label="Suivant">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zm14 0h2v16h-2z"/></svg>
+        </button>
+        <button class="player__btn" id="btnRepeat" aria-label="Répéter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/>
+            <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/>
+          </svg>
+        </button>
+      </div>
+      <div class="player__progress-row">
+        <span class="player__time" id="timeElapsed">0:00</span>
+        <div class="player__bar" id="playerBar" role="slider" aria-label="Progression">
+          <div class="player__bar-fill" id="playerFill"></div>
+        </div>
+        <span class="player__time" id="timeDuration">0:00</span>
+      </div>
+    </div>
+
+    <div class="player__right">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+      </svg>
+      <input type="range" class="player__volume" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" aria-label="Volume" />
+    </div>
+  </div>
+
   <script>
-    // Nav : transparent → blanc au scroll
+    // ── NAV scroll + parallax île ────────────────────────────────
     const nav = document.getElementById('nav');
+    const heroDeco = document.querySelector('.hero__deco');
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+      nav.classList.toggle('scrolled', scrollY > 40);
+      if (heroDeco) {
+        heroDeco.style.transform = `translateY(${scrollY * 0.12}px)`;
+      }
     });
 
+    // ── Draw de l'île ────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       const path = document.querySelector('.island-draw');
-      if (!path) { console.error('PATH NON TROUVÉ'); return; }
-
+      if (!path) return;
       const len = path.getTotalLength();
-      console.log('Longueur path:', len);
-
       path.setAttribute('stroke-dasharray', len);
       path.setAttribute('stroke-dashoffset', len);
-
       setTimeout(() => {
         path.style.transition = 'stroke-dashoffset 3s ease';
         path.setAttribute('stroke-dashoffset', '0');
       }, 500);
     });
 
-    // Photos boutique — fade + slide depuis la gauche au scroll
+    // ── Dots animés sur le contour de l'île ─────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = document.querySelector('.island-draw');
+      if (!path) return;
+      setTimeout(() => {
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const TRAIL = 10;
+        const dots = [];
+        for (let i = 0; i < TRAIL; i++) {
+          const d = document.createElementNS(svgNS, 'circle');
+          const scale = 1 - i / TRAIL;
+          d.setAttribute('r', 3 * scale);
+          d.setAttribute('fill', '#EDF10C');
+          d.setAttribute('opacity', (0.7 * scale).toFixed(2));
+          path.parentNode.appendChild(d);
+          dots.push(d);
+        }
+        const DURATION = 10000;
+        let start = null;
+        function moveDots(ts) {
+          if (!start) start = ts;
+          const elapsed = (ts - start) % DURATION;
+          const len = path.getTotalLength();
+          dots.forEach((d, i) => {
+            const lag = i * (len / (TRAIL * 12));
+            const dist = ((elapsed / DURATION) * len - lag + len) % len;
+            const pt = path.getPointAtLength(dist);
+            d.setAttribute('cx', pt.x);
+            d.setAttribute('cy', pt.y);
+          });
+          requestAnimationFrame(moveDots);
+        }
+        requestAnimationFrame(moveDots);
+      }, 3500);
+    });
+
+    // ── Photos boutique — fade + slide ──────────────────────────
     const photoObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -592,83 +419,89 @@
         }
       });
     }, { threshold: 0.2 });
-
     document.querySelectorAll('.boutique__photos .photo')
       .forEach(p => photoObserver.observe(p));
 
-    // Respiration organique du contour de l'île (après le draw)
+    // ── Scroll reveal — data-reveal ──────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
-      const path = document.querySelector('.island-draw');
-      if (!path) return;
-
-      setTimeout(() => {
-        const svgNS = 'http://www.w3.org/2000/svg';
-        const TRAIL = 8;
-        const dots = [];
-
-        for (let i = 0; i < TRAIL; i++) {
-          const d = document.createElementNS(svgNS, 'circle');
-          const scale = 1 - i / TRAIL;
-          d.setAttribute('r', 3 * scale);
-          d.setAttribute('fill', '#1a1a1a');
-          d.setAttribute('opacity', (0.7 * scale).toFixed(2));
-          path.parentNode.appendChild(d);
-          dots.push(d);
-        }
-
-        const DURATION = 10000;
-        let start = null;
-
-        function moveDots(ts) {
-          if (!start) start = ts;
-          const elapsed = (ts - start) % DURATION;
-          const len = path.getTotalLength();
-
-          dots.forEach((d, i) => {
-            const lag = i * (len / (TRAIL * 12));
-            const dist = ((elapsed / DURATION) * len - lag + len) % len;
-            const pt = path.getPointAtLength(dist);
-            d.setAttribute('cx', pt.x);
-            d.setAttribute('cy', pt.y);
-          });
-
-          requestAnimationFrame(moveDots);
-        }
-
-        requestAnimationFrame(moveDots);
-      }, 3500);
-    });
-
-    // Nav spectrum — mini visualiseur sous chaque lien au hover
-    document.querySelectorAll('.nav-spectrum').forEach(canvas => {
-      const ctx = canvas.getContext('2d');
-      const COUNT = 10;
-      const bars = Array.from({ length: COUNT }, () => ({
-        speed:  Math.random() * 0.004 + 0.002,
-        offset: Math.random() * Math.PI * 2,
-        height: Math.random() * 0.5 + 0.3
-      }));
-
-      const link = canvas.closest('a');
-      canvas.width  = link.offsetWidth || 80;
-      canvas.height = 14;
-
-      function draw(t) {
-        const W = canvas.width;
-        const H = canvas.height;
-        const bw = W / COUNT;
-        ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = '#1a1a1a';
-        bars.forEach((b, i) => {
-          const h = (Math.sin(t * b.speed + b.offset) * 0.45 + 0.55) * b.height * H;
-          ctx.fillRect(i * bw + 1, H - h, bw - 2, h);
+      const items = document.querySelectorAll('[data-reveal]');
+      items.forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.transition =
+          'opacity 0.75s cubic-bezier(0.16,1,0.3,1), ' +
+          'transform 0.75s cubic-bezier(0.16,1,0.3,1)';
+      });
+      document.querySelectorAll('[data-reveal-group]').forEach(group => {
+        group.querySelectorAll('[data-reveal]').forEach((child, i) => {
+          child.style.transitionDelay = (i * 0.08) + 's';
         });
-        requestAnimationFrame(draw);
-      }
-      requestAnimationFrame(draw);
+      });
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      items.forEach(el => obs.observe(el));
     });
 
-    // Grain canvas — plus fiable que SVG data URI en background-image
+    // ── Count-up .cat-card__num ──────────────────────────────────
+    (function () {
+      const univers = document.querySelector('.univers');
+      const nums = document.querySelectorAll('.cat-card__num');
+      let countedUp = false;
+      const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !countedUp) {
+            countedUp = true;
+            nums.forEach((el, i) => {
+              const target = i + 1;
+              const duration = 600;
+              const startTime = performance.now();
+              function tick(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = String(Math.round(eased * target)).padStart(2, '0');
+                if (progress < 1) requestAnimationFrame(tick);
+              }
+              requestAnimationFrame(tick);
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+      if (univers) countObserver.observe(univers);
+    })();
+
+    // ── Cursor dot ───────────────────────────────────────────────
+    if (!('ontouchstart' in window)) {
+      const dot = document.createElement('div');
+      dot.id = 'cursor-dot';
+      dot.style.cssText = 'position:fixed;width:6px;height:6px;border-radius:50%;background:var(--ink);pointer-events:none;z-index:9998;opacity:0;transition:transform 0.15s ease,opacity 0.2s ease,background 0.15s ease;transform:translate(-50%,-50%);top:0;left:0;';
+      document.body.appendChild(dot);
+      document.addEventListener('mousemove', e => {
+        dot.style.left = e.clientX + 'px';
+        dot.style.top  = e.clientY + 'px';
+      });
+      document.body.addEventListener('mouseenter', () => dot.style.opacity = '1');
+      document.body.addEventListener('mouseleave', () => dot.style.opacity = '0');
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          dot.style.transform = 'translate(-50%,-50%) scale(2.5)';
+          dot.style.background = 'var(--accent)';
+        });
+        el.addEventListener('mouseleave', () => {
+          dot.style.transform = 'translate(-50%,-50%) scale(1)';
+          dot.style.background = 'var(--ink)';
+        });
+      });
+    }
+
+    // ── Grain ────────────────────────────────────────────────────
     (function () {
       const size = 256;
       const canvas = document.createElement('canvas');
@@ -681,16 +514,132 @@
         img.data[i + 3] = 255;
       }
       ctx.putImageData(img, 0, 0);
-
       const grain = document.createElement('div');
       grain.style.cssText = [
         'position:fixed', 'inset:0', 'pointer-events:none', 'z-index:9999',
-        'opacity:0.07',
+        'opacity:0.025',
         'background-image:url(' + canvas.toDataURL() + ')',
         'background-repeat:repeat',
         'background-size:' + size + 'px ' + size + 'px'
       ].join(';');
       document.body.appendChild(grain);
+    })();
+
+    // ── Player ───────────────────────────────────────────────────
+    (function() {
+      const tracks = [
+        { title: 'Danyèl Waro',  artist: 'Tinn Tout',   src: '' },
+        { title: 'Baster',       artist: 'Maïdo Séré',  src: '' },
+        { title: 'Lo Rwa Kaf',   artist: 'Grèn Sémin',  src: '' },
+      ];
+
+      let current = 0, isPlaying = false, shuffle = false, repeat = false;
+
+      const audio     = new Audio();
+      const cover     = document.getElementById('playerCover');
+      const titleEl   = document.getElementById('playerTitle');
+      const artistEl  = document.getElementById('playerArtist');
+      const btnPlay   = document.getElementById('btnPlay');
+      const iconPlay  = document.getElementById('iconPlay');
+      const iconPause = document.getElementById('iconPause');
+      const btnPrev   = document.getElementById('btnPrev');
+      const btnNext   = document.getElementById('btnNext');
+      const btnShuffle = document.getElementById('btnShuffle');
+      const btnRepeat  = document.getElementById('btnRepeat');
+      const fill      = document.getElementById('playerFill');
+      const bar       = document.getElementById('playerBar');
+      const elapsed   = document.getElementById('timeElapsed');
+      const duration  = document.getElementById('timeDuration');
+      const volSlider = document.getElementById('volumeSlider');
+
+      function fmt(s) {
+        if (isNaN(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return m + ':' + String(sec).padStart(2, '0');
+      }
+
+      function load(idx) {
+        const t = tracks[idx];
+        titleEl.textContent  = t.title;
+        artistEl.textContent = t.artist;
+        audio.src = t.src;
+        audio.load();
+      }
+
+      function play() {
+        if (!audio.src) return;
+        audio.play();
+        isPlaying = true;
+        iconPlay.style.display  = 'none';
+        iconPause.style.display = 'block';
+        cover.classList.add('spinning');
+      }
+
+      function pause() {
+        audio.pause();
+        isPlaying = false;
+        iconPlay.style.display  = 'block';
+        iconPause.style.display = 'none';
+        cover.classList.remove('spinning');
+      }
+
+      btnPlay.addEventListener('click', () => isPlaying ? pause() : play());
+
+      btnNext.addEventListener('click', () => {
+        current = shuffle
+          ? Math.floor(Math.random() * tracks.length)
+          : (current + 1) % tracks.length;
+        load(current);
+        if (isPlaying) play();
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+        current = (current - 1 + tracks.length) % tracks.length;
+        load(current);
+        if (isPlaying) play();
+      });
+
+      btnShuffle.addEventListener('click', () => {
+        shuffle = !shuffle;
+        btnShuffle.classList.toggle('active', shuffle);
+      });
+
+      btnRepeat.addEventListener('click', () => {
+        repeat = !repeat;
+        btnRepeat.classList.toggle('active', repeat);
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        fill.style.width = pct + '%';
+        elapsed.textContent  = fmt(audio.currentTime);
+        duration.textContent = fmt(audio.duration);
+      });
+
+      audio.addEventListener('ended', () => {
+        if (repeat) { audio.currentTime = 0; play(); return; }
+        current = shuffle
+          ? Math.floor(Math.random() * tracks.length)
+          : (current + 1) % tracks.length;
+        load(current);
+        play();
+      });
+
+      bar.addEventListener('click', (e) => {
+        const rect = bar.getBoundingClientRect();
+        const pct  = (e.clientX - rect.left) / rect.width;
+        if (audio.duration) audio.currentTime = pct * audio.duration;
+      });
+
+      volSlider.addEventListener('input', () => {
+        audio.volume = parseFloat(volSlider.value);
+      });
+
+      audio.volume = parseFloat(volSlider.value);
+      load(current);
     })();
   </script>
 
