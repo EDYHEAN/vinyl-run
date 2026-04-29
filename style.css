@@ -119,23 +119,8 @@ a    { text-decoration: none; color: inherit; }
   opacity: 0; animation: fadeUp 0.6s var(--ease-out) 0.3s forwards;
 }
 
-.hero__title {
-  font-family: var(--font-serif);
-  font-size: clamp(64px, 8vw, 110px);
-  font-weight: 700; line-height: 0.92;
-  letter-spacing: -0.02em;
+.hero__logo-svg {
   margin-bottom: 2rem;
-}
-
-.hero__title-line {
-  display: block;
-  opacity: 0; transform: translateY(20px);
-  animation: fadeUp 0.7s var(--ease-out) forwards;
-}
-.hero__title-line:nth-child(1) { animation-delay: 0.5s; }
-.hero__title-line--accent {
-  font-style: italic; color: var(--accent);
-  animation-delay: 0.65s;
 }
 
 .hero__sub {
@@ -150,14 +135,25 @@ a    { text-decoration: none; color: inherit; }
 }
 
 .hero__right {
-  display: flex; align-items: center; justify-content: center;
-  height: 100vh; position: relative;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 0;
+  margin-left: -8vw;
+  height: 100vh;
 }
 
 .hero__deco {
-  width: min(90%, 540px);
+  width: 130vw;
+  max-width: none;
   height: auto;
-  position: relative;
+  position: absolute;
+  right: -35vw;
+  top: 50%;
+  transform: translateY(-50%);
+  overflow: visible;
   z-index: 1;
   will-change: transform;
 }
@@ -213,10 +209,17 @@ a    { text-decoration: none; color: inherit; }
 .univers__heading {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(18px, 2.4vw, 32px);
   font-weight: 400;
   color: var(--ink);
   margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .univers__heading {
+    white-space: nowrap;
+    font-size: clamp(20px, 2.2vw, 30px);
+    overflow: visible;
+  }
 }
 
 .univers__sub {
@@ -438,17 +441,20 @@ a    { text-decoration: none; color: inherit; }
 }
 
 .contact__inner {
-  max-width: 1080px;
+  max-width: 100%;
+  padding: 0;
 }
 
 .contact__card {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 340px 1fr;
   border: 1px solid var(--border-md);
   border-radius: 4px;
   overflow: hidden;
-  min-height: 500px;
+  max-width: 100%;
+  min-height: 560px;
   position: relative;
+  margin: 0 auto;
 }
 
 .contact__card::before {
@@ -492,7 +498,7 @@ a    { text-decoration: none; color: inherit; }
 
 .contact__map {
   position: relative;
-  min-height: 400px;
+  min-height: 560px;
 }
 .contact__map iframe {
   position: absolute;
