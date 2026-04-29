@@ -16,7 +16,7 @@
        NAV
   ══════════════════════════════════════ -->
   <nav class="nav" id="nav">
-    <a href="#" class="nav__logo"><img src="assets/logo.svg" alt="Vinyl Run" class="nav__logo-img" /></a>
+    <a href="#" class="nav__logo">VINYL RUN</a>
     <ul class="nav__links">
       <li><a href="#notre-univers">Notre univers</a></li>
       <li><a href="#la-boutique">La boutique</a></li>
@@ -184,6 +184,7 @@
       </button>
 
       <div class="slideshow__dots" id="slideDots"></div>
+      <div class="slideshow__progress"><div class="slideshow__progress-bar" id="slideProgressBar"></div></div>
     </div>
 
     <div class="boutique__content">
@@ -438,12 +439,14 @@
 
     // ── Slideshow galerie ────────────────────────────────────────
     (function () {
-      const track  = document.getElementById('slideshowTrack');
-      const dotsEl = document.getElementById('slideDots');
+      const track       = document.getElementById('slideshowTrack');
+      const dotsEl      = document.getElementById('slideDots');
+      const progressBar = document.getElementById('slideProgressBar');
       if (!track) return;
 
-      const slides = track.querySelectorAll('.slide');
-      let current  = 0;
+      const slides  = track.querySelectorAll('.slide');
+      const DELAY   = 4000;
+      let current   = 0;
       let autoTimer;
 
       slides.forEach((_, i) => {
@@ -454,18 +457,27 @@
         dotsEl.appendChild(btn);
       });
 
+      function animateBar() {
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        progressBar.offsetWidth;
+        progressBar.style.transition = 'width ' + DELAY + 'ms linear';
+        progressBar.style.width = '100%';
+      }
+
       function goTo(idx) {
         current = (idx + slides.length) % slides.length;
         track.style.transform = 'translateX(-' + (current * 100) + '%)';
         dotsEl.querySelectorAll('.slideshow__dot').forEach((d, i) =>
           d.classList.toggle('active', i === current)
         );
+        animateBar();
         resetAuto();
       }
 
       function resetAuto() {
         clearInterval(autoTimer);
-        autoTimer = setInterval(() => goTo(current + 1), 4500);
+        autoTimer = setInterval(() => goTo(current + 1), DELAY);
       }
 
       document.getElementById('slidePrev').addEventListener('click', () => goTo(current - 1));
@@ -478,7 +490,7 @@
         if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
       });
 
-      resetAuto();
+      goTo(0);
     })();
 
     // ── Scroll reveal — data-reveal ──────────────────────────────
