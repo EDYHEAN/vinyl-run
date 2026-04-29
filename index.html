@@ -16,7 +16,7 @@
        NAV
   ══════════════════════════════════════ -->
   <nav class="nav" id="nav">
-    <a href="#" class="nav__logo">VINYL RUN</a>
+    <a href="#" class="nav__logo"><img src="assets/logo.svg" alt="Vinyl Run" class="nav__logo-img" /></a>
     <ul class="nav__links">
       <li><a href="#notre-univers">Notre univers</a></li>
       <li><a href="#la-boutique">La boutique</a></li>
@@ -32,26 +32,7 @@
   <section class="hero" id="hero">
     <div class="hero__left">
       <p class="hero__eyebrow">Disquaire indépendant · Saint-Pierre, La Réunion</p>
-      <div class="hero__logo-svg" aria-label="Vinyl Run">
-        <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-             width="380" style="max-width:100%;opacity:0;animation:fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.5s forwards">
-          <text x="0" y="62"
-            font-family="'Bodoni Moda', Georgia, serif"
-            font-weight="700"
-            font-size="72"
-            fill="white"
-            letter-spacing="-1">VINYL</text>
-          <text x="232" y="62"
-            font-family="'Bodoni Moda', Georgia, serif"
-            font-weight="700"
-            font-style="italic"
-            font-size="72"
-            fill="#EDF10C"
-            letter-spacing="-1">RUN</text>
-          <line x1="0" y1="74" x2="420" y2="74"
-            stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
-        </svg>
-      </div>
+      <img src="assets/logo.svg" alt="Vinyl Run" class="hero__logo" />
       <p class="hero__sub">
         Vinyles neufs, occasions &amp; raretés.<br>
         Une sélection à la main depuis 2016.
@@ -112,7 +93,7 @@
         </g>
 
         <!-- ── PIN BOUTIQUE SAINT-PIERRE ── -->
-        <g class="shop-pin" transform="translate(310, 870)">
+        <g class="shop-pin" transform="translate(490, 998)">
           <circle cx="0" cy="0" r="16" fill="#EDF10C" opacity="0.12">
             <animate attributeName="r" values="12;22;12" dur="2.5s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.15;0.04;0.15" dur="2.5s" repeatCount="indefinite"/>
@@ -188,12 +169,21 @@
        LA BOUTIQUE
   ══════════════════════════════════════ -->
   <section class="boutique" id="la-boutique">
-    <div class="boutique__photos">
-      <img class="photo photo--main" src="assets/shop-main.png" alt="Devanture Vinyl Run" />
-      <div class="photo-row">
-        <img class="photo photo--sm" src="assets/shop-2.png" alt="Intérieur de la boutique" />
-        <img class="photo photo--sm" src="assets/shop-3.png" alt="DJ Vinyl Run" />
+    <div class="slideshow" id="slideshow">
+      <div class="slideshow__track" id="slideshowTrack">
+        <div class="slide"><img src="assets/shop-main.png" alt="Devanture Vinyl Run" /></div>
+        <div class="slide"><img src="assets/shop-2.png" alt="Intérieur de la boutique" /></div>
+        <div class="slide"><img src="assets/shop-3.png" alt="DJ Vinyl Run" /></div>
       </div>
+
+      <button class="slideshow__arrow slideshow__arrow--prev" id="slidePrev" aria-label="Précédent">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="slideshow__arrow slideshow__arrow--next" id="slideNext" aria-label="Suivant">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="slideshow__dots" id="slideDots"></div>
     </div>
 
     <div class="boutique__content">
@@ -393,7 +383,7 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', scrollY > 40);
       if (heroDeco) {
-        heroDeco.style.transform = `translateY(calc(-50% + ${scrollY * 0.12}px))`;
+        heroDeco.style.transform = `translateY(${scrollY * 0.12}px)`;
       }
     });
 
@@ -446,17 +436,50 @@
       }, 3500);
     });
 
-    // ── Photos boutique — fade + slide ──────────────────────────
-    const photoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          photoObserver.unobserve(e.target);
-        }
+    // ── Slideshow galerie ────────────────────────────────────────
+    (function () {
+      const track  = document.getElementById('slideshowTrack');
+      const dotsEl = document.getElementById('slideDots');
+      if (!track) return;
+
+      const slides = track.querySelectorAll('.slide');
+      let current  = 0;
+      let autoTimer;
+
+      slides.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'slideshow__dot' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+        btn.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(btn);
       });
-    }, { threshold: 0.2 });
-    document.querySelectorAll('.boutique__photos .photo')
-      .forEach(p => photoObserver.observe(p));
+
+      function goTo(idx) {
+        current = (idx + slides.length) % slides.length;
+        track.style.transform = 'translateX(-' + (current * 100) + '%)';
+        dotsEl.querySelectorAll('.slideshow__dot').forEach((d, i) =>
+          d.classList.toggle('active', i === current)
+        );
+        resetAuto();
+      }
+
+      function resetAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(() => goTo(current + 1), 4500);
+      }
+
+      document.getElementById('slidePrev').addEventListener('click', () => goTo(current - 1));
+      document.getElementById('slideNext').addEventListener('click', () => goTo(current + 1));
+
+      let touchStartX = 0;
+      track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+      });
+
+      resetAuto();
+    })();
 
     // ── Scroll reveal — data-reveal ──────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
@@ -563,11 +586,16 @@
 
     // ── Player ───────────────────────────────────────────────────
     (function() {
+      function parseTrack(filename) {
+        const base = filename.replace(/^assets\//, '').replace(/\.mp3$/i, '');
+        const [rawArtist, rawTitle = ''] = base.split('_');
+        const toWords = s => s.replace(/([A-Z])/g, ' $1').trim();
+        return { artist: toWords(rawArtist), title: toWords(rawTitle), src: filename };
+      }
+
       const tracks = [
-        { title: 'Danyèl Waro',  artist: 'Tinn Tout',   src: '' },
-        { title: 'Baster',       artist: 'Maïdo Séré',  src: '' },
-        { title: 'Lo Rwa Kaf',   artist: 'Grèn Sémin',  src: '' },
-      ];
+        'assets/PLL_Maya.mp3',
+      ].map(parseTrack);
 
       let current = 0, isPlaying = false, shuffle = false, repeat = false;
 
