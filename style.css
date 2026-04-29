@@ -698,7 +698,17 @@ a    { text-decoration: none; color: inherit; }
     padding: 6rem 1.5rem 3rem;
     min-height: auto;
   }
-  .hero__right { height: 50vw; }
+  .hero__left {
+    padding-left: 0;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero__logo { margin-left: auto; margin-right: auto; }
+  .hero__sub  { margin-left: auto; margin-right: auto; }
+  .hero__actions { justify-content: center; }
+  .hero__right { display: none; }
   .nav { padding: 1.25rem 1.5rem; }
   .contact__card { grid-template-columns: 1fr; }
   .contact__map { min-height: 300px; }
