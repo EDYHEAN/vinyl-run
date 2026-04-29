@@ -705,7 +705,7 @@ a    { text-decoration: none; color: inherit; }
     display: flex;
     flex-direction: column;
   }
-  .hero__logo { margin-left: auto; margin-right: auto; }
+  .hero__logo { margin-left: auto; margin-right: auto; width: min(50%, 160px); }
   .hero__sub  { margin-left: auto; margin-right: auto; }
   .hero__actions { justify-content: center; }
   .hero__right { display: none; }
