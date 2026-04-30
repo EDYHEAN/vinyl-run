@@ -688,6 +688,7 @@ a    { text-decoration: none; color: inherit; }
 .footer__socials { display: flex; gap: 20px; }
 .footer__socials a { color: var(--ink-muted); transition: color 0.2s; }
 .footer__socials a:hover { color: var(--ink); }
+.footer__signature { font-style: italic; color: var(--ink-muted); opacity: 0.5; }
 
 /* ═══════════════════════════════════════════
    RESPONSIVE
