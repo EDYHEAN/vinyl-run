@@ -255,6 +255,9 @@
         <span id="invCount">—</span> références disponibles · mis à jour en temps réel
       </p>
     </div>
+    <div class="inventaire__search" data-reveal>
+      <input type="search" id="invSearch" class="inv-search__input" placeholder="Rechercher artiste, titre, format…" autocomplete="off" spellcheck="false" />
+    </div>
     <div class="inventaire__grid" id="invGrid">
       <div class="inv-loading">Chargement de l'inventaire…</div>
     </div>
@@ -768,6 +771,80 @@
 
       load(1);
       if (btnMore) btnMore.addEventListener('click', function () { load(page + 1); });
+
+      // ── Search ──────────────────────────────────────────────────
+      var searchInput = document.getElementById('invSearch');
+      var allListings = null;
+      var searchActive = false;
+      var searchTimer = null;
+      const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
+
+      function renderSearchResults(listings) {
+        grid.innerHTML = '';
+        if (listings.length === 0) {
+          grid.innerHTML = '<p class="inv-loading">Aucun résultat.</p>';
+          return;
+        }
+        const wrap = document.createElement('div');
+        wrap.innerHTML = listings.map(cardHTML).join('');
+        Array.from(wrap.children).forEach(function (c, i) {
+          c.style.opacity = '0';
+          c.style.transform = 'translateY(20px)';
+          c.style.transition = 'opacity 0.4s var(--ease-out) ' + (i * 0.03) + 's, transform 0.4s var(--ease-out) ' + (i * 0.03) + 's';
+          grid.appendChild(c);
+          requestAnimationFrame(function () { requestAnimationFrame(function () { c.style.opacity = '1'; c.style.transform = 'none'; }); });
+        });
+      }
+
+      async function loadAllListings() {
+        if (allListings) return allListings;
+        grid.innerHTML = '<p class="inv-loading">Chargement de l\'inventaire complet…</p>';
+        try {
+          const firstRes = await fetch('https://api.discogs.com/users/' + SELLER + '/inventory?per_page=100&page=1&sort=listed&sort_order=desc', { headers: HEADERS });
+          if (!firstRes.ok) throw new Error(firstRes.status);
+          const firstData = await firstRes.json();
+          const pagePromises = [];
+          for (var pg = 2; pg <= firstData.pagination.pages; pg++) {
+            pagePromises.push(
+              fetch('https://api.discogs.com/users/' + SELLER + '/inventory?per_page=100&page=' + pg + '&sort=listed&sort_order=desc', { headers: HEADERS })
+                .then(function (r) { return r.json(); })
+                .then(function (d) { return d.listings; })
+                .catch(function () { return []; })
+            );
+          }
+          const rest = await Promise.all(pagePromises);
+          allListings = firstData.listings.concat.apply(firstData.listings, rest);
+          return allListings;
+        } catch (e) { return []; }
+      }
+
+      function doSearch(q) {
+        if (!q) {
+          searchActive = false;
+          load(1);
+          return;
+        }
+        searchActive = true;
+        if (btnMore) btnMore.style.display = 'none';
+        const term = q.toLowerCase();
+        loadAllListings().then(function (listings) {
+          if (!searchActive) return;
+          renderSearchResults(listings.filter(function (l) {
+            const r = l.release;
+            return (r.artist && r.artist.toLowerCase().includes(term))
+              || (r.title && r.title.toLowerCase().includes(term))
+              || (r.format && r.format.toLowerCase().includes(term))
+              || (r.year && String(r.year).includes(term));
+          }));
+        });
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', function () {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(function () { doSearch(searchInput.value.trim()); }, 350);
+        });
+      }
     })();
 
     // ── Grain ────────────────────────────────────────────────────
