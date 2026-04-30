@@ -11,6 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23111110'/><circle cx='16' cy='16' r='10' fill='none' stroke='rgba(240,237,230,0.15)' stroke-width='1'/><circle cx='16' cy='16' r='6' fill='none' stroke='rgba(240,237,230,0.1)' stroke-width='1'/><circle cx='16' cy='16' r='3' fill='%23EDF10C'/><circle cx='16' cy='16' r='1.2' fill='%23111110'/></svg>" />
 </head>
 <body>
+  <div id="scroll-progress"></div>
 
   <!-- ══════════════════════════════════════
        NAV
@@ -400,6 +401,9 @@
     </div>
 
     <div class="player__right">
+      <div class="player__viz" id="playerViz">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
         <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
@@ -524,19 +528,30 @@
       goTo(0);
     })();
 
+    // ── Scroll progress bar ──────────────────────────────────────
+    (function () {
+      const bar = document.getElementById('scroll-progress');
+      window.addEventListener('scroll', () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+      }, { passive: true });
+    })();
+
     // ── Scroll reveal — data-reveal ──────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       const items = document.querySelectorAll('[data-reveal]');
       items.forEach((el) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(28px)';
+        el.style.transform = 'translateY(48px)';
+        el.style.filter = 'blur(4px)';
         el.style.transition =
-          'opacity 0.75s cubic-bezier(0.16,1,0.3,1), ' +
-          'transform 0.75s cubic-bezier(0.16,1,0.3,1)';
+          'opacity 0.85s cubic-bezier(0.16,1,0.3,1), ' +
+          'transform 0.85s cubic-bezier(0.16,1,0.3,1), ' +
+          'filter 0.85s cubic-bezier(0.16,1,0.3,1)';
       });
       document.querySelectorAll('[data-reveal-group]').forEach(group => {
         group.querySelectorAll('[data-reveal]').forEach((child, i) => {
-          child.style.transitionDelay = (i * 0.08) + 's';
+          child.style.transitionDelay = (i * 0.12) + 's';
         });
       });
       const obs = new IntersectionObserver((entries) => {
@@ -544,6 +559,7 @@
           if (e.isIntersecting) {
             e.target.style.opacity = '1';
             e.target.style.transform = 'translateY(0)';
+            e.target.style.filter = 'blur(0)';
             obs.unobserve(e.target);
           }
         });
@@ -641,6 +657,7 @@
       ].map(parseTrack);
 
       let current = 0, isPlaying = false, shuffle = false, repeat = false;
+      let audioCtx, analyser, vizBars;
 
       const audio     = new Audio();
       const cover     = document.getElementById('playerCover');
@@ -674,13 +691,40 @@
         audio.load();
       }
 
+      function initViz() {
+        if (audioCtx) return;
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 32;
+          const src = audioCtx.createMediaElementSource(audio);
+          src.connect(analyser);
+          analyser.connect(audioCtx.destination);
+          vizBars = document.querySelectorAll('#playerViz span');
+        } catch(e) {}
+      }
+
+      function tickViz() {
+        if (!analyser || !isPlaying) return;
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        vizBars.forEach((b, i) => {
+          const v = (data[Math.floor(i * data.length / vizBars.length)] || 0) / 255;
+          b.style.height = (3 + v * 17) + 'px';
+        });
+        requestAnimationFrame(tickViz);
+      }
+
       function play() {
         if (!audio.src) return;
+        initViz();
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         audio.play();
         isPlaying = true;
         iconPlay.style.display  = 'none';
         iconPause.style.display = 'block';
         cover.classList.add('spinning');
+        requestAnimationFrame(tickViz);
       }
 
       function pause() {
@@ -689,6 +733,7 @@
         iconPlay.style.display  = 'block';
         iconPause.style.display = 'none';
         cover.classList.remove('spinning');
+        if (vizBars) vizBars.forEach(b => b.style.height = '3px');
       }
 
       btnPlay.addEventListener('click', () => isPlaying ? pause() : play());

@@ -690,6 +690,35 @@ a    { text-decoration: none; color: inherit; }
 .footer__socials a:hover { color: var(--ink); }
 .footer__signature { font-style: italic; color: var(--ink-muted); opacity: 0.5; }
 
+/* ── Scroll progress ─────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+/* ── Visualiseur player ──────────────────── */
+.player__viz {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+  margin-right: 14px;
+}
+.player__viz span {
+  display: block;
+  width: 3px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
 /* ═══════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════ */
