@@ -677,6 +677,10 @@
       if (!grid) return;
 
       let page = 1, totalPages = 1, loading = false;
+      const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
+      const CACHE_TTL = 7200000;
+      function getCached(k) { try { var r = localStorage.getItem(k); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k); return null; } return o.data; } catch(e) { return null; } }
+      function setCache(k, d) { try { localStorage.setItem(k, JSON.stringify({ ts: Date.now(), data: d })); } catch(e) {} }
 
       function esc(str) {
         return String(str ?? '')
@@ -722,7 +726,7 @@
           const url = 'https://api.discogs.com/users/' + SELLER
             + '/inventory?per_page=' + PER_PAGE + '&page=' + p
             + '&sort=listed&sort_order=desc';
-          const res = await fetch(url, { headers: { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' } });
+          const res = await fetch(url, { headers: HEADERS });
           if (!res.ok) throw new Error(res.status);
           const data = await res.json();
 
@@ -749,15 +753,22 @@
             });
           });
 
+          var hdCache = getCached('vr_hd') || {};
           data.listings.forEach(function (l, i) {
-            fetch('https://api.discogs.com/releases/' + l.release.id, {
-              headers: { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' }
-            })
+            var rid = String(l.release.id);
+            if (hdCache[rid]) {
+              var img = cards[i] && cards[i].querySelector('img');
+              if (img) img.src = hdCache[rid];
+              return;
+            }
+            fetch('https://api.discogs.com/releases/' + rid, { headers: HEADERS })
             .then(function (r) { return r.json(); })
             .then(function (rd) {
               if (rd.images && rd.images[0] && rd.images[0].uri) {
                 var img = cards[i] && cards[i].querySelector('img');
                 if (img) img.src = rd.images[0].uri;
+                hdCache[rid] = rd.images[0].uri;
+                setCache('vr_hd', hdCache);
               }
             })
             .catch(function () {});
@@ -800,7 +811,6 @@
       var allListings = null;
       var searchActive = false;
       var searchTimer = null;
-      const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
 
       function renderSearchResults(listings) {
         grid.innerHTML = '';
@@ -821,6 +831,8 @@
 
       async function loadAllListings() {
         if (allListings) return allListings;
+        var cached = getCached('vr_inv');
+        if (cached) { allListings = cached; return allListings; }
         grid.innerHTML = '<div class="inv-spinner"><span class="inv-spinner__ring"></span></div>';
         try {
           const firstRes = await fetch('https://api.discogs.com/users/' + SELLER + '/inventory?per_page=100&page=1&sort=listed&sort_order=desc', { headers: HEADERS });
@@ -837,6 +849,7 @@
           }
           const rest = await Promise.all(pagePromises);
           allListings = firstData.listings.concat.apply(firstData.listings, rest);
+          setCache('vr_inv', allListings);
           return allListings;
         } catch (e) { return []; }
       }
