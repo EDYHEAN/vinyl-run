@@ -723,6 +723,20 @@
             });
           });
 
+          data.listings.forEach(function (l, i) {
+            fetch('https://api.discogs.com/releases/' + l.release.id, {
+              headers: { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' }
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (rd) {
+              if (rd.images && rd.images[0] && rd.images[0].uri) {
+                var img = cards[i] && cards[i].querySelector('img');
+                if (img) img.src = rd.images[0].uri;
+              }
+            })
+            .catch(function () {});
+          });
+
           if (!('ontouchstart' in window)) {
             var dot = document.getElementById('cursor-dot');
             if (dot) {
