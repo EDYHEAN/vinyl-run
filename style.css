@@ -903,21 +903,8 @@ a    { text-decoration: none; color: inherit; }
 }
 .inv-search__input::placeholder { color: var(--ink-muted); }
 .inv-search__input:focus { border-color: var(--accent); }
-.inv-search__input::-webkit-search-cancel-button { cursor: pointer; }
-
-.inv-search__spinner {
-  position: absolute;
-  right: 18px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: inv-spin 0.7s linear infinite;
-  display: none;
-  flex-shrink: 0;
-}
-.inv-search__spinner.is-active { display: block; }
+.inv-search__input::-webkit-search-cancel-button,
+.inv-search__input::-webkit-search-decoration { display: none; }
 
 @keyframes inv-spin { to { transform: rotate(360deg); } }
 

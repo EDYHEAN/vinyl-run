@@ -255,11 +255,10 @@
         <span id="invCount">—</span> références disponibles · mis à jour en temps réel
       </p>
     </div>
-    <div class="inventaire__search" data-reveal>
+    <div class="inventaire__search" data-reveal-search>
       <div class="inv-search__wrap">
         <svg class="inv-search__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" id="invSearch" class="inv-search__input" placeholder="Rechercher artiste, titre, format…" autocomplete="off" spellcheck="false" />
-        <span class="inv-search__spinner" id="invSearchSpinner" aria-hidden="true"></span>
       </div>
     </div>
     <div class="inventaire__grid" id="invGrid">
@@ -594,6 +593,23 @@
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
       items.forEach(el => obs.observe(el));
+
+      const searchBar = document.querySelector('[data-reveal-search]');
+      if (searchBar) {
+        searchBar.style.opacity = '0';
+        searchBar.style.clipPath = 'inset(0 100% 0 0)';
+        searchBar.style.transition = 'opacity 0.5s ease, clip-path 1s cubic-bezier(0.16,1,0.3,1)';
+        const searchObs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.style.opacity = '1';
+              e.target.style.clipPath = 'inset(0 0% 0 0)';
+              searchObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        searchObs.observe(searchBar);
+      }
     });
 
     // ── Count-up .cat-card__num ──────────────────────────────────
@@ -778,7 +794,6 @@
 
       // ── Search ──────────────────────────────────────────────────
       var searchInput = document.getElementById('invSearch');
-      var searchSpinner = document.getElementById('invSearchSpinner');
       var allListings = null;
       var searchActive = false;
       var searchTimer = null;
@@ -826,16 +841,13 @@
       function doSearch(q) {
         if (!q) {
           searchActive = false;
-          if (searchSpinner) searchSpinner.classList.remove('is-active');
           load(1);
           return;
         }
         searchActive = true;
         if (btnMore) btnMore.style.display = 'none';
-        if (!allListings && searchSpinner) searchSpinner.classList.add('is-active');
         const term = q.toLowerCase();
         loadAllListings().then(function (listings) {
-          if (searchSpinner) searchSpinner.classList.remove('is-active');
           if (!searchActive) return;
           renderSearchResults(listings.filter(function (l) {
             const r = l.release;
