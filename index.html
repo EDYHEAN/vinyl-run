@@ -22,6 +22,7 @@
     <ul class="nav__links">
       <li><a href="#notre-univers">Notre univers</a></li>
       <li><a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener">La boutique</a></li>
+      <li><a href="#inventaire">Inventaire</a></li>
       <li><a href="#avis">Avis</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -240,6 +241,26 @@
           <p><strong>Commande spéciale</strong> — Un vinyle introuvable ? On s'en occupe.</p>
         </li>
       </ul>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       INVENTAIRE DISCOGS
+  ══════════════════════════════════════ -->
+  <section class="inventaire" id="inventaire">
+    <div class="inventaire__header">
+      <p class="section-label" data-reveal>En vente sur Discogs</p>
+      <h2 class="inventaire__heading" data-reveal>L'inventaire</h2>
+      <p class="inventaire__sub" data-reveal>
+        <span id="invCount">—</span> références disponibles · mis à jour en temps réel
+      </p>
+    </div>
+    <div class="inventaire__grid" id="invGrid">
+      <div class="inv-loading">Chargement de l'inventaire…</div>
+    </div>
+    <div class="inventaire__footer">
+      <button class="btn btn--ghost" id="invMore" style="display:none">Voir plus</button>
+      <a href="https://www.discogs.com/seller/Vinylrun974/profile" class="btn btn--fill" target="_blank" rel="noopener">Tout l'inventaire ↗</a>
     </div>
   </section>
 
@@ -619,6 +640,121 @@
         });
       });
     }
+
+    // ── Inventaire Discogs ───────────────────────────────────────
+    (function () {
+      const SELLER   = 'Vinylrun974';
+      const PER_PAGE = 12;
+      const grid     = document.getElementById('invGrid');
+      const btnMore  = document.getElementById('invMore');
+      const countEl  = document.getElementById('invCount');
+      if (!grid) return;
+
+      let page = 1, totalPages = 1, loading = false;
+
+      function esc(str) {
+        return String(str ?? '')
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function shortCond(str) {
+        const m = String(str ?? '').match(/\(([^)]+)\)/);
+        return m ? m[1].split(' or ')[0].trim() : (str ?? '');
+      }
+
+      function cardHTML(l) {
+        const r     = l.release;
+        const thumb = r.thumbnail || 'assets/vinyl-record.png';
+        const price = (l.original_price && l.original_price.formatted)
+          ? l.original_price.formatted
+          : '€' + l.price.value;
+        const cond  = shortCond(l.condition);
+        const fmt   = r.format ? r.format.split(',')[0].trim() : '';
+        return '<a class="inv-card" href="' + esc(l.uri) + '" target="_blank" rel="noopener">'
+          + '<div class="inv-card__cover">'
+          + '<img src="' + esc(thumb) + '" alt="' + esc(r.artist) + ' — ' + esc(r.title) + '" loading="lazy" decoding="async" onerror="this.src=\'assets/vinyl-record.png\'">'
+          + '<div class="inv-card__price">' + esc(price) + '</div>'
+          + '</div>'
+          + '<div class="inv-card__body">'
+          + '<p class="inv-card__artist">' + esc(r.artist) + '</p>'
+          + '<p class="inv-card__title">' + esc(r.title) + '</p>'
+          + '<div class="inv-card__meta">'
+          + (fmt  ? '<span class="inv-card__tag">' + esc(fmt)       + '</span>' : '')
+          + (r.year ? '<span class="inv-card__tag">' + esc(r.year)  + '</span>' : '')
+          + (cond ? '<span class="inv-card__tag">' + esc(cond)      + '</span>' : '')
+          + '</div>'
+          + '</div>'
+          + '</a>';
+      }
+
+      async function load(p) {
+        if (loading) return;
+        loading = true;
+        if (btnMore) btnMore.disabled = true;
+        try {
+          const url = 'https://api.discogs.com/users/' + SELLER
+            + '/inventory?per_page=' + PER_PAGE + '&page=' + p
+            + '&sort=listed&sort_order=desc';
+          const res = await fetch(url, { headers: { 'User-Agent': 'VinylRun/1.0' } });
+          if (!res.ok) throw new Error(res.status);
+          const data = await res.json();
+
+          totalPages = data.pagination.pages;
+          if (p === 1) {
+            grid.innerHTML = '';
+            if (countEl) countEl.textContent = data.pagination.items.toLocaleString('fr-FR');
+          }
+
+          const wrap = document.createElement('div');
+          wrap.innerHTML = data.listings.map(cardHTML).join('');
+          const cards = Array.from(wrap.children);
+
+          cards.forEach(function (c, i) {
+            c.style.opacity   = '0';
+            c.style.transform = 'translateY(20px)';
+            c.style.transition = 'opacity 0.5s var(--ease-out) ' + (i * 0.05) + 's, transform 0.5s var(--ease-out) ' + (i * 0.05) + 's';
+            grid.appendChild(c);
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                c.style.opacity   = '1';
+                c.style.transform = 'none';
+              });
+            });
+          });
+
+          if (!('ontouchstart' in window)) {
+            var dot = document.getElementById('cursor-dot');
+            if (dot) {
+              cards.forEach(function (card) {
+                card.addEventListener('mouseenter', function () {
+                  dot.style.transform = 'translate(-50%,-50%) scale(2.5)';
+                  dot.style.background = 'var(--accent)';
+                });
+                card.addEventListener('mouseleave', function () {
+                  dot.style.transform = 'translate(-50%,-50%) scale(1)';
+                  dot.style.background = 'var(--ink)';
+                });
+              });
+            }
+          }
+
+          page = p;
+          if (btnMore) {
+            btnMore.style.display = (page >= totalPages) ? 'none' : 'inline-flex';
+            btnMore.disabled = false;
+          }
+        } catch (e) {
+          if (p === 1) {
+            grid.innerHTML = '<p class="inv-loading">Impossible de charger l\'inventaire.</p>';
+          }
+        }
+        loading = false;
+      }
+
+      load(1);
+      if (btnMore) btnMore.addEventListener('click', function () { load(page + 1); });
+    })();
 
     // ── Grain ────────────────────────────────────────────────────
     (function () {
