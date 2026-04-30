@@ -597,13 +597,16 @@
       const searchBar = document.querySelector('[data-reveal-search]');
       if (searchBar) {
         searchBar.style.opacity = '0';
-        searchBar.style.clipPath = 'inset(0 100% 0 0)';
-        searchBar.style.transition = 'opacity 0.5s ease, clip-path 1s cubic-bezier(0.16,1,0.3,1)';
+        searchBar.style.transform = 'scaleX(0.6)';
+        searchBar.style.transformOrigin = 'left center';
+        searchBar.style.transition = 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)';
         const searchObs = new IntersectionObserver((entries) => {
           entries.forEach(e => {
             if (e.isIntersecting) {
-              e.target.style.opacity = '1';
-              e.target.style.clipPath = 'inset(0 0% 0 0)';
+              requestAnimationFrame(() => {
+                e.target.style.opacity = '1';
+                e.target.style.transform = 'scaleX(1)';
+              });
               searchObs.unobserve(e.target);
             }
           });
