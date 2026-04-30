@@ -696,7 +696,7 @@
           const url = 'https://api.discogs.com/users/' + SELLER
             + '/inventory?per_page=' + PER_PAGE + '&page=' + p
             + '&sort=listed&sort_order=desc';
-          const res = await fetch(url, { headers: { 'User-Agent': 'VinylRun/1.0' } });
+          const res = await fetch(url, { headers: { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' } });
           if (!res.ok) throw new Error(res.status);
           const data = await res.json();
 
