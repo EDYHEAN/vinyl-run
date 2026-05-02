@@ -1138,6 +1138,16 @@ a    { text-decoration: none; color: inherit; }
 }
 .nav__mobile-links a:hover { color: var(--accent); }
 
+.nav__mobile-close {
+  position: absolute;
+  top: 1.6rem; right: 1.5rem;
+  background: none; border: none;
+  cursor: pointer; padding: 8px;
+  color: var(--ink-muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.nav__mobile-close:hover { color: var(--ink); transform: rotate(90deg); }
+
 @media (max-width: 768px) {
   .nav__burger { display: flex; }
   .nav__links { display: none; }

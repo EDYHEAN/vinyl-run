@@ -70,6 +70,9 @@
   </nav>
 
   <div class="nav__mobile" id="navMobile" aria-hidden="true">
+    <button class="nav__mobile-close" aria-label="Fermer le menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
     <ul class="nav__mobile-links">
       <li><a href="../../index.html#notre-univers">Notre univers</a></li>
       <li><a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener">La boutique</a></li>
@@ -217,6 +220,7 @@
       function close() { mobile.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); mobile.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
       burger.addEventListener('click', () => { const o=mobile.classList.toggle('open'); burger.classList.toggle('open',o); burger.setAttribute('aria-expanded',o); mobile.setAttribute('aria-hidden',!o); document.body.style.overflow=o?'hidden':''; });
       mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+      mobile.querySelector('.nav__mobile-close')?.addEventListener('click',close);
       document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
     })();
 
