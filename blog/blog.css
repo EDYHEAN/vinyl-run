@@ -558,6 +558,21 @@
 /* ═══════════════════════════════════════════
    RESPONSIVE BLOG
 ═══════════════════════════════════════════ */
+@media (max-width: 540px) {
+  .blog-newsletter__form {
+    flex-direction: column;
+  }
+  .blog-newsletter__input {
+    border-right: 1px solid var(--border-md);
+    border-bottom: none;
+    border-radius: 2px 2px 0 0;
+  }
+  .blog-newsletter__btn {
+    border-radius: 0 0 2px 2px;
+    padding: 14px 22px;
+  }
+}
+
 @media (max-width: 900px) {
   .blog-hero { padding: 7rem 1.5rem 4rem; }
   .blog-hero__grid { grid-template-columns: 1fr; gap: 3rem; }
