@@ -108,7 +108,21 @@
       <li><a href="blog/coming-soon.html">Le Magazine</a></li>
     </ul>
     <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener" class="nav__cta">La boutique ↗</a>
+    <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <div class="nav__mobile" id="navMobile" aria-hidden="true">
+    <ul class="nav__mobile-links">
+      <li><a href="#notre-univers">Notre univers</a></li>
+      <li><a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener">La boutique ↗</a></li>
+      <li><a href="#inventaire">Inventaire</a></li>
+      <li><a href="#avis">Avis</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="blog/coming-soon.html">Le Magazine</a></li>
+    </ul>
+  </div>
 
   <!-- ══════════════════════════════════════
        HERO
@@ -564,6 +578,29 @@
   </div>
 
   <script>
+    // ── Burger menu ──────────────────────────────────────────────
+    (function () {
+      const burger = document.getElementById('navBurger');
+      const mobile = document.getElementById('navMobile');
+      if (!burger || !mobile) return;
+      function close() {
+        mobile.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        mobile.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      burger.addEventListener('click', () => {
+        const isOpen = mobile.classList.toggle('open');
+        burger.classList.toggle('open', isOpen);
+        burger.setAttribute('aria-expanded', isOpen);
+        mobile.setAttribute('aria-hidden', !isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+      mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
+
     // ── NAV scroll + parallax île ────────────────────────────────
     const nav = document.getElementById('nav');
     const heroDeco = document.querySelector('.hero__deco');
