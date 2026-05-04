@@ -1,12 +1,16 @@
 # CLAUDE.md — Vinyl Run
 
 ## Projet
-Site vitrine pour **Vinyl Run**, disquaire indépendant basé à Saint-Pierre, La Réunion.
-Fondé en 2016. Vend des vinyles neufs, d'occasion et des raretés.
+Site vitrine + blog magazine pour **Vinyl Run**, disquaire indépendant basé à Saint-Pierre, La Réunion.
+Fondé en **2017**. Vend des vinyles neufs, d'occasion et des raretés.
+Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 
 ## Stack
 - HTML/CSS vanilla — pas de framework, pas de build tool
-- Un seul fichier `index.html` + `style.css`
+- `index.html` + `style.css` (site principal)
+- `blog/index.html`, `blog/blog.css`, `blog/coming-soon.html`
+- `blog/articles/*.html` — articles individuels
+- `api/subscribe.js` — endpoint Vercel pour newsletter Brevo
 - Assets dans `assets/`
 
 ## Hébergement & déploiement
@@ -17,16 +21,40 @@ Fondé en 2016. Vend des vinyles neufs, d'occasion et des raretés.
 
 ## Design system
 - Thème dark, ambiance "Sonic Volcano"
-- Couleurs CSS variables dans `:root` (style.css:6)
+- Couleurs CSS variables dans `:root` (style.css)
   - `--bg: #111110` / `--ink: #f0ede6` / `--accent: #EDF10C` (jaune néon)
-- Typos : **Space Grotesk** (sans-serif) + **Bodoni Moda** (serif) — Google Fonts
-- Animations SVG inline (île La Réunion, anneaux vinyle, filtre turbulence)
+- Typos : **Space Grotesk** (sans-serif) + **Bodoni Moda** (serif italic) — Google Fonts
 
-## Sections
-- `#hero` — split gauche/droite, logo SVG, île animée
-- `#notre-univers` — présentation du shop
-- `#avis` — avis clients
-- `#contact` — carte + infos
+## Structure blog
+- `/blog/` — listing avec hero article à la une (image dans `.blog-hero__visual`) + mosaic cards
+- `/blog/articles/` — articles individuels
+- Mettre à jour le lien + l'image du hero dans `blog/index.html` à chaque nouvel article à la une
 
-## Boutique externe
-La boutique est sur Discogs : https://www.discogs.com/seller/Vinylrun974/profile
+## Pattern photos articles (Unsplash/Pexels, pas de stockage local)
+
+**Hero plein écran** (entre `article-divider` et `article-body`) :
+```html
+<div class="article-hero-img">
+  <img src="https://images.unsplash.com/photo-{ID}?w=1400&auto=format&fit=crop&q=80"
+       alt="..." loading="eager" />
+</div>
+```
+
+**Figure inline** (entre sections) :
+```html
+<figure class="article-figure">
+  <img src="https://images.unsplash.com/photo-{ID}?w=900&auto=format&fit=crop&q=80"
+       alt="..." loading="lazy" />
+  <figcaption>Photo : Prénom Nom / Unsplash</figcaption>
+</figure>
+```
+
+**Thumbnail card** (premier enfant d'un `.article-card`) :
+```html
+<div class="article-card__img">
+  <img src="https://images.unsplash.com/photo-{ID}?w=600&auto=format&fit=crop&q=80"
+       alt="..." loading="lazy" />
+</div>
+```
+
+Pour trouver l'ID CDN : récupérer la balise `og:image` sur `unsplash.com/photos/{slug}`.
