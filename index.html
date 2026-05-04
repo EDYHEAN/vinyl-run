@@ -500,6 +500,33 @@
   </section>
 
   <!-- ══════════════════════════════════════
+       NEWSLETTER
+  ══════════════════════════════════════ -->
+  <section class="newsletter-section">
+    <div class="newsletter-section__inner" data-reveal>
+      <svg class="newsletter-section__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="24" cy="24" r="23" stroke="rgba(240,237,230,0.4)" stroke-width="1"/>
+        <circle cx="24" cy="24" r="15" fill="none" stroke="rgba(240,237,230,0.25)" stroke-width="1"/>
+        <circle cx="24" cy="24" r="8"  fill="none" stroke="rgba(240,237,230,0.15)" stroke-width="1"/>
+        <circle cx="24" cy="24" r="3"  fill="#EDF10C" opacity="0.8"/>
+      </svg>
+      <p class="section-label">Newsletter</p>
+      <h2 class="newsletter-section__heading">
+        Chaque article,<br>directement dans votre boîte
+      </h2>
+      <p class="newsletter-section__sub">
+        Nouveautés, coups de cœur, arrivages — une fois par semaine, pas plus.<br>
+        Pas de spam, désabonnement en un clic.
+      </p>
+      <form class="newsletter-section__form" id="homeNewsletterForm">
+        <input type="email" class="newsletter-section__input" id="homeNewsletterEmail" placeholder="votre@email.com" autocomplete="email" required />
+        <button type="submit" class="newsletter-section__btn" id="homeNewsletterBtn">S'inscrire</button>
+      </form>
+      <span class="newsletter-section__note" id="homeNewsletterMsg"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
        FOOTER
   ══════════════════════════════════════ -->
   <footer class="footer">
@@ -1220,6 +1247,42 @@
 
       audio.volume = parseFloat(volSlider.value);
       load(current);
+    })();
+
+    // ── Newsletter homepage ──────────────────────────────────────
+    (function () {
+      const form  = document.getElementById('homeNewsletterForm');
+      if (!form) return;
+      const email = document.getElementById('homeNewsletterEmail');
+      const btn   = document.getElementById('homeNewsletterBtn');
+      const msg   = document.getElementById('homeNewsletterMsg');
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const val = email.value.trim();
+        if (!val) return;
+        btn.textContent = '…';
+        btn.disabled = true;
+        try {
+          const r = await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: val }),
+          });
+          if (r.ok) {
+            form.style.display = 'none';
+            msg.textContent = 'Merci ! Vérifiez votre boîte mail pour confirmer.';
+            msg.classList.add('newsletter-section__note--success');
+          } else {
+            btn.textContent = "S'inscrire";
+            btn.disabled = false;
+            msg.textContent = 'Une erreur est survenue. Réessayez.';
+          }
+        } catch {
+          btn.textContent = "S'inscrire";
+          btn.disabled = false;
+          msg.textContent = 'Une erreur est survenue. Réessayez.';
+        }
+      });
     })();
   </script>
 
