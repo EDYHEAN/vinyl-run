@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Le Magazine — Vinyl Run</title>
+    <link>https://vinyl-run.com/blog/</link>
+    <description>Actualités vinyle, coups de cœur et guides pour collectionneurs. Le blog du disquaire indépendant de Saint-Pierre, La Réunion.</description>
+    <language>fr</language>
+    <atom:link href="https://vinyl-run.com/rss.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>Le vinyle n'est pas mort : il s'est réveillé à La Réunion</title>
+      <link>https://vinyl-run.com/blog/articles/le-retour-du-vinyle-a-la-reunion.html</link>
+      <description>Depuis 2023, les ventes mondiales de vinyles dépassent celles du CD. À La Réunion, ce retour prend une couleur particulière. Découvrez pourquoi le vinyl reprend ses droits sur notre île.</description>
+      <pubDate>Fri, 02 May 2026 08:00:00 +0000</pubDate>
+      <guid>https://vinyl-run.com/blog/articles/le-retour-du-vinyle-a-la-reunion.html</guid>
+      <enclosure url="https://images.unsplash.com/photo-1505672984986-b7c468c7a134?w=600&amp;auto=format&amp;fit=crop&amp;q=80" type="image/jpeg" length="0"/>
+    </item>
+
+  </channel>
+</rss>
