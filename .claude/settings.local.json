@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(magick --version)",
-      "Bash(ffmpeg -version)"
+      "Bash(ffmpeg -version)",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
