@@ -242,6 +242,7 @@ a    { text-decoration: none; color: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .cat-vinyl-slider {
@@ -270,6 +271,7 @@ a    { text-decoration: none; color: inherit; }
   border-radius: 2px;
   padding: 32px; width: 100%;
   display: flex; flex-direction: column;
+  flex: 1;
   transition: border-color 0.25s ease;
 }
 .cat-card-wrap:hover .cat-card { border-color: var(--border-md); }
