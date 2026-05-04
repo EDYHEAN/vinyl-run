@@ -879,7 +879,7 @@
       if (!grid) return;
 
       let page = 1, totalPages = 1, loading = false;
-      var globalSeenIds = {};
+      var globalSeenIds = {}, pendingUnique = [], pendingQtyMap = {};
       const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
       const CACHE_TTL = 7200000;
       function getCached(k) { try { var r = localStorage.getItem(k); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k); return null; } return o.data; } catch(e) { return null; } }
@@ -939,21 +939,38 @@
           if (p === 1) {
             grid.innerHTML = '';
             globalSeenIds = {};
+            pendingUnique = [];
+            pendingQtyMap = {};
             if (countEl) countEl.textContent = data.pagination.items.toLocaleString('fr-FR');
           }
 
-          // Dédupliquer par release.id (plusieurs exemplaires = une seule carte avec badge)
-          var qtyBatch = {}, dedupedBatch = [];
+          // Dédupliquer les nouveaux items
+          var qtyBatch = {}, newUnique = [];
           data.listings.forEach(function(l) {
             var rid = String(l.release.id);
             if (globalSeenIds[rid]) return;
-            if (!qtyBatch[rid]) { qtyBatch[rid] = 0; dedupedBatch.push(l); }
+            if (!qtyBatch[rid]) { qtyBatch[rid] = 0; newUnique.push(l); }
             qtyBatch[rid]++;
           });
+
+          // Combiner les items en attente de la page précédente + les nouveaux
+          var allUnique = pendingUnique.concat(newUnique);
+          var allQtyMap = Object.assign({}, pendingQtyMap);
+          newUnique.forEach(function(l) { allQtyMap[String(l.release.id)] = qtyBatch[String(l.release.id)]; });
+
+          // Afficher uniquement des lignes complètes (sauf sur la dernière page)
+          var cols = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 900 ? 2 : 4);
+          var isLastPage = (p >= totalPages);
+          var showCount = isLastPage ? allUnique.length : Math.floor(allUnique.length / cols) * cols;
+          if (showCount === 0) showCount = Math.min(allUnique.length, cols);
+          var dedupedBatch = allUnique.slice(0, showCount);
+          pendingUnique = allUnique.slice(showCount);
+          pendingQtyMap = {};
+          pendingUnique.forEach(function(l) { pendingQtyMap[String(l.release.id)] = allQtyMap[String(l.release.id)]; });
           dedupedBatch.forEach(function(l) { globalSeenIds[String(l.release.id)] = true; });
 
           const wrap = document.createElement('div');
-          wrap.innerHTML = dedupedBatch.map(function(l) { return cardHTML(l, qtyBatch[String(l.release.id)]); }).join('');
+          wrap.innerHTML = dedupedBatch.map(function(l) { return cardHTML(l, allQtyMap[String(l.release.id)]); }).join('');
           const cards = Array.from(wrap.children);
 
           cards.forEach(function (c, i) {
@@ -1005,8 +1022,6 @@
               });
             }
           }
-
-          fillGridRow();
 
           page = p;
           if (btnMore) {
