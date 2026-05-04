@@ -75,7 +75,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         to: [{ email }],
-        sender: { name: 'Vinyl Run', email: 'vinylrun974@gmail.com' },
+        sender: { name: 'Vinyl Run', email: 'magazine@vinyl-run.com' },
         subject: 'Bienvenue dans le Magazine Vinyl Run 🎵',
         htmlContent,
       }),
