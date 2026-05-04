@@ -940,6 +940,18 @@ a    { text-decoration: none; color: inherit; }
   letter-spacing: 0.04em;
   padding: 4px 10px;
 }
+.inv-card__qty {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(17,17,16,0.75);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+}
 
 .inv-card__body {
   padding: 14px 16px 16px;

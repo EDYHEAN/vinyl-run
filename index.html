@@ -879,6 +879,7 @@
       if (!grid) return;
 
       let page = 1, totalPages = 1, loading = false;
+      var globalSeenIds = {};
       const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
       const CACHE_TTL = 7200000;
       function getCached(k) { try { var r = localStorage.getItem(k); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k); return null; } return o.data; } catch(e) { return null; } }
@@ -895,7 +896,7 @@
         return m ? m[1].split(' or ')[0].trim() : (str ?? '');
       }
 
-      function cardHTML(l) {
+      function cardHTML(l, qty) {
         const r     = l.release;
         const thumb = r.thumbnail || 'assets/vinyl-record.png';
         const price = (l.original_price && l.original_price.formatted)
@@ -903,10 +904,12 @@
           : '€' + l.price.value;
         const cond  = shortCond(l.condition);
         const fmt   = r.format ? r.format.split(',')[0].trim() : '';
+        const qtyBadge = (qty && qty > 1) ? '<span class="inv-card__qty">' + qty + '&nbsp;ex.</span>' : '';
         return '<a class="inv-card" href="' + esc(l.uri) + '" target="_blank" rel="noopener">'
           + '<div class="inv-card__cover">'
           + '<img src="' + esc(thumb) + '" alt="' + esc(r.artist) + ' — ' + esc(r.title) + '" loading="lazy" decoding="async" onerror="this.src=\'assets/vinyl-record.png\'">'
           + '<div class="inv-card__price">' + esc(price) + '</div>'
+          + qtyBadge
           + '</div>'
           + '<div class="inv-card__body">'
           + '<p class="inv-card__artist">' + esc(r.artist) + '</p>'
@@ -935,11 +938,22 @@
           totalPages = data.pagination.pages;
           if (p === 1) {
             grid.innerHTML = '';
+            globalSeenIds = {};
             if (countEl) countEl.textContent = data.pagination.items.toLocaleString('fr-FR');
           }
 
+          // Dédupliquer par release.id (plusieurs exemplaires = une seule carte avec badge)
+          var qtyBatch = {}, dedupedBatch = [];
+          data.listings.forEach(function(l) {
+            var rid = String(l.release.id);
+            if (globalSeenIds[rid]) return;
+            if (!qtyBatch[rid]) { qtyBatch[rid] = 0; dedupedBatch.push(l); }
+            qtyBatch[rid]++;
+          });
+          dedupedBatch.forEach(function(l) { globalSeenIds[String(l.release.id)] = true; });
+
           const wrap = document.createElement('div');
-          wrap.innerHTML = data.listings.map(cardHTML).join('');
+          wrap.innerHTML = dedupedBatch.map(function(l) { return cardHTML(l, qtyBatch[String(l.release.id)]); }).join('');
           const cards = Array.from(wrap.children);
 
           cards.forEach(function (c, i) {
@@ -956,7 +970,7 @@
           });
 
           var hdCache = getCached('vr_hd') || {};
-          data.listings.forEach(function (l, i) {
+          dedupedBatch.forEach(function (l, i) {
             var rid = String(l.release.id);
             if (hdCache[rid]) {
               var img = cards[i] && cards[i].querySelector('img');
@@ -1014,14 +1028,25 @@
       var searchActive = false;
       var searchTimer = null;
 
+      function dedupeListings(listings) {
+        var seen = {}, qtyMap = {}, deduped = [];
+        listings.forEach(function(l) {
+          var rid = String(l.release.id);
+          if (!seen[rid]) { seen[rid] = true; qtyMap[rid] = 0; deduped.push(l); }
+          qtyMap[rid]++;
+        });
+        return { listings: deduped, qtyMap: qtyMap };
+      }
+
       function renderSearchResults(listings) {
         grid.innerHTML = '';
         if (listings.length === 0) {
           grid.innerHTML = '<p class="inv-loading">Aucun résultat.</p>';
           return;
         }
+        var d = dedupeListings(listings);
         const wrap = document.createElement('div');
-        wrap.innerHTML = listings.map(cardHTML).join('');
+        wrap.innerHTML = d.listings.map(function(l) { return cardHTML(l, d.qtyMap[String(l.release.id)]); }).join('');
         Array.from(wrap.children).forEach(function (c, i) {
           c.style.opacity = '0';
           c.style.transform = 'translateY(20px)';
