@@ -940,6 +940,7 @@ a    { text-decoration: none; color: inherit; }
   letter-spacing: 0.04em;
   padding: 4px 10px;
 }
+.inv-card--ph { visibility: hidden; pointer-events: none; }
 .inv-card__qty {
   position: absolute;
   top: 8px; left: 8px;

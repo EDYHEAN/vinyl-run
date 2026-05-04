@@ -1006,6 +1006,8 @@
             }
           }
 
+          fillGridRow();
+
           page = p;
           if (btnMore) {
             btnMore.style.display = (page >= totalPages) ? 'none' : 'inline-flex';
@@ -1027,6 +1029,21 @@
       var allListings = null;
       var searchActive = false;
       var searchTimer = null;
+
+      function fillGridRow() {
+        var cols = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 900 ? 2 : 4);
+        grid.querySelectorAll('.inv-card--ph').forEach(function(el) { el.remove(); });
+        var count = grid.querySelectorAll('.inv-card:not(.inv-card--ph)').length;
+        var rem = count % cols;
+        if (rem !== 0) {
+          for (var k = 0; k < cols - rem; k++) {
+            var ph = document.createElement('div');
+            ph.className = 'inv-card inv-card--ph';
+            ph.setAttribute('aria-hidden', 'true');
+            grid.appendChild(ph);
+          }
+        }
+      }
 
       function dedupeListings(listings) {
         var seen = {}, qtyMap = {}, deduped = [];
@@ -1054,6 +1071,7 @@
           grid.appendChild(c);
           requestAnimationFrame(function () { requestAnimationFrame(function () { c.style.opacity = '1'; c.style.transform = 'none'; }); });
         });
+        fillGridRow();
       }
 
       async function loadAllListings() {
