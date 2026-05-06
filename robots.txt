@@ -4,4 +4,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://vinyl-run.com/sitemap.xml
+Sitemap: https://www.vinyl-run.com/sitemap.xml
