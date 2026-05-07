@@ -88,11 +88,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <!-- Désactive la hellobar après 23h59 le 08/05/2026 (La Réunion UTC+4) -->
+  <script>(function(){if(Date.now()>=new Date('2026-05-08T19:59:00Z').getTime())document.documentElement.classList.add('hellobar-off');}());</script>
   <script defer src="/_vercel/insights/script.js"></script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
+  <!-- ══════════════════════════════════════
+       HELLOBAR
+  ══════════════════════════════════════ -->
+  <div class="hellobar" role="status">
+    <span class="hellobar__desk">Fermeture exceptionnelle — Le magasin sera fermé ce vendredi 8 mai</span>
+    <span class="hellobar__mob">Fermé ce vendredi 8 mai</span>
+  </div>
+
   <div id="scroll-progress"></div>
 
   <!-- ══════════════════════════════════════
