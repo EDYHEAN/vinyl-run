@@ -90,6 +90,8 @@
   <link rel="stylesheet" href="style.css" />
   <!-- Désactive la hellobar après 23h59 le 08/05/2026 (La Réunion UTC+4) -->
   <script>(function(){if(Date.now()>=new Date('2026-05-08T19:59:00Z').getTime())document.documentElement.classList.add('hellobar-off');}());</script>
+  <!-- Supprime les click IDs plateformes (fbclid, gclid…) sans toucher aux UTM -->
+  <script>(function(){var p=new URLSearchParams(location.search),dirty=['fbclid','gclid','msclkid','twclid'],c=false;dirty.forEach(function(k){if(p.has(k)){p.delete(k);c=true;}});if(c){var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);}})();</script>
   <script defer src="/_vercel/insights/script.js"></script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
