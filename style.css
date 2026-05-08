@@ -909,6 +909,20 @@ a    { text-decoration: none; color: inherit; }
   gap: 1rem;
 }
 
+.inventaire__hint {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.inventaire__hint a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--border-md);
+  transition: color 0.2s, border-color 0.2s;
+}
+.inventaire__hint a:hover { color: var(--accent); border-color: var(--accent); }
+
 .inventaire__footer {
   max-width: 1200px;
   margin: 2.5rem auto 0;
@@ -1235,6 +1249,7 @@ a    { text-decoration: none; color: inherit; }
   .categories { grid-template-columns: 1fr; }
   .inventaire { padding: 5rem 1.5rem; }
   .inventaire__grid { grid-template-columns: repeat(2, 1fr); }
+  .inv-search__input { font-size: 16px; } /* évite le zoom auto iOS sur focus */
 }
 
 @media (max-width: 960px) and (min-width: 769px) {
