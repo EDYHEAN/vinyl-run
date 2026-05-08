@@ -1098,7 +1098,7 @@ a    { text-decoration: none; color: inherit; }
   .categories { grid-template-columns: repeat(2, 1fr); }
   .hero {
     grid-template-columns: 1fr;
-    padding: 8rem 1.5rem 3rem;
+    padding: 5.25rem 1.5rem 3rem;
     min-height: 100vh;
     min-height: 100svh;
   }
