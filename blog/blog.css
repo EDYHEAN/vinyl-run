@@ -642,4 +642,12 @@
 @media (max-width: 600px) {
   .blog-mosaic__grid { grid-template-columns: 1fr; }
   .blog-mosaic__header { flex-direction: column; gap: 1rem; }
+  .article-body ul li {
+    display: block;
+  }
+  .article-body ul li::before {
+    display: inline;
+    margin-right: 0.5rem;
+    vertical-align: baseline;
+  }
 }
