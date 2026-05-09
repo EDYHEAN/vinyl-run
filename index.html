@@ -896,8 +896,9 @@
       let page = 1, totalPages = 1, loading = false;
       var globalSeenIds = {}, pendingUnique = [], pendingQtyMap = {};
       const CACHE_TTL = 7200000;
-      function getCached(k) { try { var r = localStorage.getItem(k); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k); return null; } return o.data; } catch(e) { return null; } }
-      function setCache(k, d) { try { localStorage.setItem(k, JSON.stringify({ ts: Date.now(), data: d })); } catch(e) {} }
+      const CACHE_V = 'v2';
+      function getCached(k) { try { var r = localStorage.getItem(k + CACHE_V); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k + CACHE_V); return null; } return o.data; } catch(e) { return null; } }
+      function setCache(k, d) { try { localStorage.setItem(k + CACHE_V, JSON.stringify({ ts: Date.now(), data: d })); } catch(e) {} }
 
       function esc(str) {
         return String(str ?? '')
