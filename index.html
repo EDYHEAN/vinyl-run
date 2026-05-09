@@ -1158,7 +1158,10 @@
         if (allListings) return allListings;
         var cached = getCached('vr_inv');
         if (cached) { allListings = cached; return allListings; }
-        if (onProgress) loadProgressCb = onProgress;
+        if (onProgress) {
+          loadProgressCb = onProgress;
+          if (loadingPromise) onProgress('start');
+        }
         if (loadingPromise) return loadingPromise;
         loadingPromise = (async function () {
           try {
