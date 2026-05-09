@@ -895,7 +895,6 @@
 
       let page = 1, totalPages = 1, loading = false;
       var globalSeenIds = {}, pendingUnique = [], pendingQtyMap = {};
-      const HEADERS = { 'User-Agent': 'VinylRun/1.0', 'Authorization': 'Discogs token=TtwqiKPeLMLZTFBdyFPJdJEfpNVsvUHwBsmxiWjM' };
       const CACHE_TTL = 7200000;
       function getCached(k) { try { var r = localStorage.getItem(k); if (!r) return null; var o = JSON.parse(r); if (Date.now() - o.ts > CACHE_TTL) { localStorage.removeItem(k); return null; } return o.data; } catch(e) { return null; } }
       function setCache(k, d) { try { localStorage.setItem(k, JSON.stringify({ ts: Date.now(), data: d })); } catch(e) {} }
@@ -943,10 +942,8 @@
         loading = true;
         if (btnMore) btnMore.disabled = true;
         try {
-          const url = 'https://api.discogs.com/users/' + SELLER
-            + '/inventory?per_page=' + PER_PAGE + '&page=' + p
-            + '&sort=listed&sort_order=desc';
-          const res = await fetch(url, { headers: HEADERS });
+          const url = '/api/discogs?type=inventory&per_page=' + PER_PAGE + '&page=' + p;
+          const res = await fetch(url);
           if (!res.ok) throw new Error(res.status);
           const data = await res.json();
 
@@ -1009,7 +1006,7 @@
               if (img) img.src = hdCache[rid];
               return;
             }
-            fetch('https://api.discogs.com/releases/' + rid, { headers: HEADERS })
+            fetch('/api/discogs?type=release&id=' + rid)
             .then(function (r) { return r.json(); })
             .then(function (rd) {
               if (rd.images && rd.images[0] && rd.images[0].uri) {
@@ -1110,20 +1107,19 @@
         if (cached) { allListings = cached; return allListings; }
         grid.innerHTML = '<div class="inv-spinner"><span class="inv-spinner__ring"></span></div>';
         try {
-          const firstRes = await fetch('https://api.discogs.com/users/' + SELLER + '/inventory?per_page=100&page=1&sort=listed&sort_order=desc', { headers: HEADERS });
+          const firstRes = await fetch('/api/discogs?type=inventory&per_page=100&page=1');
           if (!firstRes.ok) throw new Error(firstRes.status);
           const firstData = await firstRes.json();
-          const pagePromises = [];
-          for (var pg = 2; pg <= firstData.pagination.pages; pg++) {
-            pagePromises.push(
-              fetch('https://api.discogs.com/users/' + SELLER + '/inventory?per_page=100&page=' + pg + '&sort=listed&sort_order=desc', { headers: HEADERS })
-                .then(function (r) { return r.json(); })
-                .then(function (d) { return d.listings; })
-                .catch(function () { return []; })
-            );
+          var listings = firstData.listings.slice();
+          var totalPg = firstData.pagination.pages;
+          for (var pg = 2; pg <= totalPg; pg++) {
+            await new Promise(function (r) { setTimeout(r, 300); });
+            var r = await fetch('/api/discogs?type=inventory&per_page=100&page=' + pg);
+            if (!r.ok) throw new Error(r.status);
+            var d = await r.json();
+            listings = listings.concat(d.listings || []);
           }
-          const rest = await Promise.all(pagePromises);
-          allListings = firstData.listings.concat.apply(firstData.listings, rest);
+          allListings = listings;
           setCache('vr_inv', allListings);
           return allListings;
         } catch (e) { return []; }
