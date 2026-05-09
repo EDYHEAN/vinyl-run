@@ -1067,15 +1067,12 @@
         'Presque là, encore quelques sillons…',
       ];
 
-      function showSearchProgress(pg, totalPg) {
-        var pct = Math.round((pg / totalPg) * 100);
-        var fill = grid.querySelector('.inv-prog__fill');
-        if (!fill) {
+      function showSearchProgress(state) {
+        if (state === 'start' && !grid.querySelector('.inv-prog')) {
           grid.innerHTML =
             '<div class="inv-prog">'
             + '<p class="inv-prog__txt">' + PHRASES[0] + '</p>'
             + '<div class="inv-prog__bar"><div class="inv-prog__fill"></div></div>'
-            + '<span class="inv-prog__num">0 %</span>'
             + '</div>';
           var phraseIdx = 0;
           phraseTimer = setInterval(function () {
@@ -1087,10 +1084,6 @@
             }
           }, 2800);
         }
-        fill = grid.querySelector('.inv-prog__fill');
-        var num = grid.querySelector('.inv-prog__num');
-        if (fill) fill.style.width = pct + '%';
-        if (num)  num.textContent = pct + ' %';
       }
 
       function clearSearchProgress() {
@@ -1171,21 +1164,12 @@
         if (loadingPromise) return loadingPromise;
         loadingPromise = (async function () {
           try {
-            const firstRes = await fetch('/api/discogs?type=inventory&per_page=100&page=1');
-            if (!firstRes.ok) throw new Error(firstRes.status);
-            const firstData = await firstRes.json();
-            var listings = firstData.listings.slice();
-            var totalPg = firstData.pagination.pages;
-            if (loadProgressCb) loadProgressCb(1, totalPg);
-            for (var pg = 2; pg <= totalPg; pg++) {
-              await new Promise(function (r) { setTimeout(r, 300); });
-              var r = await fetch('/api/discogs?type=inventory&per_page=100&page=' + pg);
-              if (!r.ok) throw new Error(r.status);
-              var d = await r.json();
-              listings = listings.concat(d.listings || []);
-              if (loadProgressCb) loadProgressCb(pg, totalPg);
-            }
-            allListings = listings;
+            if (loadProgressCb) loadProgressCb('start');
+            var res = await fetch('/api/inventory-all');
+            if (!res.ok) throw new Error(res.status);
+            var data = await res.json();
+            if (!Array.isArray(data)) throw new Error('invalid');
+            allListings = data;
             setCache('vr_inv', allListings);
             loadingPromise = null; loadProgressCb = null;
             return allListings;

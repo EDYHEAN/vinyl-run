@@ -1124,6 +1124,7 @@ a    { text-decoration: none; color: inherit; }
   transition: opacity 0.3s ease;
 }
 .inv-prog__bar {
+  position: relative;
   width: 220px;
   height: 2px;
   background: var(--border);
@@ -1131,17 +1132,17 @@ a    { text-decoration: none; color: inherit; }
   overflow: hidden;
 }
 .inv-prog__fill {
+  position: absolute;
+  top: 0; left: 0;
   height: 100%;
-  width: 0%;
+  width: 38%;
   background: var(--accent);
   border-radius: 1px;
-  transition: width 0.35s var(--ease-out);
+  animation: inv-prog-slide 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
-.inv-prog__num {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--ink-muted);
-  font-family: var(--font-sans);
+@keyframes inv-prog-slide {
+  0%   { transform: translateX(-160%); }
+  100% { transform: translateX(370%); }
 }
 
 /* ═══════════════════════════════════════════
