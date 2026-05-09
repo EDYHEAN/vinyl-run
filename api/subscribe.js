@@ -80,7 +80,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         to: [{ email }],
         sender: { name: 'Vinyl Run', email: 'magazine@vinyl-run.com' },
-        replyTo: { email: 'magazine@vinyl-run.com', name: 'Vinyl Run' },
+        replyTo: { email: 'vinylrun974@gmail.com', name: 'Vinyl Run' },
         subject: 'Bienvenue dans le Magazine Vinyl Run 🎵',
         htmlContent,
       }),
