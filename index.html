@@ -1008,26 +1008,7 @@
             });
           });
 
-          var hdCache = getCached('vr_hd') || {};
-          dedupedBatch.forEach(function (l, i) {
-            var rid = String(l.release.id);
-            if (hdCache[rid]) {
-              var img = cards[i] && cards[i].querySelector('img');
-              if (img) img.src = hdCache[rid];
-              return;
-            }
-            fetch('/api/discogs?type=release&id=' + rid)
-            .then(function (r) { return r.json(); })
-            .then(function (rd) {
-              if (rd.images && rd.images[0] && rd.images[0].uri) {
-                var img = cards[i] && cards[i].querySelector('img');
-                if (img) img.src = rd.images[0].uri;
-                hdCache[rid] = rd.images[0].uri;
-                setCache('vr_hd', hdCache);
-              }
-            })
-            .catch(function () {});
-          });
+          applyHDImages(dedupedBatch, cards);
 
           if (!('ontouchstart' in window)) {
             var dot = document.getElementById('cursor-dot');
@@ -1116,6 +1097,25 @@
         if (phraseTimer) { clearInterval(phraseTimer); phraseTimer = null; }
       }
 
+      function applyHDImages(listings, cards) {
+        var hdCache = getCached('vr_hd') || {};
+        listings.forEach(function (l, i) {
+          var rid = String(l.release.id);
+          var img = cards[i] && cards[i].querySelector('img');
+          if (hdCache[rid]) { if (img) img.src = hdCache[rid]; return; }
+          fetch('/api/discogs?type=release&id=' + rid)
+            .then(function (r) { return r.json(); })
+            .then(function (rd) {
+              if (rd.images && rd.images[0] && rd.images[0].uri) {
+                if (img) img.src = rd.images[0].uri;
+                hdCache[rid] = rd.images[0].uri;
+                setCache('vr_hd', hdCache);
+              }
+            })
+            .catch(function () {});
+        });
+      }
+
       function fillGridRow() {
         var cols = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 900 ? 2 : 4);
         grid.querySelectorAll('.inv-card--ph').forEach(function(el) { el.remove(); });
@@ -1150,7 +1150,8 @@
         var d = dedupeListings(listings);
         const wrap = document.createElement('div');
         wrap.innerHTML = d.listings.map(function(l) { return cardHTML(l, d.qtyMap[String(l.release.id)]); }).join('');
-        Array.from(wrap.children).forEach(function (c, i) {
+        var cards = Array.from(wrap.children);
+        cards.forEach(function (c, i) {
           c.style.opacity = '0';
           c.style.transform = 'translateY(20px)';
           c.style.transition = 'opacity 0.4s var(--ease-out) ' + (i * 0.03) + 's, transform 0.4s var(--ease-out) ' + (i * 0.03) + 's';
@@ -1158,6 +1159,7 @@
           requestAnimationFrame(function () { requestAnimationFrame(function () { c.style.opacity = '1'; c.style.transform = 'none'; }); });
         });
         fillGridRow();
+        applyHDImages(d.listings, cards);
       }
 
       async function loadAllListings(onProgress) {
