@@ -2,7 +2,7 @@ const ALLOWED = ['vinyl-run.com', 'vinyl-run.vercel.app'];
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
-  if (!ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
+  if (origin && !ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
   if (req.method !== 'POST') return res.status(405).end();
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;

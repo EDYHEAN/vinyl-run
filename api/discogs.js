@@ -8,7 +8,7 @@ const HEADERS = {
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
-  if (!ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
+  if (origin && !ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
   const { type, page, per_page, id } = req.query;
 
   let url;
