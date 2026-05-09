@@ -886,7 +886,6 @@
 
     // ── Inventaire Discogs ───────────────────────────────────────
     (function () {
-      const SELLER   = 'Vinylrun974';
       const PER_PAGE = 12;
       const grid     = document.getElementById('invGrid');
       const btnMore  = document.getElementById('invMore');
@@ -1159,7 +1158,6 @@
         if (allListings) return allListings;
         var cached = getCached('vr_inv');
         if (cached) { allListings = cached; return allListings; }
-        // Si l'user fournit une progress cb, on l'enregistre même si un fetch tourne déjà
         if (onProgress) loadProgressCb = onProgress;
         if (loadingPromise) return loadingPromise;
         loadingPromise = (async function () {
