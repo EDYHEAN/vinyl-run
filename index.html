@@ -1061,9 +1061,16 @@
       load(1);
       if (btnMore) btnMore.addEventListener('click', function () { load(page + 1); });
 
+      // Pre-fetch silencieux après que la page soit chargée et idle
+      window.addEventListener('load', function () {
+        setTimeout(function () { loadAllListings(); }, 2500);
+      });
+
       // ── Search ──────────────────────────────────────────────────
       var searchInput = document.getElementById('invSearch');
       var allListings = null;
+      var loadingPromise = null;
+      var loadProgressCb = null;
       var searchActive = false;
       var searchTimer = null;
       var phraseTimer = null;
@@ -1157,25 +1164,32 @@
         if (allListings) return allListings;
         var cached = getCached('vr_inv');
         if (cached) { allListings = cached; return allListings; }
-        try {
-          const firstRes = await fetch('/api/discogs?type=inventory&per_page=100&page=1');
-          if (!firstRes.ok) throw new Error(firstRes.status);
-          const firstData = await firstRes.json();
-          var listings = firstData.listings.slice();
-          var totalPg = firstData.pagination.pages;
-          if (onProgress) onProgress(1, totalPg);
-          for (var pg = 2; pg <= totalPg; pg++) {
-            await new Promise(function (r) { setTimeout(r, 300); });
-            var r = await fetch('/api/discogs?type=inventory&per_page=100&page=' + pg);
-            if (!r.ok) throw new Error(r.status);
-            var d = await r.json();
-            listings = listings.concat(d.listings || []);
-            if (onProgress) onProgress(pg, totalPg);
-          }
-          allListings = listings;
-          setCache('vr_inv', allListings);
-          return allListings;
-        } catch (e) { return []; }
+        // Si l'user fournit une progress cb, on l'enregistre même si un fetch tourne déjà
+        if (onProgress) loadProgressCb = onProgress;
+        if (loadingPromise) return loadingPromise;
+        loadingPromise = (async function () {
+          try {
+            const firstRes = await fetch('/api/discogs?type=inventory&per_page=100&page=1');
+            if (!firstRes.ok) throw new Error(firstRes.status);
+            const firstData = await firstRes.json();
+            var listings = firstData.listings.slice();
+            var totalPg = firstData.pagination.pages;
+            if (loadProgressCb) loadProgressCb(1, totalPg);
+            for (var pg = 2; pg <= totalPg; pg++) {
+              await new Promise(function (r) { setTimeout(r, 300); });
+              var r = await fetch('/api/discogs?type=inventory&per_page=100&page=' + pg);
+              if (!r.ok) throw new Error(r.status);
+              var d = await r.json();
+              listings = listings.concat(d.listings || []);
+              if (loadProgressCb) loadProgressCb(pg, totalPg);
+            }
+            allListings = listings;
+            setCache('vr_inv', allListings);
+            loadingPromise = null; loadProgressCb = null;
+            return allListings;
+          } catch (e) { loadingPromise = null; loadProgressCb = null; return []; }
+        })();
+        return loadingPromise;
       }
 
       function doSearch(q) {
