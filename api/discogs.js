@@ -1,3 +1,4 @@
+const ALLOWED = ['vinyl-run.com', 'vinyl-run.vercel.app'];
 const SELLER = 'Vinylrun974';
 const TOKEN  = process.env.DISCOGS_TOKEN;
 const HEADERS = {
@@ -6,6 +7,8 @@ const HEADERS = {
 };
 
 export default async function handler(req, res) {
+  const origin = req.headers.origin || '';
+  if (!ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
   const { type, page, per_page, id } = req.query;
 
   let url;

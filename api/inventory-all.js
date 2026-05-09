@@ -1,3 +1,4 @@
+const ALLOWED = ['vinyl-run.com', 'vinyl-run.vercel.app'];
 const SELLER  = 'Vinylrun974';
 const TOKEN   = process.env.DISCOGS_TOKEN;
 const HEADERS = {
@@ -35,6 +36,8 @@ async function fetchPage(page, retries = 2) {
 }
 
 export default async function handler(req, res) {
+  const origin = req.headers.origin || '';
+  if (!ALLOWED.some(h => origin.includes(h))) return res.status(403).end();
   try {
     const first      = await fetchPage(1);
     const totalPages = first.pagination.pages;
