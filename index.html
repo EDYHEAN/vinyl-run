@@ -1089,23 +1089,38 @@
         if (phraseTimer) { clearInterval(phraseTimer); phraseTimer = null; }
       }
 
+      var hdQueue = [];
+      var hdActive = 0;
+      var HD_CONCURRENCY = 3;
+
+      function hdNext() {
+        while (hdActive < HD_CONCURRENCY && hdQueue.length) {
+          var job = hdQueue.shift();
+          hdActive++;
+          fetch('/api/discogs?type=release&id=' + job.rid)
+            .then(function (r) { return r.json(); })
+            .then(function (rd) {
+              if (rd.images && rd.images[0] && rd.images[0].uri) {
+                if (job.img) job.img.src = rd.images[0].uri;
+                var hdCache = getCached('vr_hd') || {};
+                hdCache[job.rid] = rd.images[0].uri;
+                setCache('vr_hd', hdCache);
+              }
+            })
+            .catch(function () {})
+            .then(function () { hdActive--; hdNext(); });
+        }
+      }
+
       function applyHDImages(listings, cards) {
         var hdCache = getCached('vr_hd') || {};
         listings.forEach(function (l, i) {
           var rid = String(l.release.id);
           var img = cards[i] && cards[i].querySelector('img');
           if (hdCache[rid]) { if (img) img.src = hdCache[rid]; return; }
-          fetch('/api/discogs?type=release&id=' + rid)
-            .then(function (r) { return r.json(); })
-            .then(function (rd) {
-              if (rd.images && rd.images[0] && rd.images[0].uri) {
-                if (img) img.src = rd.images[0].uri;
-                hdCache[rid] = rd.images[0].uri;
-                setCache('vr_hd', hdCache);
-              }
-            })
-            .catch(function () {});
+          hdQueue.push({ rid: rid, img: img });
         });
+        hdNext();
       }
 
       function fillGridRow() {
