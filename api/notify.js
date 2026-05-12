@@ -47,6 +47,8 @@ export default async function handler(req, res) {
       <p style="font-size:12px;color:rgba(240,237,230,0.25);margin:0;line-height:1.6;">Vinyl Run · Saint-Pierre, La Réunion · <a href="https://vinyl-run.com/blog/" style="color:rgba(240,237,230,0.25);">Le Magazine</a></p>
     </div>
 
+    <div style="height:48px;"></div>
+
   </div>
 </body>
 </html>`;
