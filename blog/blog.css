@@ -556,7 +556,7 @@
   flex-shrink: 0;
   margin-top: 0.05em;
 }
-.article-body ul li strong { color: var(--ink); }
+.article-body ul li strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
 
 .article-body .article-cta {
   margin-top: 3rem;
