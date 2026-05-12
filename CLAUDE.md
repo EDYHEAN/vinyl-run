@@ -58,3 +58,29 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 ```
 
 Pour trouver l'ID CDN : récupérer la balise `og:image` sur `unsplash.com/photos/{slug}`.
+
+**L'ID complet a toujours deux parties** : `photo-XXXXXXXX-XXXXXXXXXXXX` (ex: `photo-1537829382363-dfe2e5e72d36`). Ne jamais utiliser un ID tronqué à une seule partie — l'image ne s'affichera pas.
+
+## SEO — Règles canoniques obligatoires
+
+Le domaine primaire est **`www.vinyl-run.com`**. Dans chaque fichier HTML :
+- `<link rel="canonical">` → toujours `https://www.vinyl-run.com/...`
+- `<meta property="og:url">` → toujours `https://www.vinyl-run.com/...`
+- `<meta property="og:image">` → toujours `https://www.vinyl-run.com/...`
+- JSON-LD (`url`, `author.url`, `publisher.url`) → toujours `https://www.vinyl-run.com/...`
+
+Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait la page comme doublon et ne l'indexerait pas.
+
+## Sujets d'articles — À éviter
+
+- **Zouk** — hors scope éditorial de Vinyl Run
+
+## Checklist publication article
+
+Avant tout push d'un nouvel article :
+1. `class="hellobar-off"` sur le `<body>`
+2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...`
+3. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
+4. Mettre à jour `blog/index.html` (hero + card mosaïque)
+5. Mettre à jour `rss.xml`
+6. Mettre à jour `sitemap.xml`
