@@ -48,6 +48,9 @@ export default async function handler(req, res) {
       listings = listings.concat(data.listings.map(trim));
     }
 
+    const seen = new Set();
+    listings = listings.filter(l => seen.has(l.uri) ? false : seen.add(l.uri));
+
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
     return res.status(200).json(listings);
   } catch (e) {
