@@ -959,6 +959,7 @@
           totalPages = data.pagination.pages;
           if (p === 1) {
             grid.innerHTML = '';
+            hdQueue = [];
             globalSeenIds = {};
             pendingUnique = [];
             pendingQtyMap = {};
@@ -1095,13 +1096,13 @@
 
       function hdNext() {
         while (hdActive < HD_CONCURRENCY && hdQueue.length) {
-          var job = hdQueue.shift();
+          let job = hdQueue.shift();
           hdActive++;
           fetch('/api/discogs?type=release&id=' + job.rid)
             .then(function (r) { return r.json(); })
             .then(function (rd) {
               if (rd.images && rd.images[0] && rd.images[0].uri) {
-                if (job.img) job.img.src = rd.images[0].uri;
+                if (job.img && job.img.isConnected) job.img.src = rd.images[0].uri;
                 var hdCache = getCached('vr_hd') || {};
                 hdCache[job.rid] = rd.images[0].uri;
                 setCache('vr_hd', hdCache);
@@ -1150,6 +1151,7 @@
 
       function renderSearchResults(listings) {
         grid.innerHTML = '';
+        hdQueue = [];
         if (listings.length === 0) {
           grid.innerHTML = '<p class="inv-loading">Aucun résultat.</p>';
           return;
