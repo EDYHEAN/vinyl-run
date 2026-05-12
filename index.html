@@ -1181,7 +1181,7 @@
         loadingPromise = (async function () {
           try {
             if (loadProgressCb) loadProgressCb('start');
-            var res = await fetch('/api/inventory-all');
+            var res = await fetch('/api/inventory-all?v=2');
             if (!res.ok) throw new Error(res.status);
             var data = await res.json();
             if (!Array.isArray(data)) throw new Error('invalid');
