@@ -62,7 +62,7 @@ export default async function handler(req, res) {
       name: `Magazine — ${latest.title}`,
       subject: `Nouvel article : ${latest.title}`,
       sender: { name: 'Vinyl Run', email: 'magazine@vinyl-run.com' },
-      replyTo: 'magazine@vinyl-run.com',
+      replyTo: 'vinylrun974@gmail.com',
       recipients: { listIds: [4] },
       htmlContent,
     }),

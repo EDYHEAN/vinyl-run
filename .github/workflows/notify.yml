@@ -1,0 +1,14 @@
+name: Newsletter Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send newsletter notification
+        run: |
+          curl -s -X POST https://www.vinyl-run.com/api/notify \
+            -H "Content-Type: application/json" \
+            -d '{"secret":"${{ secrets.NOTIFY_SECRET }}"}'
