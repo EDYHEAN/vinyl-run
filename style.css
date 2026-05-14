@@ -859,10 +859,19 @@ a    { text-decoration: none; color: inherit; }
   text-decoration: none;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  animation: wishlist-attention 7s ease-in-out infinite 4s;
 }
 .wishlist-fab:hover {
+  animation-play-state: paused;
   transform: scale(1.08);
   box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+}
+@keyframes wishlist-attention {
+  0%, 78%, 100% { transform: scale(1);    box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  82%           { transform: scale(1.18); box-shadow: 0 6px 28px rgba(237,241,12,0.35); }
+  86%           { transform: scale(1.0);  box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  90%           { transform: scale(1.12); box-shadow: 0 5px 24px rgba(237,241,12,0.2); }
+  94%           { transform: scale(1.0);  box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 }
 .wishlist-fab:hover .wishlist-fab__tip {
   opacity: 1;
