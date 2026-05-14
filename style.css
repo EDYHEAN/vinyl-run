@@ -846,9 +846,9 @@ a    { text-decoration: none; color: inherit; }
 /* ── Wishlist FAB ────────────────────────── */
 .wishlist-fab {
   position: fixed;
-  bottom: 24px;
+  bottom: 104px;
   left: 24px;
-  z-index: 90;
+  z-index: 210;
   width: 56px;
   height: 56px;
   border-radius: 50%;
