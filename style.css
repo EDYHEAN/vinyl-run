@@ -843,6 +843,53 @@ a    { text-decoration: none; color: inherit; }
 .footer__socials a:hover { color: var(--ink); }
 .footer__signature { font-style: italic; color: var(--ink-muted); opacity: 0.5; }
 
+/* ── Wishlist FAB ────────────────────────── */
+.wishlist-fab {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 90;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.wishlist-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+}
+.wishlist-fab:hover .wishlist-fab__tip {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.wishlist-fab__tip {
+  position: absolute;
+  left: 68px;
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 7px 14px;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .wishlist-fab { display: none; }
+}
+
 /* ── Scroll progress ─────────────────────── */
 #scroll-progress {
   position: fixed;
