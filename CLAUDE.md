@@ -30,9 +30,13 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 - `/blog/articles/` — articles individuels
 - Mettre à jour le lien + l'image du hero dans `blog/index.html` à chaque nouvel article à la une
 
-## Pattern photos articles (Unsplash/Pexels, pas de stockage local)
+## Pattern photos articles (Unsplash / Pexels, pas de stockage local)
 
-**Hero plein écran** (entre `article-divider` et `article-body`) :
+Deux sources autorisées : **Unsplash** et **Pexels**. Choisir selon la disponibilité du sujet.
+
+### Unsplash
+
+**Hero plein écran** :
 ```html
 <div class="article-hero-img">
   <img src="https://images.unsplash.com/photo-{ID}?w=1400&auto=format&fit=crop&q=80"
@@ -40,7 +44,7 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 </div>
 ```
 
-**Figure inline** (entre sections) :
+**Figure inline** :
 ```html
 <figure class="article-figure">
   <img src="https://images.unsplash.com/photo-{ID}?w=900&auto=format&fit=crop&q=80"
@@ -49,7 +53,7 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 </figure>
 ```
 
-**Thumbnail card** (premier enfant d'un `.article-card`) :
+**Thumbnail card** :
 ```html
 <div class="article-card__img">
   <img src="https://images.unsplash.com/photo-{ID}?w=600&auto=format&fit=crop&q=80"
@@ -58,8 +62,36 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 ```
 
 Pour trouver l'ID CDN : récupérer la balise `og:image` sur `unsplash.com/photos/{slug}`.
-
 **L'ID complet a toujours deux parties** : `photo-XXXXXXXX-XXXXXXXXXXXX` (ex: `photo-1537829382363-dfe2e5e72d36`). Ne jamais utiliser un ID tronqué à une seule partie — l'image ne s'affichera pas.
+
+### Pexels
+
+L'ID est un nombre visible dans l'URL de la photo (ex: `pexels.com/photo/titre-1234567/` → ID = `1234567`).
+
+**Hero plein écran** :
+```html
+<div class="article-hero-img">
+  <img src="https://images.pexels.com/photos/{ID}/pexels-photo-{ID}.jpeg?auto=compress&cs=tinysrgb&w=1400&fit=crop"
+       alt="..." loading="eager" />
+</div>
+```
+
+**Figure inline** :
+```html
+<figure class="article-figure">
+  <img src="https://images.pexels.com/photos/{ID}/pexels-photo-{ID}.jpeg?auto=compress&cs=tinysrgb&w=900&fit=crop"
+       alt="..." loading="lazy" />
+  <figcaption>Photo : Prénom Nom / Pexels</figcaption>
+</figure>
+```
+
+**Thumbnail card** :
+```html
+<div class="article-card__img">
+  <img src="https://images.pexels.com/photos/{ID}/pexels-photo-{ID}.jpeg?auto=compress&cs=tinysrgb&w=600&fit=crop"
+       alt="..." loading="lazy" />
+</div>
+```
 
 ## SEO — Règles canoniques obligatoires
 
