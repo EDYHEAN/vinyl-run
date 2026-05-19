@@ -652,9 +652,9 @@
       if (!fab) return;
       function showTip() {
         fab.classList.add('tip-visible');
-        setTimeout(function () { fab.classList.remove('tip-visible'); }, 3000);
+        setTimeout(function () { fab.classList.remove('tip-visible'); }, 5000);
       }
-      setTimeout(function () { showTip(); setInterval(showTip, 15000); }, 2500);
+      setTimeout(function () { showTip(); setInterval(showTip, 10000); }, 2500);
     })();
 
     // ── Burger menu ──────────────────────────────────────────────
