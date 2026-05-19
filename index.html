@@ -646,6 +646,16 @@
   </div>
 
   <script>
+    // ── Wishlist FAB — tooltip auto ──────────────────────────────
+    (function () {
+      var fab = document.querySelector('.wishlist-fab');
+      if (!fab) return;
+      setTimeout(function () {
+        fab.classList.add('tip-visible');
+        setTimeout(function () { fab.classList.remove('tip-visible'); }, 3000);
+      }, 2500);
+    })();
+
     // ── Burger menu ──────────────────────────────────────────────
     (function () {
       const burger = document.getElementById('navBurger');
