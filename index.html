@@ -646,14 +646,15 @@
   </div>
 
   <script>
-    // ── Wishlist FAB — tooltip auto ──────────────────────────────
+    // ── Wishlist FAB — tooltip auto (loop toutes les 15s) ───────
     (function () {
       var fab = document.querySelector('.wishlist-fab');
       if (!fab) return;
-      setTimeout(function () {
+      function showTip() {
         fab.classList.add('tip-visible');
         setTimeout(function () { fab.classList.remove('tip-visible'); }, 3000);
-      }, 2500);
+      }
+      setTimeout(function () { showTip(); setInterval(showTip, 15000); }, 2500);
     })();
 
     // ── Burger menu ──────────────────────────────────────────────
