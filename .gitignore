@@ -1,2 +1,5 @@
 # Photos originales (HEIC lourd, non destinées au repo)
 assets/photos/
+
+# Claude Code — config locale
+.claude/settings.local.json
