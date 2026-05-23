@@ -1430,9 +1430,11 @@ a    { text-decoration: none; color: inherit; }
   .avis__grid::-webkit-scrollbar { display: none; }
   .avis__grid .avis-card {
     scroll-snap-align: start;
-    min-width: calc(100% - 20px);
+    min-width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
     margin: 0 10px;
     flex-shrink: 0;
+    flex-direction: column;
     box-sizing: border-box;
   }
   .avis__dots {
