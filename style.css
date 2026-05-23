@@ -864,6 +864,7 @@ a    { text-decoration: none; color: inherit; }
 .lang-btn:hover { opacity: 0.75; }
 .lang-btn--active { opacity: 1; }
 .lang-en .nav__mag { display: none; }
+.lang-en .newsletter-section { display: none; }
 
 /* ── Wishlist FAB ────────────────────────── */
 .wishlist-fab {
