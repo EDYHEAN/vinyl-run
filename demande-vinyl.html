@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <script src="/i18n.js" defer></script>
   <style>
     .wl-page {
       min-height: 100vh;
@@ -193,48 +194,48 @@
     <div class="wl-inner">
 
       <div class="wl-hero">
-        <span class="wl-hero__label">Demande spéciale</span>
-        <h1>Vous cherchez un vinyle<br>en particulier&nbsp;?</h1>
-        <p class="wl-hero__sub">Décrivez-nous ce que vous recherchez. On fouille nos réseaux, nos fournisseurs et on vous rappelle pour affiner la demande.</p>
+        <span class="wl-hero__label" data-i18n="wl.hero.label">Demande spéciale</span>
+        <h1 data-i18n-html="wl.hero.title">Vous cherchez un vinyle<br>en particulier ?</h1>
+        <p class="wl-hero__sub" data-i18n="wl.hero.sub">Décrivez-nous ce que vous recherchez. On fouille nos réseaux, nos fournisseurs et on vous rappelle pour affiner la demande.</p>
       </div>
 
       <form class="wl-form" id="wlForm" novalidate>
 
-        <p class="wl-section-title">Vos coordonnées</p>
+        <p class="wl-section-title" data-i18n="wl.section.contact">Vos coordonnées</p>
 
         <div class="wl-row">
           <div class="wl-field">
-            <label for="wl-nom">Prénom / Nom <span class="req">*</span></label>
-            <input type="text" id="wl-nom" name="nom" placeholder="Jean Dupont" autocomplete="name" />
+            <label for="wl-nom"><span data-i18n="wl.nom.label">Prénom / Nom</span> <span class="req">*</span></label>
+            <input type="text" id="wl-nom" name="nom" placeholder="Jean Dupont" data-i18n-placeholder="wl.nom.placeholder" autocomplete="name" />
           </div>
           <div class="wl-field">
-            <label for="wl-telephone">Téléphone <span class="req">*</span></label>
+            <label for="wl-telephone"><span data-i18n="wl.tel.label">Téléphone</span> <span class="req">*</span></label>
             <input type="tel" id="wl-telephone" name="telephone" placeholder="0692 00 00 00" autocomplete="tel" />
           </div>
         </div>
         <div class="wl-field">
-          <label for="wl-email">Email <span style="color:var(--ink-muted);font-size:10px;">(facultatif)</span></label>
+          <label for="wl-email">Email <span style="color:var(--ink-muted);font-size:10px;" data-i18n="wl.email.optional">(facultatif)</span></label>
           <input type="email" id="wl-email" name="email" placeholder="jean@exemple.com" autocomplete="email" />
         </div>
 
-        <p class="wl-section-title">Le vinyle recherché</p>
+        <p class="wl-section-title" data-i18n="wl.section.vinyl">Le vinyle recherché</p>
 
         <div class="wl-row">
           <div class="wl-field">
-            <label for="wl-artiste">Artiste / Groupe <span class="req">*</span></label>
+            <label for="wl-artiste"><span data-i18n="wl.artiste.label">Artiste / Groupe</span> <span class="req">*</span></label>
             <input type="text" id="wl-artiste" name="artiste" placeholder="Miles Davis" />
           </div>
           <div class="wl-field">
-            <label for="wl-album">Titre de l'album <span style="color:var(--ink-muted);font-size:10px;">(si connu)</span></label>
+            <label for="wl-album"><span data-i18n="wl.album.label">Titre de l'album</span> <span style="color:var(--ink-muted);font-size:10px;" data-i18n="wl.album.optional">(si connu)</span></label>
             <input type="text" id="wl-album" name="album" placeholder="Kind of Blue" />
           </div>
         </div>
 
         <div class="wl-row">
           <div class="wl-field">
-            <label for="wl-format">Format</label>
+            <label for="wl-format" data-i18n="wl.format.label">Format</label>
             <select id="wl-format" name="format">
-              <option value="Peu importe">Peu importe</option>
+              <option value="Peu importe" data-i18n="wl.format.any">Peu importe</option>
               <option value="LP 33t">LP 33t</option>
               <option value="45t / Single">45t / Single</option>
               <option value="78t">78t</option>
@@ -242,9 +243,9 @@
             </select>
           </div>
           <div class="wl-field">
-            <label for="wl-genre">Genre</label>
+            <label for="wl-genre" data-i18n="wl.genre.label">Genre</label>
             <select id="wl-genre" name="genre">
-              <option value="Peu importe">Peu importe</option>
+              <option value="Peu importe" data-i18n="wl.format.any">Peu importe</option>
               <option value="Jazz">Jazz</option>
               <option value="Soul / Funk">Soul / Funk</option>
               <option value="Rock / Pop">Rock / Pop</option>
@@ -259,17 +260,17 @@
         </div>
 
         <div class="wl-field" style="max-width:300px;">
-          <label for="wl-etat">État recherché</label>
+          <label for="wl-etat" data-i18n="wl.etat.label">État recherché</label>
           <select id="wl-etat" name="etat">
-            <option value="Peu importe">Peu importe</option>
-            <option value="Neuf">Neuf</option>
-            <option value="Occasion (bon état)">Occasion (bon état)</option>
+            <option value="Peu importe" data-i18n="wl.etat.any">Peu importe</option>
+            <option value="Neuf" data-i18n="wl.etat.new">Neuf</option>
+            <option value="Occasion (bon état)" data-i18n="wl.etat.used">Occasion (bon état)</option>
           </select>
         </div>
 
         <div class="wl-field">
-          <label for="wl-message">Précisions <span style="color:var(--ink-muted);font-size:10px;">(facultatif)</span></label>
-          <textarea id="wl-message" name="message" placeholder="Budget max, édition particulière, pressage original, couleur du vinyle…"></textarea>
+          <label for="wl-message"><span data-i18n="wl.message.label">Précisions</span> <span style="color:var(--ink-muted);font-size:10px;" data-i18n="wl.email.optional">(facultatif)</span></label>
+          <textarea id="wl-message" name="message" placeholder="Budget max, édition particulière, pressage original, couleur du vinyle…" data-i18n-placeholder="wl.message.placeholder"></textarea>
         </div>
 
         <!-- Honeypot -->
@@ -278,10 +279,10 @@
         </div>
 
         <div class="wl-submit">
-          <div class="wl-msg wl-msg--ok" id="wlOk">Demande envoyée — on vous rappelle dès que possible.</div>
-          <div class="wl-msg wl-msg--err" id="wlErr">Une erreur est survenue, veuillez réessayer.</div>
-          <button type="submit" class="btn btn--fill" id="wlBtn">Envoyer la demande</button>
-          <p class="wl-submit__note">Champs marqués <span style="color:var(--accent);">*</span> obligatoires. Recontact par téléphone uniquement.</p>
+          <div class="wl-msg wl-msg--ok" id="wlOk" data-i18n="wl.ok">Demande envoyée — on vous rappelle dès que possible.</div>
+          <div class="wl-msg wl-msg--err" id="wlErr" data-i18n="wl.err">Une erreur est survenue, veuillez réessayer.</div>
+          <button type="submit" class="btn btn--fill" id="wlBtn" data-i18n="wl.submit">Envoyer la demande</button>
+          <p class="wl-submit__note" data-i18n="wl.required">Champs marqués * obligatoires. Recontact par téléphone uniquement.</p>
         </div>
 
       </form>
@@ -290,7 +291,7 @@
 
   <footer class="footer">
     <span class="footer__logo">VINYL RUN</span>
-    <p>© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
+    <p data-i18n="footer.copy">© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
     <p class="footer__signature">Made by the son the father made</p>
     <div class="footer__socials">
       <a href="https://www.instagram.com/vinylrun974/" target="_blank" rel="noopener">Instagram</a>

@@ -93,6 +93,7 @@
   <!-- Supprime les click IDs plateformes (fbclid, gclid…) sans toucher aux UTM -->
   <script>(function(){var p=new URLSearchParams(location.search),dirty=['fbclid','gclid','msclkid','twclid'],c=false;dirty.forEach(function(k){if(p.has(k)){p.delete(k);c=true;}});if(c){var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);}})();</script>
   <script defer src="/_vercel/insights/script.js"></script>
+  <script src="/i18n.js" defer></script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
@@ -114,15 +115,12 @@
   ══════════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero__left">
-      <p class="hero__eyebrow">Disquaire indépendant · Saint-Pierre, La Réunion</p>
+      <p class="hero__eyebrow" data-i18n="hero.eyebrow">Disquaire indépendant · Saint-Pierre, La Réunion</p>
       <img src="assets/logo.svg" alt="Vinyl Run" class="hero__logo" />
-      <p class="hero__sub">
-        Vinyles neufs, occasions &amp; raretés.<br>
-        Une sélection à la main depuis 2017.
-      </p>
+      <p class="hero__sub" data-i18n-html="hero.sub">Vinyles neufs, occasions &amp; raretés.<br>Une sélection à la main depuis 2017.</p>
       <div class="hero__actions">
-        <a href="#inventaire" class="btn btn--fill">Explorer le shop</a>
-        <a href="#contact" class="btn btn--ghost">Nous trouver</a>
+        <a href="#inventaire" class="btn btn--fill" data-i18n="hero.cta.shop">Explorer le shop</a>
+        <a href="#contact" class="btn btn--ghost" data-i18n="hero.cta.find">Nous trouver</a>
       </div>
     </div>
 
@@ -233,12 +231,9 @@
   ══════════════════════════════════════ -->
   <section class="univers" id="notre-univers">
     <div class="univers__top">
-      <p class="section-label" data-reveal>Notre univers</p>
-      <h2 class="univers__heading" data-reveal>Ce qu'on trouve chez VINYL RUN</h2>
-      <p class="univers__sub" data-reveal>
-        Un espace pensé pour les amoureux du son analogique. Pas un supermarché —
-        une sélection, une passion, une conversation.
-      </p>
+      <p class="section-label" data-reveal data-i18n="univers.label">Notre univers</p>
+      <h2 class="univers__heading" data-reveal data-i18n="univers.heading">Ce qu'on trouve chez VINYL RUN</h2>
+      <p class="univers__sub" data-reveal data-i18n="univers.sub">Un espace pensé pour les amoureux du son analogique. Pas un supermarché — une sélection, une passion, une conversation.</p>
     </div>
 
     <div class="categories" data-reveal-group>
@@ -249,8 +244,8 @@
         <div class="cat-card">
           <span class="cat-card__num">01</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Vinyles Neufs</h3>
-          <p class="cat-card__desc">Les grandes sorties, les rééditions essentielles. Du rock au jazz, du reggae à l'électronique — sélectionnés à la main.</p>
+          <h3 class="cat-card__title" data-i18n="cat.01.title">Vinyles Neufs</h3>
+          <p class="cat-card__desc" data-i18n="cat.01.desc">Les grandes sorties, les rééditions essentielles. Du rock au jazz, du reggae à l'électronique — sélectionnés à la main.</p>
         </div>
       </div>
       <div class="cat-card-wrap" data-reveal>
@@ -260,8 +255,8 @@
         <div class="cat-card">
           <span class="cat-card__num">02</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Musiques Océan Indien</h3>
-          <p class="cat-card__desc">Le plus grand choix de musiques de la zone océan indien, en vinyles, disponibles dès leur sortie nationale.</p>
+          <h3 class="cat-card__title" data-i18n="cat.02.title">Musiques Océan Indien</h3>
+          <p class="cat-card__desc" data-i18n="cat.02.desc">Le plus grand choix de musiques de la zone océan indien, en vinyles, disponibles dès leur sortie nationale.</p>
         </div>
       </div>
       <div class="cat-card-wrap" data-reveal>
@@ -271,8 +266,8 @@
         <div class="cat-card">
           <span class="cat-card__num">03</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Occasions &amp; Raretés</h3>
-          <p class="cat-card__desc">Des pressings introuvables, des pépites de collection. Le fond de caisse qui change chaque semaine.</p>
+          <h3 class="cat-card__title" data-i18n-html="cat.03.title">Occasions &amp; Raretés</h3>
+          <p class="cat-card__desc" data-i18n="cat.03.desc">Des pressings introuvables, des pépites de collection. Le fond de caisse qui change chaque semaine.</p>
         </div>
       </div>
       <div class="cat-card-wrap" data-reveal>
@@ -282,8 +277,8 @@
         <div class="cat-card">
           <span class="cat-card__num">04</span>
           <hr class="cat-card__line" />
-          <h3 class="cat-card__title">Imports &amp; Exclusivités</h3>
-          <p class="cat-card__desc">Des éditions limitées, des imports directs. Ce qu'on ne trouve nulle part ailleurs sur l'île.</p>
+          <h3 class="cat-card__title" data-i18n-html="cat.04.title">Imports &amp; Exclusivités</h3>
+          <p class="cat-card__desc" data-i18n="cat.04.desc">Des éditions limitées, des imports directs. Ce qu'on ne trouve nulle part ailleurs sur l'île.</p>
         </div>
       </div>
     </div>
@@ -316,24 +311,21 @@
     </div>
 
     <div class="boutique__content">
-      <p class="section-label" data-reveal>La boutique</p>
-      <h2 class="boutique__heading" data-reveal>L'expérience en magasin</h2>
-      <p class="boutique__intro" data-reveal>
-        Vinyl Run ce n'est pas juste acheter un disque. C'est une heure passée à fouiller,
-        écouter, découvrir. Notre équipe connaît chaque sillon.
-      </p>
+      <p class="section-label" data-reveal data-i18n="boutique.label">La boutique</p>
+      <h2 class="boutique__heading" data-reveal data-i18n="boutique.heading">L'expérience en magasin</h2>
+      <p class="boutique__intro" data-reveal data-i18n="boutique.intro">Vinyl Run ce n'est pas juste acheter un disque. C'est une heure passée à fouiller, écouter, découvrir. Notre équipe connaît chaque sillon.</p>
       <ul class="features">
         <li class="feature" data-reveal>
           <span class="feature__dot"></span>
-          <p><strong>Station d'écoute</strong> — Testez avant d'acheter. Platine disponible en boutique.</p>
+          <p data-i18n-html="boutique.feat1"><strong>Station d'écoute</strong> — Testez avant d'acheter. Platine disponible en boutique.</p>
         </li>
         <li class="feature" data-reveal>
           <span class="feature__dot"></span>
-          <p><strong>Conseil personnalisé</strong> — Dites-nous ce que vous aimez, on trouve.</p>
+          <p data-i18n-html="boutique.feat2"><strong>Conseil personnalisé</strong> — Dites-nous ce que vous aimez, on trouve.</p>
         </li>
         <li class="feature" data-reveal>
           <span class="feature__dot"></span>
-          <p><strong>Commande spéciale</strong> — Un vinyle introuvable ? On s'en occupe.</p>
+          <p data-i18n-html="boutique.feat3"><strong>Commande spéciale</strong> — Un vinyle introuvable ? On s'en occupe.</p>
         </li>
       </ul>
     </div>
@@ -344,25 +336,25 @@
   ══════════════════════════════════════ -->
   <section class="inventaire" id="inventaire">
     <div class="inventaire__header">
-      <p class="section-label" data-reveal>En vente sur Discogs</p>
-      <h2 class="inventaire__heading" data-reveal>L'inventaire</h2>
+      <p class="section-label" data-reveal data-i18n="inventaire.label">En vente sur Discogs</p>
+      <h2 class="inventaire__heading" data-reveal data-i18n="inventaire.heading">L'inventaire</h2>
       <p class="inventaire__sub" data-reveal>
-        <span id="invCount">—</span> références disponibles · mis à jour en temps réel
+        <span id="invCount">—</span><span data-i18n="inventaire.sub.suffix"> références disponibles · mis à jour en temps réel</span>
       </p>
     </div>
     <div class="inventaire__search" data-reveal-search>
       <div class="inv-search__wrap">
         <svg class="inv-search__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" id="invSearch" class="inv-search__input" placeholder="Rechercher artiste, titre, format…" autocomplete="off" spellcheck="false" />
+        <input type="search" id="invSearch" class="inv-search__input" placeholder="Rechercher artiste, titre, format…" data-i18n-placeholder="inventaire.placeholder" autocomplete="off" spellcheck="false" />
       </div>
     </div>
     <div class="inventaire__grid" id="invGrid">
-      <div class="inv-loading">Chargement de l'inventaire…</div>
+      <div class="inv-loading" data-i18n="inventaire.loading">Chargement de l'inventaire…</div>
     </div>
-    <p class="inventaire__hint">Vous ne trouvez pas le vinyle que vous cherchez ? <a href="tel:+262692441388">Appelez-nous</a></p>
+    <p class="inventaire__hint" data-i18n-html="inventaire.hint">Vous ne trouvez pas le vinyle que vous cherchez ? <a href="tel:+262692441388">Appelez-nous</a></p>
     <div class="inventaire__footer">
-      <button class="btn btn--ghost" id="invMore" style="display:none">Voir plus</button>
-      <a href="https://www.discogs.com/seller/Vinylrun974/profile" class="btn btn--fill" target="_blank" rel="noopener">Tout l'inventaire</a>
+      <button class="btn btn--ghost" id="invMore" style="display:none" data-i18n="inventaire.more">Voir plus</button>
+      <a href="https://www.discogs.com/seller/Vinylrun974/profile" class="btn btn--fill" target="_blank" rel="noopener" data-i18n="inventaire.all">Tout l'inventaire</a>
     </div>
   </section>
 
@@ -371,8 +363,8 @@
   ══════════════════════════════════════ -->
   <section class="avis" id="avis">
     <div class="avis__header">
-      <p class="section-label" data-reveal>Ils en parlent</p>
-      <h2 class="avis__heading" data-reveal>Avis clients</h2>
+      <p class="section-label" data-reveal data-i18n="avis.label">Ils en parlent</p>
+      <h2 class="avis__heading" data-reveal data-i18n="avis.heading">Avis clients</h2>
     </div>
     <div class="avis__grid" data-reveal-group>
       <div class="avis-card" data-reveal>
@@ -413,9 +405,9 @@
   ══════════════════════════════════════ -->
   <section class="equipe" id="equipe">
     <div class="equipe__header">
-      <p class="section-label" data-reveal>Derrière le comptoir</p>
-      <h2 class="equipe__heading" data-reveal>L'équipe</h2>
-      <p class="equipe__sub" data-reveal>Deux passionnés, une boutique, dix ans de disques.</p>
+      <p class="section-label" data-reveal data-i18n="equipe.label">Derrière le comptoir</p>
+      <h2 class="equipe__heading" data-reveal data-i18n="equipe.heading">L'équipe</h2>
+      <p class="equipe__sub" data-reveal data-i18n="equipe.sub">Deux passionnés, une boutique, dix ans de disques.</p>
     </div>
     <div class="equipe__grid" data-reveal-group>
 
@@ -427,9 +419,9 @@
         <div class="equipe-card__info">
           <div class="equipe-card__top">
             <h3 class="equipe-card__name">Christophe</h3>
-            <span class="equipe-card__role">Fondateur · Disquaire</span>
+            <span class="equipe-card__role" data-i18n="equipe.christophe.role">Fondateur · Disquaire</span>
           </div>
-          <p class="equipe-card__bio">À l'origine de Vinyl Run depuis 2017. Il connaît chaque sillon, chaque pressage. C'est lui qui déniche les raretés et négocie les imports introuvables sur l'île.</p>
+          <p class="equipe-card__bio" data-i18n="equipe.christophe.bio">À l'origine de Vinyl Run depuis 2017. Il connaît chaque sillon, chaque pressage. C'est lui qui déniche les raretés et négocie les imports introuvables sur l'île.</p>
         </div>
       </div>
 
@@ -441,9 +433,9 @@
         <div class="equipe-card__info">
           <div class="equipe-card__top">
             <h3 class="equipe-card__name">Rolande</h3>
-            <span class="equipe-card__role">Co-fondatrice · Conseil</span>
+            <span class="equipe-card__role" data-i18n="equipe.rolande.role">Co-fondatrice · Conseil</span>
           </div>
-          <p class="equipe-card__bio">L'oreille fine de la boutique. Rolande écoute tout, conseille juste. Si vous ne savez pas quoi chercher, elle trouve à votre place — et elle tombe rarement à côté.</p>
+          <p class="equipe-card__bio" data-i18n="equipe.rolande.bio">L'oreille fine de la boutique. Rolande écoute tout, conseille juste. Si vous ne savez pas quoi chercher, elle trouve à votre place — et elle tombe rarement à côté.</p>
         </div>
       </div>
 
@@ -455,25 +447,25 @@
   ══════════════════════════════════════ -->
   <section class="contact" id="contact">
     <div class="contact__inner">
-      <p class="section-label" data-reveal>Contact</p>
+      <p class="section-label" data-reveal data-i18n="contact.label">Contact</p>
       <div class="contact__card" data-reveal>
 
         <div class="contact__info">
           <div class="contact__block">
-            <h4 class="contact__block-label">Adresse</h4>
+            <h4 class="contact__block-label" data-i18n="contact.adresse">Adresse</h4>
             <p>45 bis rue du four à chaux<br>Saint-Pierre 97410, La Réunion</p>
           </div>
           <div class="contact__block">
-            <h4 class="contact__block-label">Horaires d'écoute</h4>
-            <p>Mar – Ven : 10h–13h · 14h–18h<br>Samedi : 10h–18h<br><span style="color:var(--ink-muted)">Dim &amp; Lun : Fermé</span></p>
+            <h4 class="contact__block-label" data-i18n="contact.horaires">Horaires d'écoute</h4>
+            <p data-i18n-html="contact.horaires.val">Mar – Ven : 10h–13h · 14h–18h<br>Samedi : 10h–18h<br><span style="color:var(--ink-muted)">Dim &amp; Lun : Fermé</span></p>
           </div>
           <div class="contact__block">
-            <h4 class="contact__block-label">Nous joindre</h4>
+            <h4 class="contact__block-label" data-i18n="contact.joindre">Nous joindre</h4>
             <a href="tel:+262692441388" class="contact__link">+262 692 44 13 88</a>
             <a href="mailto:vinylrun974@gmail.com" class="contact__link">vinylrun974@gmail.com</a>
           </div>
           <div class="contact__block">
-            <h4 class="contact__block-label">Retrouvez-nous</h4>
+            <h4 class="contact__block-label" data-i18n="contact.trouver">Retrouvez-nous</h4>
             <div style="display:flex;gap:14px;margin-top:4px;">
               <a href="https://www.instagram.com/vinylrun974/" class="contact__social" target="_blank" rel="noopener">Instagram</a>
               <a href="https://www.facebook.com/vinylrun/" class="contact__social" target="_blank" rel="noopener">Facebook</a>
@@ -508,17 +500,12 @@
         <circle cx="24" cy="24" r="8"  fill="none" stroke="rgba(240,237,230,0.15)" stroke-width="1"/>
         <circle cx="24" cy="24" r="3"  fill="#EDF10C" opacity="0.8"/>
       </svg>
-      <p class="section-label">Newsletter</p>
-      <h2 class="newsletter-section__heading">
-        Chaque article,<br>directement dans votre boîte
-      </h2>
-      <p class="newsletter-section__sub">
-        Nouveautés, coups de cœur, arrivages — une fois par semaine, pas plus.<br>
-        Pas de spam, désabonnement en un clic.
-      </p>
+      <p class="section-label" data-i18n="newsletter.label">Newsletter</p>
+      <h2 class="newsletter-section__heading" data-i18n-html="newsletter.heading">Chaque article,<br>directement dans votre boîte</h2>
+      <p class="newsletter-section__sub" data-i18n-html="newsletter.sub">Nouveautés, coups de cœur, arrivages — une fois par semaine, pas plus.<br>Pas de spam, désabonnement en un clic.</p>
       <form class="newsletter-section__form" id="homeNewsletterForm">
-        <input type="email" class="newsletter-section__input" id="homeNewsletterEmail" placeholder="votre@email.com" autocomplete="email" required />
-        <button type="submit" class="newsletter-section__btn" id="homeNewsletterBtn">S'inscrire</button>
+        <input type="email" class="newsletter-section__input" id="homeNewsletterEmail" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder" autocomplete="email" required />
+        <button type="submit" class="newsletter-section__btn" id="homeNewsletterBtn" data-i18n="newsletter.btn">S'inscrire</button>
       </form>
       <span class="newsletter-section__note" id="homeNewsletterMsg"></span>
     </div>
@@ -536,12 +523,12 @@
       <circle cx="13" cy="13" r="3.5" fill="#1e1e1c"/>
       <circle cx="13" cy="13" r="1.4" fill="#EDF10C"/>
     </svg>
-    <span class="wishlist-fab__tip">Vous cherchez un vinyle&nbsp;?</span>
+    <span class="wishlist-fab__tip" data-i18n="wishlist.tip">Vous cherchez un vinyle ?</span>
   </a>
 
   <footer class="footer">
     <span class="footer__logo">VINYL RUN</span>
-    <p>© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
+    <p data-i18n="footer.copy">© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
     <p class="footer__signature">Made by the son the father made</p>
     <div class="footer__socials">
       <a href="https://www.instagram.com/vinylrun974/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
