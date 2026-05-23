@@ -1407,8 +1407,9 @@
           clone.removeAttribute('data-reveal');
           clone.style.opacity = '1';
           clone.style.transform = 'none';
-          clone.style.width = cardW + 'px';
-          clone.style.minWidth = cardW + 'px';
+          clone.style.width = (cardW - 20) + 'px';
+          clone.style.minWidth = (cardW - 20) + 'px';
+          clone.style.margin = '0 10px';
           clone.style.flexShrink = '0';
           clone.style.boxSizing = 'border-box';
           track.appendChild(clone);
