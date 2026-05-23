@@ -1412,6 +1412,7 @@ a    { text-decoration: none; color: inherit; }
   .nav__burger { display: flex; }
   .nav__links { display: none; }
   .nav__right .nav__lang { display: none; }
+  .cat-vinyl-slider { display: none; }
   .univers { padding: 5rem 1.5rem; }
   .boutique { grid-template-columns: 1fr; padding: 5rem 1.5rem; }
   .avis__grid { grid-template-columns: 1fr; }
