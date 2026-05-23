@@ -1427,6 +1427,8 @@ a    { text-decoration: none; color: inherit; }
   .avis__track {
     display: flex;
     will-change: transform;
+    touch-action: pan-y;
+    user-select: none;
   }
   .avis__track .avis-card {
     padding: 1.5rem;

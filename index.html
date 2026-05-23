@@ -1473,10 +1473,18 @@
         setPos(true);
         updateDots();
         setTimeout(function () {
-          if (currentIdx >= n * 2) { currentIdx = n;     setPos(false); }
-          if (currentIdx < n)      { currentIdx = n*2-1; setPos(false); }
+          var moved = false;
+          if (currentIdx >= n * 2) { currentIdx -= n; moved = true; }
+          if (currentIdx < n)      { currentIdx += n; moved = true; }
+          if (moved) setPos(false);
         }, 360);
         diffX = 0;
+      });
+
+      track.addEventListener('touchcancel', function () {
+        dragging = false;
+        diffX = 0;
+        setPos(true);
       });
     })();
 
