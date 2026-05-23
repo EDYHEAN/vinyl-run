@@ -1392,32 +1392,15 @@
       var grid = document.querySelector('.avis__grid');
       if (!grid) return;
 
-      var origCards = Array.from(grid.querySelectorAll('.avis-card'));
-      var n = origCards.length;
-      var cardW = grid.offsetWidth;
+      var cards = Array.from(grid.querySelectorAll('.avis-card'));
+      var n = cards.length;
 
-      // Triple-clone pour infinite loop : [clone][original][clone]
-      var track = document.createElement('div');
-      track.className = 'avis__track';
-      [-1, 0, 1].forEach(function () {
-        origCards.forEach(function (c) {
-          var clone = c.cloneNode(true);
-          // Neutraliser data-reveal pour éviter que l'IntersectionObserver
-          // laisse les cartes à opacity:0
-          clone.removeAttribute('data-reveal');
-          clone.style.opacity = '1';
-          clone.style.transform = 'none';
-          clone.style.width = (cardW - 20) + 'px';
-          clone.style.minWidth = (cardW - 20) + 'px';
-          clone.style.margin = '0 10px';
-          clone.style.flexShrink = '0';
-          clone.style.boxSizing = 'border-box';
-          track.appendChild(clone);
-        });
+      // Neutraliser data-reveal sur les cartes originales
+      cards.forEach(function (c) {
+        c.removeAttribute('data-reveal');
+        c.style.opacity = '1';
+        c.style.transform = 'none';
       });
-
-      grid.innerHTML = '';
-      grid.appendChild(track);
 
       // Dots
       var dotsEl = document.createElement('div');
@@ -1429,73 +1412,14 @@
       }
       grid.parentNode.insertBefore(dotsEl, grid.nextSibling);
 
-      var currentIdx = n;
-
-      function setPos(animated) {
-        track.style.transition = animated
-          ? 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-          : 'none';
-        track.style.transform = 'translateX(' + (-currentIdx * cardW) + 'px)';
-      }
-
-      function updateDots() {
-        var active = ((currentIdx % n) + n) % n;
+      // Mise à jour des dots au scroll natif
+      grid.addEventListener('scroll', function () {
+        var cardW = grid.offsetWidth;
+        var idx   = Math.round(grid.scrollLeft / cardW);
         dotsEl.querySelectorAll('.avis__dot').forEach(function (dot, i) {
-          dot.classList.toggle('avis__dot--active', i === active);
+          dot.classList.toggle('avis__dot--active', i === idx);
         });
-      }
-
-      setPos(false);
-
-      var startX = 0, startY = 0, startTime = 0, diffX = 0;
-      var dragging = false, isHoriz = null;
-
-      track.addEventListener('touchstart', function (e) {
-        startX    = e.touches[0].clientX;
-        startY    = e.touches[0].clientY;
-        startTime = Date.now();
-        diffX     = 0;
-        dragging  = true;
-        isHoriz   = null;
-        track.style.transition = 'none';
       }, { passive: true });
-
-      track.addEventListener('touchmove', function (e) {
-        if (!dragging) return;
-        var dx = e.touches[0].clientX - startX;
-        var dy = e.touches[0].clientY - startY;
-        if (isHoriz === null) isHoriz = Math.abs(dx) > Math.abs(dy);
-        if (!isHoriz) return; // geste vertical → laisser la page scroller
-        e.preventDefault();  // geste horizontal → on prend la main
-        diffX = dx;
-        track.style.transform = 'translateX(' + (-currentIdx * cardW + diffX) + 'px)';
-      }, { passive: false });
-
-      track.addEventListener('touchend', function () {
-        if (!dragging) return;
-        dragging = false;
-        if (!isHoriz) return; // geste vertical, rien à faire
-        var velocity = Math.abs(diffX) / (Date.now() - startTime);
-        if (Math.abs(diffX) > cardW / 3 || velocity > 0.3) {
-          currentIdx += diffX < 0 ? 1 : -1;
-        }
-        setPos(true);
-        updateDots();
-        setTimeout(function () {
-          var moved = false;
-          if (currentIdx >= n * 2) { currentIdx -= n; moved = true; }
-          if (currentIdx < n)      { currentIdx += n; moved = true; }
-          if (moved) setPos(false);
-        }, 360);
-        diffX = 0;
-      });
-
-      track.addEventListener('touchcancel', function () {
-        dragging = false;
-        diffX    = 0;
-        isHoriz  = null;
-        setPos(false);
-      });
     })();
 
     // ── Newsletter homepage ──────────────────────────────────────

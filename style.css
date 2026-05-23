@@ -1420,17 +1420,20 @@ a    { text-decoration: none; color: inherit; }
   .avis { padding: 5rem 0; }
   .avis__header { padding: 0 1.5rem; }
   .avis__grid {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-  }
-  .avis__track {
     display: flex;
-    will-change: transform;
-    user-select: none;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
   }
-  .avis__track .avis-card {
-    padding: 1.5rem;
+  .avis__grid::-webkit-scrollbar { display: none; }
+  .avis__grid .avis-card {
+    scroll-snap-align: start;
+    min-width: calc(100% - 20px);
+    margin: 0 10px;
+    flex-shrink: 0;
+    box-sizing: border-box;
   }
   .avis__dots {
     display: flex;
