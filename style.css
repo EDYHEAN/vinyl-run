@@ -1415,8 +1415,39 @@ a    { text-decoration: none; color: inherit; }
   .cat-vinyl-slider { display: none; }
   .univers { padding: 5rem 1.5rem; }
   .boutique { grid-template-columns: 1fr; padding: 5rem 1.5rem; }
-  .avis__grid { grid-template-columns: 1fr; }
-  .avis { padding: 5rem 1.5rem; }
+  .avis { padding: 5rem 0; }
+  .avis__header { padding: 0 1.5rem; }
+  .avis__grid {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+  }
+  .avis__track {
+    display: flex;
+    will-change: transform;
+  }
+  .avis__track .avis-card {
+    min-width: 100%;
+    flex-shrink: 0;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    margin: 0 1.5rem;
+    min-width: calc(100% - 3rem);
+  }
+  .avis__dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .avis__dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(240,237,230,0.2);
+    transition: background 0.2s;
+  }
+  .avis__dot--active { background: var(--accent); }
   .equipe { padding: 5rem 1.5rem; }
   .equipe__grid { grid-template-columns: 1fr; gap: 3rem; }
   .equipe__header { margin-bottom: 3rem; }

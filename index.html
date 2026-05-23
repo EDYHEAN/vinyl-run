@@ -1385,6 +1385,88 @@
       load(current);
     })();
 
+    // ── Slider avis mobile ───────────────────────────────────────
+    (function () {
+      if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+      const grid = document.querySelector('.avis__grid');
+      if (!grid) return;
+
+      const origCards = Array.from(grid.querySelectorAll('.avis-card'));
+      const n = origCards.length;
+
+      // Triple-clone pour infinite loop : [clone][original][clone]
+      const track = document.createElement('div');
+      track.className = 'avis__track';
+      [-1, 0, 1].forEach(function () {
+        origCards.forEach(function (c) { track.appendChild(c.cloneNode(true)); });
+      });
+
+      grid.innerHTML = '';
+      grid.appendChild(track);
+
+      // Dots
+      const dotsEl = document.createElement('div');
+      dotsEl.className = 'avis__dots';
+      for (var i = 0; i < n; i++) {
+        var d = document.createElement('span');
+        d.className = 'avis__dot' + (i === 0 ? ' avis__dot--active' : '');
+        dotsEl.appendChild(d);
+      }
+      grid.parentNode.insertBefore(dotsEl, grid.nextSibling);
+
+      var currentIdx = n; // démarre sur la 1ère carte du set du milieu
+      var cardW = grid.offsetWidth;
+
+      function setPos(animated) {
+        track.style.transition = animated
+          ? 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+          : 'none';
+        track.style.transform = 'translateX(' + (-currentIdx * cardW) + 'px)';
+      }
+
+      function updateDots() {
+        var active = ((currentIdx % n) + n) % n;
+        dotsEl.querySelectorAll('.avis__dot').forEach(function (dot, i) {
+          dot.classList.toggle('avis__dot--active', i === active);
+        });
+      }
+
+      setPos(false);
+
+      var startX = 0, startTime = 0, diffX = 0, dragging = false;
+
+      track.addEventListener('touchstart', function (e) {
+        startX = e.touches[0].clientX;
+        startTime = Date.now();
+        diffX = 0;
+        dragging = true;
+        track.style.transition = 'none';
+      }, { passive: true });
+
+      track.addEventListener('touchmove', function (e) {
+        if (!dragging) return;
+        diffX = e.touches[0].clientX - startX;
+        track.style.transform = 'translateX(' + (-currentIdx * cardW + diffX) + 'px)';
+      }, { passive: true });
+
+      track.addEventListener('touchend', function () {
+        if (!dragging) return;
+        dragging = false;
+        var velocity = Math.abs(diffX) / (Date.now() - startTime);
+        if (Math.abs(diffX) > cardW / 3 || velocity > 0.3) {
+          currentIdx += diffX < 0 ? 1 : -1;
+        }
+        setPos(true);
+        updateDots();
+        setTimeout(function () {
+          if (currentIdx >= n * 2) { currentIdx = n;      setPos(false); }
+          if (currentIdx < n)      { currentIdx = n*2-1;  setPos(false); }
+        }, 360);
+        diffX = 0;
+      });
+    })();
+
     // ── Newsletter homepage ──────────────────────────────────────
     (function () {
       const form  = document.getElementById('homeNewsletterForm');
