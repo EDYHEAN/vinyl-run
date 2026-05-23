@@ -1380,13 +1380,39 @@ a    { text-decoration: none; color: inherit; }
 }
 .nav__mobile-links a:hover { color: var(--accent); }
 
+/* ── Lang toggle dans l'overlay mobile ───── */
+.nav__mobile-lang {
+  position: absolute;
+  bottom: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.38s ease, transform 0.38s var(--ease-out);
+}
+.nav__mobile.open .nav__mobile-lang {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+  transition-delay: 0.44s;
+}
+.nav__mobile-lang .lang-toggle {
+  border-color: rgba(240,237,230,0.15);
+}
+.nav__mobile-lang .lang-btn {
+  font-size: 12px;
+  padding: 6px 14px;
+  gap: 7px;
+}
+.nav__mobile-lang .lang-flag { display: inline; font-size: 16px; }
+.nav__mobile-lang .lang-text { display: inline; }
+
 @media (max-width: 768px) {
   .nav__burger { display: flex; }
   .nav__links { display: none; }
-  .nav__cta { display: none; }
-  .lang-flag { display: inline; font-size: 17px; }
-  .lang-text { display: none; }
-  .lang-btn { padding: 5px 7px; }
+  .nav__right .nav__lang { display: none; }
   .univers { padding: 5rem 1.5rem; }
   .boutique { grid-template-columns: 1fr; padding: 5rem 1.5rem; }
   .avis__grid { grid-template-columns: 1fr; }

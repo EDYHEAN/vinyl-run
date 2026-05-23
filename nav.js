@@ -31,8 +31,14 @@
       <li class="nav__mag"><a href="/blog/" data-i18n="nav.magazine">Le Magazine</a></li>
       <li><a href="/#avis" data-i18n="nav.avis">Avis</a></li>
       <li><a href="/#contact" data-i18n="nav.contact">Contact</a></li>
-      <li><a href="/demande-vinyl" data-i18n="nav.demande">Demande spéciale</a></li>
+      <li><a href="/demande-vinyl" data-i18n="nav.demande">Demande sp&#233;ciale</a></li>
     </ul>
+    <div class="nav__mobile-lang">
+      <div class="lang-toggle">
+        <button class="lang-btn" data-lang="fr" aria-label="Passer en fran&#231;ais"><span class="lang-flag">&#127467;&#127479;</span><span class="lang-text">FR</span></button>
+        <button class="lang-btn" data-lang="en" aria-label="Switch to English"><span class="lang-flag">&#127468;&#127463;</span><span class="lang-text">EN</span></button>
+      </div>
+    </div>
   </div>
 `);
 
