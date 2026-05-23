@@ -10,8 +10,8 @@
     </ul>
     <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener" class="nav__cta" data-i18n="nav.boutique">La boutique</a>
     <div class="nav__lang">
-      <button class="lang-btn" data-lang="fr" aria-label="Passer en français">🇫🇷</button>
-      <button class="lang-btn" data-lang="en" aria-label="Switch to English">🇬🇧</button>
+      <button class="lang-btn" data-lang="fr" aria-label="Passer en français">🇫🇷 FR</button>
+      <button class="lang-btn" data-lang="en" aria-label="Switch to English">🇬🇧 EN</button>
     </div>
     <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
