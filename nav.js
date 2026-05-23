@@ -29,9 +29,8 @@
     <ul class="nav__mobile-links">
       <li><a href="/#inventaire" data-i18n="nav.inventaire">Inventaire</a></li>
       <li class="nav__mag"><a href="/blog/" data-i18n="nav.magazine">Le Magazine</a></li>
-      <li><a href="/#avis" data-i18n="nav.avis">Avis</a></li>
-      <li><a href="/#contact" data-i18n="nav.contact">Contact</a></li>
       <li><a href="/demande-vinyl" data-i18n="nav.demande">Demande sp&#233;ciale</a></li>
+      <li><a href="/#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
     <div class="nav__mobile-lang">
       <div class="lang-toggle">
