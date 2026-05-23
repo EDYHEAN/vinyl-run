@@ -8,14 +8,18 @@
       <li><a href="/#avis" data-i18n="nav.avis">Avis</a></li>
       <li><a href="/#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
-    <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener" class="nav__cta" data-i18n="nav.boutique">La boutique</a>
-    <div class="nav__lang">
-      <button class="lang-btn" data-lang="fr" aria-label="Passer en français">🇫🇷 FR</button>
-      <button class="lang-btn" data-lang="en" aria-label="Switch to English">🇬🇧 EN</button>
+    <div class="nav__right">
+      <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener" class="nav__cta" data-i18n="nav.boutique">La boutique</a>
+      <div class="nav__lang">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="fr" aria-label="Passer en français"><span class="lang-flag">&#127467;&#127479;</span><span class="lang-text">FR</span></button>
+          <button class="lang-btn" data-lang="en" aria-label="Switch to English"><span class="lang-flag">&#127468;&#127463;</span><span class="lang-text">EN</span></button>
+        </div>
+      </div>
+      <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
 
   <div class="nav__mobile" id="navMobile" aria-hidden="true">
