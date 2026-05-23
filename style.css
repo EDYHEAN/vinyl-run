@@ -1417,7 +1417,7 @@ a    { text-decoration: none; color: inherit; }
   .cat-vinyl-slider { display: none; }
   .univers { padding: 5rem 1.5rem; }
   .boutique { grid-template-columns: 1fr; padding: 5rem 1.5rem; }
-  .avis { padding: 5rem 0; }
+  .avis { padding: 5rem 0 2rem; }
   .avis__header { padding: 0 1.5rem; }
   .avis__grid {
     display: flex;
@@ -1451,7 +1451,7 @@ a    { text-decoration: none; color: inherit; }
     transition: background 0.2s;
   }
   .avis__dot--active { background: var(--accent); }
-  .equipe { padding: 5rem 1.5rem; }
+  .equipe { padding: 2rem 1.5rem 5rem; }
   .equipe__grid { grid-template-columns: 1fr; gap: 3rem; }
   .equipe__header { margin-bottom: 3rem; }
   .contact { padding: 5rem 1.5rem; }
