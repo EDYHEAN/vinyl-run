@@ -470,7 +470,7 @@ a    { text-decoration: none; color: inherit; }
 ═══════════════════════════════════════════ */
 .avis {
   background: var(--bg-2);
-  padding: 8rem 3.5rem;
+  padding: 8rem 3.5rem 4rem;
 }
 
 .avis__header {
@@ -538,7 +538,7 @@ a    { text-decoration: none; color: inherit; }
 ═══════════════════════════════════════════ */
 .equipe {
   background: var(--bg-2);
-  padding: 8rem 3.5rem;
+  padding: 4rem 3.5rem 8rem;
 }
 
 .equipe__header {
@@ -1427,7 +1427,6 @@ a    { text-decoration: none; color: inherit; }
   .avis__track {
     display: flex;
     will-change: transform;
-    touch-action: pan-y;
     user-select: none;
   }
   .avis__track .avis-card {

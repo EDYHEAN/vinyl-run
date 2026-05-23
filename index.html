@@ -1447,25 +1447,34 @@
 
       setPos(false);
 
-      var startX = 0, startTime = 0, diffX = 0, dragging = false;
+      var startX = 0, startY = 0, startTime = 0, diffX = 0;
+      var dragging = false, isHoriz = null;
 
       track.addEventListener('touchstart', function (e) {
-        startX = e.touches[0].clientX;
+        startX    = e.touches[0].clientX;
+        startY    = e.touches[0].clientY;
         startTime = Date.now();
-        diffX = 0;
-        dragging = true;
+        diffX     = 0;
+        dragging  = true;
+        isHoriz   = null;
         track.style.transition = 'none';
       }, { passive: true });
 
       track.addEventListener('touchmove', function (e) {
         if (!dragging) return;
-        diffX = e.touches[0].clientX - startX;
+        var dx = e.touches[0].clientX - startX;
+        var dy = e.touches[0].clientY - startY;
+        if (isHoriz === null) isHoriz = Math.abs(dx) > Math.abs(dy);
+        if (!isHoriz) return; // geste vertical → laisser la page scroller
+        e.preventDefault();  // geste horizontal → on prend la main
+        diffX = dx;
         track.style.transform = 'translateX(' + (-currentIdx * cardW + diffX) + 'px)';
-      }, { passive: true });
+      }, { passive: false });
 
       track.addEventListener('touchend', function () {
         if (!dragging) return;
         dragging = false;
+        if (!isHoriz) return; // geste vertical, rien à faire
         var velocity = Math.abs(diffX) / (Date.now() - startTime);
         if (Math.abs(diffX) > cardW / 3 || velocity > 0.3) {
           currentIdx += diffX < 0 ? 1 : -1;
@@ -1483,8 +1492,9 @@
 
       track.addEventListener('touchcancel', function () {
         dragging = false;
-        diffX = 0;
-        setPos(true);
+        diffX    = 0;
+        isHoriz  = null;
+        setPos(false);
       });
     })();
 
