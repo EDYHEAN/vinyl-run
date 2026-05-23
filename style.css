@@ -1427,12 +1427,7 @@ a    { text-decoration: none; color: inherit; }
     will-change: transform;
   }
   .avis__track .avis-card {
-    min-width: 100%;
-    flex-shrink: 0;
     padding: 1.5rem;
-    box-sizing: border-box;
-    margin: 0 1.5rem;
-    min-width: calc(100% - 3rem);
   }
   .avis__dots {
     display: flex;

@@ -1389,24 +1389,37 @@
     (function () {
       if (!window.matchMedia('(max-width: 768px)').matches) return;
 
-      const grid = document.querySelector('.avis__grid');
+      var grid = document.querySelector('.avis__grid');
       if (!grid) return;
 
-      const origCards = Array.from(grid.querySelectorAll('.avis-card'));
-      const n = origCards.length;
+      var origCards = Array.from(grid.querySelectorAll('.avis-card'));
+      var n = origCards.length;
+      var cardW = grid.offsetWidth;
 
       // Triple-clone pour infinite loop : [clone][original][clone]
-      const track = document.createElement('div');
+      var track = document.createElement('div');
       track.className = 'avis__track';
       [-1, 0, 1].forEach(function () {
-        origCards.forEach(function (c) { track.appendChild(c.cloneNode(true)); });
+        origCards.forEach(function (c) {
+          var clone = c.cloneNode(true);
+          // Neutraliser data-reveal pour éviter que l'IntersectionObserver
+          // laisse les cartes à opacity:0
+          clone.removeAttribute('data-reveal');
+          clone.style.opacity = '1';
+          clone.style.transform = 'none';
+          clone.style.width = cardW + 'px';
+          clone.style.minWidth = cardW + 'px';
+          clone.style.flexShrink = '0';
+          clone.style.boxSizing = 'border-box';
+          track.appendChild(clone);
+        });
       });
 
       grid.innerHTML = '';
       grid.appendChild(track);
 
       // Dots
-      const dotsEl = document.createElement('div');
+      var dotsEl = document.createElement('div');
       dotsEl.className = 'avis__dots';
       for (var i = 0; i < n; i++) {
         var d = document.createElement('span');
@@ -1415,8 +1428,7 @@
       }
       grid.parentNode.insertBefore(dotsEl, grid.nextSibling);
 
-      var currentIdx = n; // démarre sur la 1ère carte du set du milieu
-      var cardW = grid.offsetWidth;
+      var currentIdx = n;
 
       function setPos(animated) {
         track.style.transition = animated
@@ -1460,8 +1472,8 @@
         setPos(true);
         updateDots();
         setTimeout(function () {
-          if (currentIdx >= n * 2) { currentIdx = n;      setPos(false); }
-          if (currentIdx < n)      { currentIdx = n*2-1;  setPos(false); }
+          if (currentIdx >= n * 2) { currentIdx = n;     setPos(false); }
+          if (currentIdx < n)      { currentIdx = n*2-1; setPos(false); }
         }, 360);
         diffX = 0;
       });
