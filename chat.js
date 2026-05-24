@@ -103,7 +103,11 @@
     unread = 0;
     badge.style.display = 'none';
     textarea.focus();
-    if (convId) loadMessages();
+    if (convId) {
+      loadMessages();
+    } else {
+      renderMessages();
+    }
     startPolling();
   }
   function closePanel() { panel.classList.remove('open'); stopPolling(); }

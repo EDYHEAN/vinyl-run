@@ -46,10 +46,7 @@
       letter-spacing: 0.06em;
       margin-bottom: 8px;
     }
-    .login-box span {
-      font-size: 12px;
-      color: var(--ink-muted);
-    }
+    .login-box span { font-size: 12px; color: var(--ink-muted); }
     .login-input {
       background: rgba(240,237,230,0.05);
       border: 1px solid var(--border);
@@ -76,18 +73,69 @@
       transition: opacity 0.2s;
     }
     .login-btn:hover { opacity: 0.85; }
-    #login-error {
-      font-size: 12px;
-      color: #ff6b6b;
-      display: none;
-    }
+    #login-error { font-size: 12px; color: #ff6b6b; display: none; }
 
     /* App */
     #app {
       display: none;
       height: 100vh;
+      flex-direction: column;
     }
     #app.visible { display: flex; }
+
+    /* Topbar */
+    #topbar {
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      background: var(--bg2);
+    }
+    #topbar-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #topbar-profile img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(240,237,230,0.15);
+    }
+    #topbar-online-dot {
+      width: 7px;
+      height: 7px;
+      background: #3ecf59;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    #topbar-profile-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    #logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      border-radius: 5px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    #logout-btn:hover { color: var(--ink); border-color: rgba(240,237,230,0.3); }
+
+    /* App body */
+    #app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
 
     /* Sidebar */
     #sidebar {
@@ -98,17 +146,32 @@
       flex-shrink: 0;
     }
     #sidebar-header {
-      padding: 20px 18px 16px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+    #sidebar-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     #sidebar-header h2 {
       font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+    #new-conv-badge {
+      display: none;
+      background: var(--accent);
+      color: #111110;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 10px;
+      line-height: 1.5;
     }
     #refresh-btn {
       background: none;
@@ -135,6 +198,11 @@
     }
     .conv-item:hover { background: rgba(240,237,230,0.03); }
     .conv-item.active { background: rgba(240,237,230,0.06); }
+    @keyframes convNewFlash {
+      0%, 100% { background: transparent; }
+      30%, 70% { background: rgba(237,241,12,0.07); }
+    }
+    .conv-item--new { animation: convNewFlash 1.2s ease 3; }
     .conv-item__row {
       display: flex;
       align-items: center;
@@ -154,13 +222,6 @@
       color: var(--ink-muted);
       flex-shrink: 0;
     }
-    .conv-item__preview {
-      font-size: 12px;
-      color: var(--ink-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     .conv-item__delete {
       visibility: hidden;
       background: none;
@@ -176,6 +237,13 @@
     }
     .conv-item__delete:hover { color: #ff6b6b; background: rgba(255,107,107,0.1); }
     .conv-item:hover .conv-item__delete { visibility: visible; }
+    .conv-item__preview {
+      font-size: 12px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     #conv-empty {
       padding: 32px 18px;
       font-size: 13px;
@@ -210,15 +278,8 @@
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-    #conv-header-name {
-      font-size: 14px;
-      font-weight: 500;
-    }
-    #conv-header-phone {
-      font-size: 12px;
-      color: var(--ink-muted);
-      margin-top: 3px;
-    }
+    #conv-header-name { font-size: 14px; font-weight: 500; }
+    #conv-header-phone { font-size: 12px; color: var(--ink-muted); margin-top: 3px; }
 
     #messages-area {
       flex: 1;
@@ -250,12 +311,7 @@
       align-self: flex-end;
       border-bottom-right-radius: 3px;
     }
-    .msg__time {
-      font-size: 10px;
-      opacity: 0.5;
-      margin-top: 4px;
-      display: block;
-    }
+    .msg__time { font-size: 10px; opacity: 0.5; margin-top: 4px; display: block; }
     .msg--admin .msg__time { text-align: right; }
 
     #reply-zone {
@@ -323,26 +379,40 @@
 
   <!-- App -->
   <div id="app">
-    <div id="sidebar">
-      <div id="sidebar-header">
-        <h2>Messages</h2>
-        <button id="refresh-btn" title="Rafraîchir">↻</button>
+    <div id="topbar">
+      <div id="topbar-profile">
+        <img src="/assets/titote.jpg" alt="Christophe" />
+        <div id="topbar-online-dot"></div>
+        <span id="topbar-profile-name">Christophe</span>
       </div>
-      <div id="conv-list"></div>
-      <div id="conv-empty">Aucun message pour l'instant.</div>
+      <button id="logout-btn">Déconnecter</button>
     </div>
 
-    <div id="main">
-      <div id="main-empty">Sélectionnez une conversation</div>
-      <div id="conv-view">
-        <div id="conv-header">
-          <div id="conv-header-name"></div>
-          <div id="conv-header-phone"></div>
+    <div id="app-body">
+      <div id="sidebar">
+        <div id="sidebar-header">
+          <div id="sidebar-header-left">
+            <h2>Messages</h2>
+            <span id="new-conv-badge"></span>
+          </div>
+          <button id="refresh-btn" title="Rafraîchir">↻</button>
         </div>
-        <div id="messages-area"></div>
-        <div id="reply-zone">
-          <textarea id="reply-text" placeholder="Votre réponse…" rows="1"></textarea>
-          <button id="reply-send">Envoyer</button>
+        <div id="conv-list"></div>
+        <div id="conv-empty">Aucun message pour l'instant.</div>
+      </div>
+
+      <div id="main">
+        <div id="main-empty">Sélectionnez une conversation</div>
+        <div id="conv-view">
+          <div id="conv-header">
+            <div id="conv-header-name"></div>
+            <div id="conv-header-phone"></div>
+          </div>
+          <div id="messages-area"></div>
+          <div id="reply-zone">
+            <textarea id="reply-text" placeholder="Votre réponse…" rows="1"></textarea>
+            <button id="reply-send">Envoyer</button>
+          </div>
         </div>
       </div>
     </div>
@@ -353,6 +423,7 @@
     var currentConvId = null;
     var pollInterval = null;
     var loadingMessages = false;
+    var knownConvIds = new Set();
 
     // Login
     document.getElementById('login-btn').addEventListener('click', tryLogin);
@@ -363,7 +434,6 @@
     async function tryLogin() {
       var input = document.getElementById('login-pwd').value.trim();
       if (!input) return;
-      // Vérifier en chargeant les conversations
       var res = await fetch('/api/chat-admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -378,9 +448,24 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').classList.add('visible');
       var convs = await res.json();
-      renderConvList(convs);
+      convs.forEach(function (c) { knownConvIds.add(c.id); });
+      renderConvList(convs, false);
       startAutoRefresh();
     }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', function () {
+      sessionStorage.removeItem('vr_admin_pwd');
+      pwd = '';
+      currentConvId = null;
+      knownConvIds.clear();
+      if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+      document.getElementById('app').classList.remove('visible');
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('login-pwd').value = '';
+      document.getElementById('conv-view').classList.remove('visible');
+      document.getElementById('main-empty').style.display = '';
+    });
 
     // Restaurer session
     var savedPwd = sessionStorage.getItem('vr_admin_pwd');
@@ -390,24 +475,26 @@
       tryLogin();
     }
 
-    function renderConvList(convs) {
+    function renderConvList(convs, notifyNew) {
       var list = document.getElementById('conv-list');
       var empty = document.getElementById('conv-empty');
       list.innerHTML = '';
       if (!convs.length) { empty.style.display = 'block'; return; }
       empty.style.display = 'none';
+      var newCount = 0;
       convs.forEach(function (c) {
+        var isNew = notifyNew && !knownConvIds.has(c.id);
+        if (isNew) { newCount++; knownConvIds.add(c.id); }
         var el = document.createElement('div');
-        el.className = 'conv-item' + (c.id === currentConvId ? ' active' : '');
+        el.className = 'conv-item' + (c.id === currentConvId ? ' active' : '') + (isNew ? ' conv-item--new' : '');
         el.setAttribute('data-conv-id', c.id);
         var d = new Date(c.last_message_at);
         var dateStr = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) +
                       ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         var preview = c.last_message_body ? esc(c.last_message_body) : '&nbsp;';
         el.innerHTML =
-          '<div class="conv-item__row"><span class="conv-item__name">' + esc(c.visitor_name) + '</span><span class="conv-item__date">' + dateStr + '</span></div>' +
-          '<div class="conv-item__preview">' + preview + '</div>' +
-          '<button class="conv-item__delete" title="Supprimer">✕</button>';
+          '<div class="conv-item__row"><span class="conv-item__name">' + esc(c.visitor_name) + '</span><span class="conv-item__date">' + dateStr + '</span><button class="conv-item__delete" title="Supprimer">✕</button></div>' +
+          '<div class="conv-item__preview">' + preview + '</div>';
         el.querySelector('.conv-item__delete').addEventListener('click', function (e) {
           e.stopPropagation();
           deleteConv(c.id);
@@ -415,6 +502,29 @@
         el.addEventListener('click', function () { openConv(c); });
         list.appendChild(el);
       });
+      if (newCount > 0) {
+        playNotifSound();
+        var badge = document.getElementById('new-conv-badge');
+        badge.textContent = '+' + newCount;
+        badge.style.display = 'inline-block';
+        setTimeout(function () { badge.style.display = 'none'; }, 8000);
+      }
+    }
+
+    function playNotifSound() {
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 780;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.5);
+      } catch(_) {}
     }
 
     async function openConv(c) {
@@ -422,7 +532,6 @@
       document.getElementById('conv-header-name').textContent = c.visitor_name;
       document.getElementById('main-empty').style.display = 'none';
       document.getElementById('conv-view').classList.add('visible');
-      // Active state via data-conv-id
       document.querySelectorAll('.conv-item').forEach(function (el) {
         el.classList.toggle('active', el.getAttribute('data-conv-id') === c.id);
       });
@@ -489,7 +598,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ admin_password: pwd }),
       });
-      if (res.ok) renderConvList(await res.json());
+      if (res.ok) renderConvList(await res.json(), true);
       if (currentConvId) loadMessages();
     }
 
@@ -499,6 +608,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ admin_password: pwd, conversation_id: id }),
       });
+      knownConvIds.delete(id);
       if (currentConvId === id) {
         currentConvId = null;
         document.getElementById('conv-view').classList.remove('visible');
