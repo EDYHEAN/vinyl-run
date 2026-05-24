@@ -7,19 +7,9 @@ export default async function handler(req, res) {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const KEY = process.env.SUPABASE_SECRET_KEY;
 
-  // Compter les conversations existantes pour générer "Client XX"
-  const countRes = await fetch(`${SUPABASE_URL}/rest/v1/conversations?select=id`, {
-    headers: {
-      'apikey': KEY,
-      'Authorization': `Bearer ${KEY}`,
-      'Prefer': 'count=exact',
-      'Range-Unit': 'items',
-      'Range': '0-0',
-    },
-  });
-  const contentRange = countRes.headers.get('content-range') || '0/0';
-  const total = parseInt(contentRange.split('/')[1] || '0', 10);
-  const label = 'Client ' + String(total + 1).padStart(2, '0');
+  // Label visiteur aléatoire — pas de dépendance à un comptage
+  const code = Math.floor(1000 + Math.random() * 9000);
+  const label = 'Client ' + code;
 
   // Créer la conversation
   const convRes = await fetch(`${SUPABASE_URL}/rest/v1/conversations`, {
@@ -33,11 +23,14 @@ export default async function handler(req, res) {
     body: JSON.stringify({ visitor_name: label, visitor_phone: '' }),
   });
 
-  if (!convRes.ok) return res.status(500).json({ error: 'Erreur création conversation' });
+  if (!convRes.ok) {
+    const err = await convRes.text();
+    return res.status(500).json({ error: 'Erreur création conversation', detail: err });
+  }
   const [conv] = await convRes.json();
 
   // Premier message
-  await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+  const msgRes = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,6 +39,11 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({ conversation_id: conv.id, body: message, sender: 'visitor' }),
   });
+
+  if (!msgRes.ok) {
+    const err = await msgRes.text();
+    return res.status(500).json({ error: 'Erreur envoi message', detail: err });
+  }
 
   return res.status(200).json({ conversation_id: conv.id });
 }
