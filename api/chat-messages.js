@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { conversation_id } = req.query;
   if (!conversation_id) return res.status(400).json({ error: 'conversation_id manquant' });
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_URL = process.env.SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
   const KEY = process.env.SUPABASE_SECRET_KEY;
 
   const r = await fetch(

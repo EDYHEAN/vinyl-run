@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { message } = req.body || {};
   if (!message) return res.status(400).json({ error: 'Message manquant' });
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_URL = process.env.SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
   const KEY = process.env.SUPABASE_SECRET_KEY;
 
   // Label visiteur aléatoire — pas de dépendance à un comptage

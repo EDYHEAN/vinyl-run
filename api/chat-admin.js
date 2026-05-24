@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: 'Non autorisé' });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_URL = process.env.SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
   const KEY = process.env.SUPABASE_SECRET_KEY;
 
   // Si conversation_id fourni → retourner les messages de cette conversation
