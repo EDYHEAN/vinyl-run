@@ -155,6 +155,7 @@
         badge.textContent = unread;
         mobileBadge.style.display = 'flex';
         mobileBadge.textContent = unread;
+        if (window.innerWidth <= 999 && navigator.vibrate) navigator.vibrate(200);
       }
       prevAdminCount = adminCount;
       renderMessages();
@@ -197,6 +198,7 @@
     document.body.style.overflow = '';
     setTimeout(function() { panel.style.top = ''; }, 380);
     stopPolling();
+    startBgPoll();
   }
 
   window.vrChat = { open: openPanel, close: closePanel };
@@ -209,7 +211,7 @@
   });
   closeBtn.addEventListener('click', closePanel);
 
-  if (convId) loadMessages();
+  if (convId) { loadMessages(); startBgPoll(); }
 
   // ── Send ─────────────────────────────────────────────────────
   sendBtn.addEventListener('click', sendMessage);
@@ -271,12 +273,20 @@
 
   function startPolling() {
     if (pollInterval || !convId) return;
+    stopBgPoll();
     pollInterval = setInterval(function() {
       loadMessages();
       checkTypingStatus();
     }, 3000);
   }
   function stopPolling() { clearInterval(pollInterval); pollInterval = null; }
+
+  var bgPollInterval = null;
+  function startBgPoll() {
+    if (bgPollInterval || !convId) return;
+    bgPollInterval = setInterval(loadMessages, 10000);
+  }
+  function stopBgPoll() { clearInterval(bgPollInterval); bgPollInterval = null; }
 
   function escHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
