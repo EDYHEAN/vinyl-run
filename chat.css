@@ -210,6 +210,32 @@
 }
 #vr-chat-send:hover { opacity: 0.85; }
 
+/* Typing dots */
+.vr-msg-typing {
+  align-self: flex-start;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 11px 14px;
+  background: rgba(240,237,230,0.07);
+  border-radius: 10px;
+  border-bottom-left-radius: 3px;
+}
+.vr-msg-typing span {
+  width: 6px;
+  height: 6px;
+  background: rgba(240,237,230,0.45);
+  border-radius: 50%;
+  display: inline-block;
+  animation: vrTypingBounce 1.3s infinite;
+}
+.vr-msg-typing span:nth-child(2) { animation-delay: 0.2s; }
+.vr-msg-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes vrTypingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
 @media (max-width: 768px) {
   #vr-chat-bubble { display: none; }
   #vr-chat-panel  { display: none !important; }

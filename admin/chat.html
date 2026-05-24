@@ -314,6 +314,32 @@
     .msg__time { font-size: 10px; opacity: 0.5; margin-top: 4px; display: block; }
     .msg--admin .msg__time { text-align: right; }
 
+    /* Typing dots */
+    .msg-typing {
+      align-self: flex-start;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 11px 14px;
+      background: rgba(240,237,230,0.08);
+      border-radius: 10px;
+      border-bottom-left-radius: 3px;
+    }
+    .msg-typing span {
+      width: 6px;
+      height: 6px;
+      background: rgba(240,237,230,0.45);
+      border-radius: 50%;
+      display: inline-block;
+      animation: adminTypingBounce 1.3s infinite;
+    }
+    .msg-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .msg-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes adminTypingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
     #reply-zone {
       padding: 14px 20px;
       border-top: 1px solid var(--border);
@@ -424,6 +450,8 @@
     var pollInterval = null;
     var loadingMessages = false;
     var knownConvIds = new Set();
+    var visitorIsTyping   = false;
+    var lastAdminTyping   = 0;
 
     // Login
     document.getElementById('login-btn').addEventListener('click', tryLogin);
@@ -558,6 +586,12 @@
         el.innerHTML = '<span>' + esc(m.body) + '</span><span class="msg__time">' + time + '</span>';
         area.appendChild(el);
       });
+      if (visitorIsTyping) {
+        var dots = document.createElement('div');
+        dots.className = 'msg-typing';
+        dots.innerHTML = '<span></span><span></span><span></span>';
+        area.appendChild(dots);
+      }
       area.scrollTop = area.scrollHeight;
     }
 
@@ -617,14 +651,40 @@
       refreshList();
     }
 
-    function startAutoRefresh() {
-      setInterval(refreshList, 5000);
+    async function checkVisitorTyping() {
+      if (!currentConvId) return;
+      try {
+        var r = await fetch('/api/chat-typing-status?conversation_id=' + currentConvId + '&_t=' + Date.now());
+        if (!r.ok) return;
+        var data = await r.json();
+        visitorIsTyping = !!data.visitor_typing;
+      } catch(_) {}
     }
 
-    // Auto-resize reply textarea
+    function sendAdminTypingSignal() {
+      if (!currentConvId) return;
+      var now = Date.now();
+      if (now - lastAdminTyping < 2000) return;
+      lastAdminTyping = now;
+      fetch('/api/chat-typing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversation_id: currentConvId, sender: 'admin', admin_password: pwd }),
+      }).catch(function(){});
+    }
+
+    function startAutoRefresh() {
+      setInterval(async function() {
+        await checkVisitorTyping();
+        refreshList();
+      }, 3000);
+    }
+
+    // Auto-resize reply textarea + signal typing
     document.getElementById('reply-text').addEventListener('input', function () {
       this.style.height = 'auto';
       this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+      sendAdminTypingSignal();
     });
 
     function esc(s) {

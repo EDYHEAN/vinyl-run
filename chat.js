@@ -46,6 +46,8 @@
   var pendingMsgs  = [];
   var prevAdminCount = 0;
   var unread       = 0;
+  var adminIsTyping     = false;
+  var lastTypingSignal  = 0;
 
   var bubble   = document.getElementById('vr-chat-bubble');
   var badge    = document.getElementById('vr-chat-badge');
@@ -61,7 +63,15 @@
     msgBox.innerHTML = '<div class="vr-msg-welcome">Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.</div>';
     serverMsgs.forEach(function (m) { addBubble(m.body, m.sender, m.created_at, false); });
     pendingMsgs.forEach(function (m) { addBubble(m.body, 'visitor', m.created_at, true); });
-    if (scrolledToBottom || pendingMsgs.length) msgBox.scrollTop = msgBox.scrollHeight;
+    if (adminIsTyping) addTypingDots();
+    if (scrolledToBottom || pendingMsgs.length || adminIsTyping) msgBox.scrollTop = msgBox.scrollHeight;
+  }
+
+  function addTypingDots() {
+    var el = document.createElement('div');
+    el.className = 'vr-msg-typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    msgBox.appendChild(el);
   }
 
   function addBubble(body, sender, ts, isPending) {
@@ -71,6 +81,31 @@
     var time = new Date(ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     el.innerHTML = '<span>' + escHtml(body) + '</span><span class="vr-msg__time">' + time + '</span>';
     msgBox.appendChild(el);
+  }
+
+  // ── Typing status ────────────────────────────────────────────
+  async function checkTypingStatus() {
+    if (!convId) return;
+    try {
+      var r = await fetch('/api/chat-typing-status?conversation_id=' + convId + '&_t=' + Date.now());
+      if (!r.ok) return;
+      var data = await r.json();
+      var prev = adminIsTyping;
+      adminIsTyping = !!data.admin_typing;
+      if (adminIsTyping !== prev) renderMessages();
+    } catch(_) {}
+  }
+
+  function sendTypingSignal() {
+    if (!convId) return;
+    var now = Date.now();
+    if (now - lastTypingSignal < 2000) return;
+    lastTypingSignal = now;
+    fetch('/api/chat-typing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ conversation_id: convId, sender: 'visitor' }),
+    }).catch(function(){});
   }
 
   // ── Load from server ─────────────────────────────────────────
@@ -127,6 +162,7 @@
   textarea.addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    sendTypingSignal();
   });
 
   async function sendMessage() {
@@ -178,7 +214,10 @@
 
   function startPolling() {
     if (pollInterval || !convId) return;
-    pollInterval = setInterval(loadMessages, 4000);
+    pollInterval = setInterval(function() {
+      loadMessages();
+      checkTypingStatus();
+    }, 3000);
   }
   function stopPolling() { clearInterval(pollInterval); pollInterval = null; }
 
