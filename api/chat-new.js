@@ -45,5 +45,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Erreur envoi message', detail: err });
   }
 
+  // Mettre à jour le preview du dernier message sur la conversation
+  await fetch(`${SUPABASE_URL}/rest/v1/conversations?id=eq.${conv.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': KEY,
+      'Authorization': `Bearer ${KEY}`,
+    },
+    body: JSON.stringify({ last_message_at: new Date().toISOString(), last_message_body: message }),
+  });
+
   return res.status(200).json({ conversation_id: conv.id });
 }

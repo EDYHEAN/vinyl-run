@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       'apikey': KEY,
       'Authorization': `Bearer ${KEY}`,
     },
-    body: JSON.stringify({ last_message_at: new Date().toISOString() }),
+    body: JSON.stringify({ last_message_at: new Date().toISOString(), last_message_body: message }),
   });
 
   return res.status(200).json({ ok: true });

@@ -135,20 +135,50 @@
     }
     .conv-item:hover { background: rgba(240,237,230,0.03); }
     .conv-item.active { background: rgba(240,237,230,0.06); }
+    .conv-item__row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
     .conv-item__name {
       font-size: 13px;
       font-weight: 500;
-      margin-bottom: 3px;
-    }
-    .conv-item__phone {
-      font-size: 11px;
-      color: var(--ink-muted);
-      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .conv-item__date {
+      font-size: 10px;
+      color: var(--ink-muted);
+      flex-shrink: 0;
+    }
+    .conv-item__preview {
       font-size: 11px;
       color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+    .conv-item__delete {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 3px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .conv-item__delete:hover { color: #ff6b6b; background: rgba(255,107,107,0.1); }
+    .conv-item:hover .conv-item__delete { display: block; }
+    .conv-item { position: relative; }
     #conv-empty {
       padding: 32px 18px;
       font-size: 13px;
@@ -376,9 +406,15 @@
         var d = new Date(c.last_message_at);
         var dateStr = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) +
                       ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        var preview = c.last_message_body ? esc(c.last_message_body) : '&nbsp;';
         el.innerHTML =
-          '<div class="conv-item__name">' + esc(c.visitor_name) + '</div>' +
-          '<div class="conv-item__date">' + dateStr + '</div>';
+          '<div class="conv-item__row"><span class="conv-item__name">' + esc(c.visitor_name) + '</span><span class="conv-item__date">' + dateStr + '</span></div>' +
+          '<div class="conv-item__preview">' + preview + '</div>' +
+          '<button class="conv-item__delete" title="Supprimer">✕</button>';
+        el.querySelector('.conv-item__delete').addEventListener('click', function (e) {
+          e.stopPropagation();
+          deleteConv(c.id);
+        });
         el.addEventListener('click', function () { openConv(c); });
         list.appendChild(el);
       });
@@ -458,6 +494,20 @@
       });
       if (res.ok) renderConvList(await res.json());
       if (currentConvId) loadMessages();
+    }
+
+    async function deleteConv(id) {
+      await fetch('/api/chat-delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ admin_password: pwd, conversation_id: id }),
+      });
+      if (currentConvId === id) {
+        currentConvId = null;
+        document.getElementById('conv-view').classList.remove('visible');
+        document.getElementById('main-empty').style.display = '';
+      }
+      refreshList();
     }
 
     function startAutoRefresh() {
