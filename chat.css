@@ -236,7 +236,94 @@
   30% { transform: translateY(-4px); opacity: 1; }
 }
 
-@media (max-width: 768px) {
+/* ── Mobile bar (sticky, replaces floating bubble) ──────── */
+#vr-chat-mobilebar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 210;
+  background: #1a1a18;
+  border-top: 1px solid rgba(240,237,230,0.1);
+  align-items: center;
+  padding: 0 18px;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+#vr-chat-mobilebar:hover { background: rgba(255,255,255,0.04); }
+.vr-chat-mobilebar__avatar {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.vr-chat-mobilebar__avatar img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+}
+.vr-chat-mobilebar__info {
+  flex: 1;
+  min-width: 0;
+}
+.vr-chat-mobilebar__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f0ede6;
+  display: block;
+}
+.vr-chat-mobilebar__sub {
+  font-size: 11px;
+  color: rgba(240,237,230,0.45);
+  display: block;
+  margin-top: 1px;
+}
+#vr-chat-mobilebadge {
+  min-width: 18px;
+  height: 18px;
+  background: #ff4d4d;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  font-family: sans-serif;
+  flex-shrink: 0;
+}
+.vr-chat-mobilebar__chevron {
+  color: rgba(240,237,230,0.4);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  display: flex;
+}
+#vr-chat-mobilebar.open .vr-chat-mobilebar__chevron { transform: rotate(180deg); }
+
+@media (max-width: 999px) {
   #vr-chat-bubble { display: none; }
-  #vr-chat-panel  { display: none !important; }
+  #vr-chat-mobilebar { display: flex; }
+  #vr-chat-panel {
+    display: flex !important;
+    top: 0;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    transform: translateY(calc(100% + 60px));
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    pointer-events: none;
+  }
+  #vr-chat-panel.open {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
 }

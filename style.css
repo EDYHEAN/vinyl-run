@@ -1285,6 +1285,14 @@ a    { text-decoration: none; color: inherit; }
   body { padding-bottom: 100px; }
 }
 
+@media (max-width: 999px) {
+  .nav__burger { display: flex; }
+  .nav__links { display: none; }
+  .nav__right .nav__lang { display: none; }
+  .player { display: none; }
+  body { padding-bottom: 60px; }
+}
+
 /* ── Burger button ──────────────────────── */
 .nav__burger {
   display: none;
@@ -1411,9 +1419,6 @@ a    { text-decoration: none; color: inherit; }
 .nav__mobile-lang .lang-text { display: inline; }
 
 @media (max-width: 768px) {
-  .nav__burger { display: flex; }
-  .nav__links { display: none; }
-  .nav__right .nav__lang { display: none; }
   .cat-vinyl-slider { display: none; }
   .univers { padding: 5rem 1.5rem; }
   .boutique { grid-template-columns: 1fr; padding: 5rem 1.5rem; }

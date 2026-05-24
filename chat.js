@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   var link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = '/chat.css';
@@ -38,6 +38,23 @@
         </button>
       </div>
     </div>
+
+    <div id="vr-chat-mobilebar" role="button" aria-label="Ouvrir le chat">
+      <div class="vr-chat-mobilebar__avatar">
+        <img src="/assets/titote.jpg" alt="Christophe" />
+        <span class="vr-chat-online"></span>
+      </div>
+      <div class="vr-chat-mobilebar__info">
+        <span class="vr-chat-mobilebar__name">Chat avec Christophe</span>
+        <span class="vr-chat-mobilebar__sub">En ligne · Répondre sous 24h</span>
+      </div>
+      <span id="vr-chat-mobilebadge"></span>
+      <span class="vr-chat-mobilebar__chevron">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </span>
+    </div>
   `);
 
   var convId       = localStorage.getItem('vr_chat_conv');
@@ -49,18 +66,24 @@
   var adminIsTyping     = false;
   var lastTypingSignal  = 0;
 
-  var bubble   = document.getElementById('vr-chat-bubble');
-  var badge    = document.getElementById('vr-chat-badge');
-  var panel    = document.getElementById('vr-chat-panel');
-  var closeBtn = document.getElementById('vr-chat-close');
-  var msgBox   = document.getElementById('vr-chat-messages');
-  var textarea = document.getElementById('vr-chat-text');
-  var sendBtn  = document.getElementById('vr-chat-send');
+  var bubble      = document.getElementById('vr-chat-bubble');
+  var badge       = document.getElementById('vr-chat-badge');
+  var panel       = document.getElementById('vr-chat-panel');
+  var closeBtn    = document.getElementById('vr-chat-close');
+  var msgBox      = document.getElementById('vr-chat-messages');
+  var textarea    = document.getElementById('vr-chat-text');
+  var sendBtn     = document.getElementById('vr-chat-send');
+  var mobilebar   = document.getElementById('vr-chat-mobilebar');
+  var mobileBadge = document.getElementById('vr-chat-mobilebadge');
 
   // ── Render ──────────────────────────────────────────────────
   function renderMessages() {
     var scrolledToBottom = msgBox.scrollHeight - msgBox.scrollTop - msgBox.clientHeight < 40;
-    msgBox.innerHTML = '<div class="vr-msg-welcome">Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.</div>';
+    var isEn = navigator.language && navigator.language.startsWith('en');
+    var welcomeText = isEn
+      ? "Hello! Got a question about a vinyl, an artist, or availability? I'm here."
+      : "Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.";
+    msgBox.innerHTML = '<div class="vr-msg-welcome">' + welcomeText + '</div>';
     serverMsgs.forEach(function (m) { addBubble(m.body, m.sender, m.created_at, false); });
     pendingMsgs.forEach(function (m) { addBubble(m.body, 'visitor', m.created_at, true); });
     if (adminIsTyping) addTypingDots();
@@ -126,6 +149,8 @@
         unread += adminCount - prevAdminCount;
         badge.style.display = 'flex';
         badge.textContent = unread;
+        mobileBadge.style.display = 'flex';
+        mobileBadge.textContent = unread;
       }
       prevAdminCount = adminCount;
       renderMessages();
@@ -135,8 +160,10 @@
   // ── Panel open/close ─────────────────────────────────────────
   function openPanel() {
     panel.classList.add('open');
+    mobilebar.classList.add('open');
     unread = 0;
     badge.style.display = 'none';
+    mobileBadge.style.display = 'none';
     textarea.focus();
     if (convId) {
       loadMessages();
@@ -145,9 +172,16 @@
     }
     startPolling();
   }
-  function closePanel() { panel.classList.remove('open'); stopPolling(); }
+  function closePanel() {
+    panel.classList.remove('open');
+    mobilebar.classList.remove('open');
+    stopPolling();
+  }
 
   bubble.addEventListener('click', function () {
+    panel.classList.contains('open') ? closePanel() : openPanel();
+  });
+  mobilebar.addEventListener('click', function () {
     panel.classList.contains('open') ? closePanel() : openPanel();
   });
   closeBtn.addEventListener('click', closePanel);
