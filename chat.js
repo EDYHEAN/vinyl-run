@@ -155,7 +155,7 @@
         badge.textContent = unread;
         mobileBadge.style.display = 'flex';
         mobileBadge.textContent = unread;
-        if (window.innerWidth <= 999 && navigator.vibrate) navigator.vibrate(200);
+
       }
       prevAdminCount = adminCount;
       renderMessages();
