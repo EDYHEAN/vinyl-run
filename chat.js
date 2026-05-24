@@ -13,7 +13,6 @@
     </button>
 
     <div id="vr-chat-panel" role="dialog" aria-label="Chat Vinyl Run">
-
       <div id="vr-chat-header">
         <div class="vr-chat-avatar">
           <img src="/assets/titote.jpg" alt="Christophe" />
@@ -42,14 +41,13 @@
           </svg>
         </button>
       </div>
-
     </div>
   `);
 
-  var convId      = localStorage.getItem('vr_chat_conv');
+  var convId       = localStorage.getItem('vr_chat_conv');
   var pollInterval = null;
-  var knownIds    = new Set();
-  var unread      = 0;
+  var knownIds     = new Set();
+  var unread       = 0;
 
   var bubble   = document.getElementById('vr-chat-bubble');
   var badge    = document.getElementById('vr-chat-badge');
@@ -78,7 +76,6 @@
   });
   closeBtn.addEventListener('click', closePanel);
 
-  // Si conversation existante, charger les messages au boot
   if (convId) loadMessages();
 
   // Envoi
@@ -97,30 +94,38 @@
     textarea.value = '';
     textarea.style.height = 'auto';
 
-    // Afficher optimistiquement
-    appendMessage({ body: msg, sender: 'visitor', created_at: new Date().toISOString(), id: '_tmp_' + Date.now() });
+    // Affichage optimiste
+    var tmpId = '_tmp_' + Date.now();
+    appendMessage({ id: tmpId, body: msg, sender: 'visitor', created_at: new Date().toISOString() });
 
     try {
       if (!convId) {
-        // Première conversation — créer
         var res = await fetch('/api/chat-new', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: msg }),
         });
-        if (!res.ok) return;
+        if (!res.ok) { removeTmp(tmpId); return; }
         var data = await res.json();
         convId = data.conversation_id;
         localStorage.setItem('vr_chat_conv', convId);
         startPolling();
       } else {
-        await fetch('/api/chat-send', {
+        var r = await fetch('/api/chat-send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversation_id: convId, message: msg, sender: 'visitor' }),
         });
+        if (!r.ok) { removeTmp(tmpId); return; }
       }
-    } catch (_) {}
+      // Charger les messages réels pour remplacer le tmp
+      loadMessages();
+    } catch (_) { removeTmp(tmpId); }
+  }
+
+  function removeTmp(tmpId) {
+    var el = msgBox.querySelector('[data-tmp-id="' + tmpId + '"]');
+    if (el) el.remove();
   }
 
   async function loadMessages() {
@@ -129,27 +134,26 @@
       var res = await fetch('/api/chat-messages?conversation_id=' + convId);
       if (!res.ok) return;
       var msgs = await res.json();
-      msgs.forEach(function (m) {
-        if (!knownIds.has(m.id)) {
-          knownIds.add(m.id);
-          appendMessage(m);
-        }
-      });
+      // Supprimer les messages tmp avant d'afficher les vrais
+      msgBox.querySelectorAll('[data-tmp]').forEach(function (el) { el.remove(); });
+      msgs.forEach(function (m) { appendMessage(m); });
     } catch (_) {}
   }
 
   function appendMessage(m) {
-    // Supprimer les messages temporaires si on reçoit la version serveur
-    if (m.sender === 'visitor' && !m.id.startsWith('_tmp_')) {
-      var tmps = msgBox.querySelectorAll('[data-tmp]');
-      if (tmps.length) tmps[0].remove();
+    var isTemp = String(m.id).startsWith('_tmp_');
+
+    if (!isTemp) {
+      if (knownIds.has(m.id)) return;
+      knownIds.add(m.id);
     }
-    if (knownIds.has(m.id) && !m.id.startsWith('_tmp_')) return;
-    if (!m.id.startsWith('_tmp_')) knownIds.add(m.id);
 
     var el = document.createElement('div');
     el.className = 'vr-msg vr-msg--' + m.sender;
-    if (m.id.startsWith('_tmp_')) el.setAttribute('data-tmp', '1');
+    if (isTemp) {
+      el.setAttribute('data-tmp', '1');
+      el.setAttribute('data-tmp-id', m.id);
+    }
     var time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     el.innerHTML = '<span>' + escHtml(m.body) + '</span><span class="vr-msg__time">' + time + '</span>';
     msgBox.appendChild(el);
@@ -173,6 +177,6 @@
   }
 
   function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 })();
