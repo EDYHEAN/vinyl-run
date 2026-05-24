@@ -79,7 +79,8 @@
   // ── Render ──────────────────────────────────────────────────
   function renderMessages() {
     var scrolledToBottom = msgBox.scrollHeight - msgBox.scrollTop - msgBox.clientHeight < 40;
-    var isEn = navigator.language && navigator.language.startsWith('en');
+    var siteLang = (typeof localStorage !== 'undefined' && localStorage.getItem('vr_lang')) || navigator.language || 'fr';
+    var isEn = siteLang.startsWith('en');
     var welcomeText = isEn
       ? "Hello! Got a question about a vinyl, an artist, or availability? I'm here."
       : "Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.";
@@ -158,20 +159,25 @@
   }
 
   // ── Panel open/close ─────────────────────────────────────────
-  var vpHandler = null;
+  var vpHandler    = null;
+  var cachedNavBottom = 0;
 
   function getMobileNavBottom() {
     var nav = document.querySelector('.nav') || document.querySelector('nav');
     return nav ? Math.round(nav.getBoundingClientRect().bottom) : 72;
   }
 
-  function setMobilePanelBounds() {
+  function updateMobileHeight() {
     var vp = window.visualViewport;
     var vpH = vp ? vp.height : window.innerHeight;
-    var navH = getMobileNavBottom();
-    panel.style.top    = navH + 'px';
-    panel.style.height = Math.max(vpH - navH - 60, 200) + 'px';
+    panel.style.height = Math.max(vpH - cachedNavBottom - 60, 200) + 'px';
+  }
+
+  function setMobilePanelBounds() {
+    cachedNavBottom = getMobileNavBottom();
+    panel.style.top    = cachedNavBottom + 'px';
     panel.style.bottom = 'auto';
+    updateMobileHeight();
   }
 
   function openPanel() {
@@ -186,7 +192,7 @@
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
       if (window.visualViewport && !vpHandler) {
-        vpHandler = setMobilePanelBounds;
+        vpHandler = updateMobileHeight;
         window.visualViewport.addEventListener('resize', vpHandler);
       }
     }
