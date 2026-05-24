@@ -4,6 +4,9 @@
   link.href = '/chat.css';
   document.head.appendChild(link);
 
+  var _siteLang = (typeof localStorage !== 'undefined' && localStorage.getItem('vr_lang')) || 'fr';
+  var _isEn = _siteLang === 'en';
+
   document.body.insertAdjacentHTML('beforeend', `
     <button id="vr-chat-bubble" aria-label="Ouvrir le chat">
       <span id="vr-chat-badge"></span>
@@ -45,8 +48,8 @@
         <span class="vr-chat-online"></span>
       </div>
       <div class="vr-chat-mobilebar__info">
-        <span class="vr-chat-mobilebar__name">Chat avec Christophe</span>
-        <span class="vr-chat-mobilebar__sub">En ligne · Répondre sous 24h</span>
+        <span class="vr-chat-mobilebar__name">${_isEn ? 'Chat with Christophe' : 'Chat avec Christophe'}</span>
+        <span class="vr-chat-mobilebar__sub">${_isEn ? 'Online · Reply within 24h' : 'En ligne · Répondre sous 24h'}</span>
       </div>
       <span id="vr-chat-mobilebadge"></span>
       <span class="vr-chat-mobilebar__chevron">
@@ -159,42 +162,19 @@
   }
 
   // ── Panel open/close ─────────────────────────────────────────
-  var vpHandler    = null;
-  var cachedNavBottom = 0;
-
-  function getMobileNavBottom() {
-    var nav = document.querySelector('.nav') || document.querySelector('nav');
-    return nav ? Math.round(nav.getBoundingClientRect().bottom) : 72;
-  }
-
-  function updateMobileHeight() {
-    var vp = window.visualViewport;
-    var vpH = vp ? vp.height : window.innerHeight;
-    panel.style.height = Math.max(vpH - cachedNavBottom - 60, 200) + 'px';
-  }
-
-  function setMobilePanelBounds() {
-    cachedNavBottom = getMobileNavBottom();
-    panel.style.top    = cachedNavBottom + 'px';
-    panel.style.bottom = 'auto';
-    updateMobileHeight();
-  }
-
   function openPanel() {
-    // Close burger overlay if open
     var navMobile = document.getElementById('navMobile');
     var navBurger = document.getElementById('navBurger');
     if (navMobile) { navMobile.classList.remove('open'); document.body.style.overflow = ''; }
     if (navBurger) { navBurger.classList.remove('open'); navBurger.setAttribute('aria-expanded', 'false'); }
 
     if (window.innerWidth <= 999) {
-      setMobilePanelBounds();
+      var nav = document.querySelector('.nav') || document.querySelector('nav');
+      var navH = nav ? Math.round(nav.getBoundingClientRect().bottom) : 72;
+      panel.style.top = navH + 'px';
+      document.documentElement.style.setProperty('--vr-nav-h', navH + 'px');
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
-      if (window.visualViewport && !vpHandler) {
-        vpHandler = updateMobileHeight;
-        window.visualViewport.addEventListener('resize', vpHandler);
-      }
     }
     panel.classList.add('open');
     mobilebar.classList.add('open');
@@ -213,15 +193,9 @@
   function closePanel() {
     panel.classList.remove('open');
     mobilebar.classList.remove('open');
-    if (vpHandler) {
-      window.visualViewport.removeEventListener('resize', vpHandler);
-      vpHandler = null;
-    }
-    panel.style.top    = '';
-    panel.style.height = '';
-    panel.style.bottom = '';
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
+    setTimeout(function() { panel.style.top = ''; }, 380);
     stopPolling();
   }
 

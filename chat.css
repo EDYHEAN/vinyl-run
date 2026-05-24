@@ -325,6 +325,8 @@
   #vr-chat-panel.open {
     transform: translateY(0);
     pointer-events: auto;
+    height: calc(100dvh - var(--vr-nav-h, 72px) - 60px);
+    bottom: auto;
   }
   #vr-chat-text { font-size: 16px; }
 }
