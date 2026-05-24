@@ -325,7 +325,6 @@
     var pwd = '';
     var currentConvId = null;
     var pollInterval = null;
-    var knownIds = new Set();
 
     // Login
     document.getElementById('login-btn').addEventListener('click', tryLogin);
@@ -390,8 +389,6 @@
       document.getElementById('conv-header-phone').textContent = c.visitor_phone;
       document.getElementById('main-empty').style.display = 'none';
       document.getElementById('conv-view').classList.add('visible');
-      knownIds = new Set();
-      document.getElementById('messages-area').innerHTML = '';
       await loadMessages();
       document.querySelectorAll('.conv-item').forEach(function (el, i) {
         el.classList.remove('active');
@@ -413,15 +410,13 @@
       if (!res.ok) return;
       var msgs = await res.json();
       var area = document.getElementById('messages-area');
+      area.innerHTML = '';
       msgs.forEach(function (m) {
-        if (!knownIds.has(m.id)) {
-          knownIds.add(m.id);
-          var el = document.createElement('div');
-          el.className = 'msg msg--' + m.sender;
-          var time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-          el.innerHTML = '<span>' + esc(m.body) + '</span><span class="msg__time">' + time + '</span>';
-          area.appendChild(el);
-        }
+        var el = document.createElement('div');
+        el.className = 'msg msg--' + m.sender;
+        var time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        el.innerHTML = '<span>' + esc(m.body) + '</span><span class="msg__time">' + time + '</span>';
+        area.appendChild(el);
       });
       area.scrollTop = area.scrollHeight;
     }

@@ -28,11 +28,7 @@
           </svg>
         </button>
       </div>
-
-      <div id="vr-chat-messages">
-        <div class="vr-msg-welcome">Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.</div>
-      </div>
-
+      <div id="vr-chat-messages"></div>
       <div id="vr-chat-inputzone">
         <textarea id="vr-chat-text" placeholder="Votre message…" rows="1"></textarea>
         <button id="vr-chat-send" aria-label="Envoyer">
@@ -46,7 +42,9 @@
 
   var convId       = localStorage.getItem('vr_chat_conv');
   var pollInterval = null;
-  var knownIds     = new Set();
+  var serverMsgs   = [];
+  var pendingMsgs  = [];
+  var prevAdminCount = 0;
   var unread       = 0;
 
   var bubble   = document.getElementById('vr-chat-bubble');
@@ -57,6 +55,49 @@
   var textarea = document.getElementById('vr-chat-text');
   var sendBtn  = document.getElementById('vr-chat-send');
 
+  // ── Render ──────────────────────────────────────────────────
+  function renderMessages() {
+    var scrolledToBottom = msgBox.scrollHeight - msgBox.scrollTop - msgBox.clientHeight < 40;
+    msgBox.innerHTML = '<div class="vr-msg-welcome">Bonjour ! Une question sur un vinyle, un artiste, une disponibilité ? Je suis là.</div>';
+    serverMsgs.forEach(function (m) { addBubble(m.body, m.sender, m.created_at, false); });
+    pendingMsgs.forEach(function (m) { addBubble(m.body, 'visitor', m.created_at, true); });
+    if (scrolledToBottom || pendingMsgs.length) msgBox.scrollTop = msgBox.scrollHeight;
+  }
+
+  function addBubble(body, sender, ts, isPending) {
+    var el = document.createElement('div');
+    el.className = 'vr-msg vr-msg--' + sender;
+    if (isPending) el.style.opacity = '0.6';
+    var time = new Date(ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    el.innerHTML = '<span>' + escHtml(body) + '</span><span class="vr-msg__time">' + time + '</span>';
+    msgBox.appendChild(el);
+  }
+
+  // ── Load from server ─────────────────────────────────────────
+  async function loadMessages() {
+    if (!convId) return;
+    try {
+      var res = await fetch('/api/chat-messages?conversation_id=' + convId);
+      if (!res.ok) return;
+      var msgs = await res.json();
+      serverMsgs = msgs;
+      // Remove pending confirmed by server (match body + visitor)
+      pendingMsgs = pendingMsgs.filter(function (pm) {
+        return !msgs.some(function (sm) { return sm.sender === 'visitor' && sm.body === pm.body; });
+      });
+      // Badge for new admin messages
+      var adminCount = msgs.filter(function (m) { return m.sender === 'admin'; }).length;
+      if (adminCount > prevAdminCount && !panel.classList.contains('open')) {
+        unread += adminCount - prevAdminCount;
+        badge.style.display = 'flex';
+        badge.textContent = unread;
+      }
+      prevAdminCount = adminCount;
+      renderMessages();
+    } catch (_) {}
+  }
+
+  // ── Panel open/close ─────────────────────────────────────────
   function openPanel() {
     panel.classList.add('open');
     unread = 0;
@@ -65,11 +106,7 @@
     if (convId) loadMessages();
     startPolling();
   }
-
-  function closePanel() {
-    panel.classList.remove('open');
-    stopPolling();
-  }
+  function closePanel() { panel.classList.remove('open'); stopPolling(); }
 
   bubble.addEventListener('click', function () {
     panel.classList.contains('open') ? closePanel() : openPanel();
@@ -78,7 +115,7 @@
 
   if (convId) loadMessages();
 
-  // Envoi
+  // ── Send ─────────────────────────────────────────────────────
   sendBtn.addEventListener('click', sendMessage);
   textarea.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
@@ -94,9 +131,9 @@
     textarea.value = '';
     textarea.style.height = 'auto';
 
-    // Affichage optimiste
-    var tmpId = '_tmp_' + Date.now();
-    appendMessage({ id: tmpId, body: msg, sender: 'visitor', created_at: new Date().toISOString() });
+    var pending = { body: msg, created_at: new Date().toISOString() };
+    pendingMsgs.push(pending);
+    renderMessages();
 
     try {
       if (!convId) {
@@ -105,7 +142,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: msg }),
         });
-        if (!res.ok) { removeTmp(tmpId); return; }
+        if (!res.ok) { pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; }); renderMessages(); return; }
         var data = await res.json();
         convId = data.conversation_id;
         localStorage.setItem('vr_chat_conv', convId);
@@ -116,57 +153,13 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversation_id: convId, message: msg, sender: 'visitor' }),
         });
-        if (!r.ok) { removeTmp(tmpId); return; }
+        if (!r.ok) { pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; }); renderMessages(); return; }
       }
-    } catch (_) { removeTmp(tmpId); }
-  }
-
-  function removeTmp(tmpId) {
-    var el = msgBox.querySelector('[data-tmp-id="' + tmpId + '"]');
-    if (el) el.remove();
-  }
-
-  async function loadMessages() {
-    if (!convId) return;
-    try {
-      var res = await fetch('/api/chat-messages?conversation_id=' + convId);
-      if (!res.ok) return;
-      var msgs = await res.json();
-      var newMsgs = msgs.filter(function (m) { return !knownIds.has(m.id); });
-      newMsgs.forEach(function (m) {
-        // Remplacer le tmp uniquement quand on a le vrai message visiteur
-        if (m.sender === 'visitor') {
-          var tmp = msgBox.querySelector('[data-tmp]');
-          if (tmp) tmp.remove();
-        }
-        appendMessage(m);
-      });
-    } catch (_) {}
-  }
-
-  function appendMessage(m) {
-    var isTemp = String(m.id).startsWith('_tmp_');
-
-    if (!isTemp) {
-      if (knownIds.has(m.id)) return;
-      knownIds.add(m.id);
-    }
-
-    var el = document.createElement('div');
-    el.className = 'vr-msg vr-msg--' + m.sender;
-    if (isTemp) {
-      el.setAttribute('data-tmp', '1');
-      el.setAttribute('data-tmp-id', m.id);
-    }
-    var time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    el.innerHTML = '<span>' + escHtml(m.body) + '</span><span class="vr-msg__time">' + time + '</span>';
-    msgBox.appendChild(el);
-    msgBox.scrollTop = msgBox.scrollHeight;
-
-    if (m.sender === 'admin' && !panel.classList.contains('open')) {
-      unread++;
-      badge.style.display = 'flex';
-      badge.textContent = unread;
+      // Rafraîchir depuis le serveur pour confirmer
+      await loadMessages();
+    } catch (_) {
+      pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; });
+      renderMessages();
     }
   }
 
@@ -174,11 +167,7 @@
     if (pollInterval || !convId) return;
     pollInterval = setInterval(loadMessages, 4000);
   }
-
-  function stopPolling() {
-    clearInterval(pollInterval);
-    pollInterval = null;
-  }
+  function stopPolling() { clearInterval(pollInterval); pollInterval = null; }
 
   function escHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
