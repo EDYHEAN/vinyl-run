@@ -636,6 +636,7 @@
         burger.setAttribute('aria-expanded', isOpen);
         mobile.setAttribute('aria-hidden', !isOpen);
         document.body.style.overflow = isOpen ? 'hidden' : '';
+        if (isOpen && window.vrChat) window.vrChat.close();
       });
       mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
       mobile.querySelector('.nav__mobile-close')?.addEventListener('click', close);

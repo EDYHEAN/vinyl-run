@@ -158,21 +158,44 @@
   }
 
   // ── Panel open/close ─────────────────────────────────────────
+  var vpHandler = null;
+
   function getMobileNavBottom() {
     var nav = document.querySelector('.nav') || document.querySelector('nav');
     return nav ? Math.round(nav.getBoundingClientRect().bottom) : 72;
   }
 
+  function setMobilePanelBounds() {
+    var vp = window.visualViewport;
+    var vpH = vp ? vp.height : window.innerHeight;
+    var navH = getMobileNavBottom();
+    panel.style.top    = navH + 'px';
+    panel.style.height = Math.max(vpH - navH - 60, 200) + 'px';
+    panel.style.bottom = 'auto';
+  }
+
   function openPanel() {
+    // Close burger overlay if open
+    var navMobile = document.getElementById('navMobile');
+    var navBurger = document.getElementById('navBurger');
+    if (navMobile) { navMobile.classList.remove('open'); document.body.style.overflow = ''; }
+    if (navBurger) { navBurger.classList.remove('open'); navBurger.setAttribute('aria-expanded', 'false'); }
+
     if (window.innerWidth <= 999) {
-      panel.style.top = getMobileNavBottom() + 'px';
+      setMobilePanelBounds();
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      if (window.visualViewport && !vpHandler) {
+        vpHandler = setMobilePanelBounds;
+        window.visualViewport.addEventListener('resize', vpHandler);
+      }
     }
     panel.classList.add('open');
     mobilebar.classList.add('open');
     unread = 0;
     badge.style.display = 'none';
     mobileBadge.style.display = 'none';
-    textarea.focus();
+    if (window.innerWidth > 999) textarea.focus();
     if (convId) {
       loadMessages();
     } else {
@@ -180,11 +203,23 @@
     }
     startPolling();
   }
+
   function closePanel() {
     panel.classList.remove('open');
     mobilebar.classList.remove('open');
+    if (vpHandler) {
+      window.visualViewport.removeEventListener('resize', vpHandler);
+      vpHandler = null;
+    }
+    panel.style.top    = '';
+    panel.style.height = '';
+    panel.style.bottom = '';
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
     stopPolling();
   }
+
+  window.vrChat = { open: openPanel, close: closePanel };
 
   bubble.addEventListener('click', function () {
     panel.classList.contains('open') ? closePanel() : openPanel();
