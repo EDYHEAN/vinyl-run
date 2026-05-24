@@ -153,7 +153,16 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversation_id: convId, message: msg, sender: 'visitor' }),
         });
-        if (!r.ok) { pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; }); renderMessages(); return; }
+        if (!r.ok) {
+          // Conversation introuvable (ex: supprimée côté admin) — reset pour permettre une nouvelle conv
+          convId = null;
+          localStorage.removeItem('vr_chat_conv');
+          stopPolling();
+          serverMsgs = [];
+          pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; });
+          renderMessages();
+          return;
+        }
       }
       // Rafraîchir depuis le serveur pour confirmer
       await loadMessages();
