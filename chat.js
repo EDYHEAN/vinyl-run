@@ -77,7 +77,7 @@
   async function loadMessages() {
     if (!convId) return;
     try {
-      var res = await fetch('/api/chat-messages?conversation_id=' + convId);
+      var res = await fetch('/api/chat-messages?conversation_id=' + convId + '&_t=' + Date.now());
       if (!res.ok) return;
       var msgs = await res.json();
       serverMsgs = msgs;

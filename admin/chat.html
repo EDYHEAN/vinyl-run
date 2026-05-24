@@ -325,6 +325,7 @@
     var pwd = '';
     var currentConvId = null;
     var pollInterval = null;
+    var loadingMessages = false;
 
     // Login
     document.getElementById('login-btn').addEventListener('click', tryLogin);
@@ -371,12 +372,12 @@
       convs.forEach(function (c) {
         var el = document.createElement('div');
         el.className = 'conv-item' + (c.id === currentConvId ? ' active' : '');
+        el.setAttribute('data-conv-id', c.id);
         var d = new Date(c.last_message_at);
         var dateStr = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) +
                       ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         el.innerHTML =
           '<div class="conv-item__name">' + esc(c.visitor_name) + '</div>' +
-          '<div class="conv-item__phone">' + esc(c.visitor_phone) + '</div>' +
           '<div class="conv-item__date">' + dateStr + '</div>';
         el.addEventListener('click', function () { openConv(c); });
         list.appendChild(el);
@@ -386,29 +387,26 @@
     async function openConv(c) {
       currentConvId = c.id;
       document.getElementById('conv-header-name').textContent = c.visitor_name;
-      document.getElementById('conv-header-phone').textContent = c.visitor_phone;
       document.getElementById('main-empty').style.display = 'none';
       document.getElementById('conv-view').classList.add('visible');
-      await loadMessages();
-      document.querySelectorAll('.conv-item').forEach(function (el, i) {
-        el.classList.remove('active');
-      });
+      // Active state via data-conv-id
       document.querySelectorAll('.conv-item').forEach(function (el) {
-        if (el.querySelector('.conv-item__phone').textContent === c.visitor_phone) {
-          el.classList.add('active');
-        }
+        el.classList.toggle('active', el.getAttribute('data-conv-id') === c.id);
       });
+      await loadMessages();
     }
 
     async function loadMessages() {
-      if (!currentConvId) return;
+      if (!currentConvId || loadingMessages) return;
+      loadingMessages = true;
       var res = await fetch('/api/chat-admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ admin_password: pwd, conversation_id: currentConvId }),
       });
-      if (!res.ok) return;
+      if (!res.ok) { loadingMessages = false; return; }
       var msgs = await res.json();
+      loadingMessages = false;
       var area = document.getElementById('messages-area');
       area.innerHTML = '';
       msgs.forEach(function (m) {
