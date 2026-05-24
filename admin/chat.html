@@ -391,6 +391,7 @@
       document.getElementById('main-empty').style.display = 'none';
       document.getElementById('conv-view').classList.add('visible');
       knownIds = new Set();
+      document.getElementById('messages-area').innerHTML = '';
       await loadMessages();
       document.querySelectorAll('.conv-item').forEach(function (el, i) {
         el.classList.remove('active');

@@ -118,8 +118,6 @@
         });
         if (!r.ok) { removeTmp(tmpId); return; }
       }
-      // Charger les messages réels pour remplacer le tmp
-      loadMessages();
     } catch (_) { removeTmp(tmpId); }
   }
 
@@ -134,9 +132,15 @@
       var res = await fetch('/api/chat-messages?conversation_id=' + convId);
       if (!res.ok) return;
       var msgs = await res.json();
-      // Supprimer les messages tmp avant d'afficher les vrais
-      msgBox.querySelectorAll('[data-tmp]').forEach(function (el) { el.remove(); });
-      msgs.forEach(function (m) { appendMessage(m); });
+      var newMsgs = msgs.filter(function (m) { return !knownIds.has(m.id); });
+      newMsgs.forEach(function (m) {
+        // Remplacer le tmp uniquement quand on a le vrai message visiteur
+        if (m.sender === 'visitor') {
+          var tmp = msgBox.querySelector('[data-tmp]');
+          if (tmp) tmp.remove();
+        }
+        appendMessage(m);
+      });
     } catch (_) {}
   }
 
