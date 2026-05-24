@@ -158,7 +158,15 @@
   }
 
   // ── Panel open/close ─────────────────────────────────────────
+  function getMobileNavBottom() {
+    var nav = document.querySelector('.nav') || document.querySelector('nav');
+    return nav ? Math.round(nav.getBoundingClientRect().bottom) : 72;
+  }
+
   function openPanel() {
+    if (window.innerWidth <= 999) {
+      panel.style.top = getMobileNavBottom() + 'px';
+    }
     panel.classList.add('open');
     mobilebar.classList.add('open');
     unread = 0;
