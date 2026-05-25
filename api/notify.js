@@ -1,3 +1,7 @@
+function decodeXml(s) {
+  return (s || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
@@ -10,11 +14,11 @@ export default async function handler(req, res) {
   let latest = null;
   try {
     const rssText = await fetch('https://vinyl-run.com/rss.xml').then(x => x.text());
-    const title = rssText.match(/<item>[\s\S]*?<title>([\s\S]*?)<\/title>/)?.[1]?.trim();
+    const title = decodeXml(rssText.match(/<item>[\s\S]*?<title>([\s\S]*?)<\/title>/)?.[1]?.trim());
     const link  = rssText.match(/<item>[\s\S]*?<link>([\s\S]*?)<\/link>/)?.[1]?.trim();
-    const desc  = rssText.match(/<item>[\s\S]*?<description>([\s\S]*?)<\/description>/)?.[1]?.trim();
+    const desc  = decodeXml(rssText.match(/<item>[\s\S]*?<description>([\s\S]*?)<\/description>/)?.[1]?.trim());
     const img   = rssText.match(/enclosure url="([^"]+)"/)?.[1];
-    const cat   = rssText.match(/<item>[\s\S]*?<category>([\s\S]*?)<\/category>/)?.[1]?.trim();
+    const cat   = decodeXml(rssText.match(/<item>[\s\S]*?<category>([\s\S]*?)<\/category>/)?.[1]?.trim());
     if (title && link) latest = { title, link, desc: desc || '', img: img || '', cat: cat || 'Le Magazine' };
   } catch (_) {}
 
@@ -53,6 +57,8 @@ export default async function handler(req, res) {
 </body>
 </html>`;
 
+  const textContent = `VINYL RUN — Le Magazine\n\n${latest.cat}\n\n${latest.title}\n\n${latest.desc}\n\nLire l'article : ${latest.link}\n\n---\nVinyl Run · Saint-Pierre, La Réunion\nhttps://www.vinyl-run.com/blog/`;
+
   // 3. Create campaign
   const createRes = await fetch('https://api.brevo.com/v3/emailCampaigns', {
     method: 'POST',
@@ -62,11 +68,12 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       name: `Magazine — ${latest.title}`,
-      subject: `Nouvel article : ${latest.title}`,
+      subject: latest.title,
       sender: { name: 'Vinyl Run', email: 'magazine@vinyl-run.com' },
       replyTo: 'vinylrun974@gmail.com',
       recipients: { listIds: [4] },
       htmlContent,
+      textContent,
     }),
   });
 
