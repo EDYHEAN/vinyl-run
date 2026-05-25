@@ -25,7 +25,7 @@ function trim(l) {
 }
 
 async function fetchPage(page, retries = 3) {
-  const url = `https://api.discogs.com/users/${SELLER}/inventory?per_page=100&page=${page}&sort=listed&sort_order=desc`;
+  const url = `https://api.discogs.com/users/${SELLER}/inventory?per_page=100&page=${page}`;
   const res = await fetch(url, { headers: HEADERS });
   if (res.status === 429 && retries > 0) {
     await new Promise(r => setTimeout(r, 500));
