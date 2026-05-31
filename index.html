@@ -88,8 +88,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <!-- Désactive la hellobar après 23h59 le 08/05/2026 (La Réunion UTC+4) -->
-  <script>(function(){if(Date.now()>=new Date('2026-05-08T19:59:00Z').getTime())document.documentElement.classList.add('hellobar-off');}());</script>
   <!-- Supprime les click IDs plateformes (fbclid, gclid…) sans toucher aux UTM -->
   <script>(function(){var p=new URLSearchParams(location.search),dirty=['fbclid','gclid','msclkid','twclid'],c=false;dirty.forEach(function(k){if(p.has(k)){p.delete(k);c=true;}});if(c){var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);}})();</script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -102,8 +100,8 @@
        HELLOBAR
   ══════════════════════════════════════ -->
   <div class="hellobar" role="status">
-    <span class="hellobar__desk">Fermeture exceptionnelle — Le magasin sera fermé ce vendredi 8 mai</span>
-    <span class="hellobar__mob">Fermé ce vendredi 8 mai</span>
+    <span class="hellobar__desk" data-i18n="hellobar.desk">Vinyl Run expédie dans le monde entier</span>
+    <span class="hellobar__mob" data-i18n="hellobar.mob">Expédition mondiale disponible</span>
   </div>
 
   <div id="scroll-progress"></div>
@@ -279,6 +277,17 @@
           <hr class="cat-card__line" />
           <h3 class="cat-card__title" data-i18n-html="cat.04.title">Imports &amp; Exclusivités</h3>
           <p class="cat-card__desc" data-i18n="cat.04.desc">Des éditions limitées, des imports directs. Ce qu'on ne trouve nulle part ailleurs sur l'île.</p>
+        </div>
+      </div>
+      <div class="cat-card-wrap" data-reveal>
+        <div class="cat-vinyl-slider">
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        </div>
+        <div class="cat-card">
+          <span class="cat-card__num">05</span>
+          <hr class="cat-card__line" />
+          <h3 class="cat-card__title" data-i18n="cat.05.title">Expédition Mondiale</h3>
+          <p class="cat-card__desc" data-i18n="cat.05.desc">Vinyl Run expédie ses vinyles partout dans le monde. Chaque commande préparée et envoyée par Christophe, directement depuis Saint-Pierre de La Réunion.</p>
         </div>
       </div>
     </div>
