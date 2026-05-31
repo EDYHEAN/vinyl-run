@@ -253,14 +253,25 @@
           body: JSON.stringify({ conversation_id: convId, message: msg, sender: 'visitor' }),
         });
         if (!r.ok) {
-          // Conversation introuvable (ex: supprimée côté admin) — reset pour permettre une nouvelle conv
+          // Conversation introuvable — reset et relance via chat-new avec le même message
           convId = null;
           localStorage.removeItem('vr_chat_conv');
           stopPolling();
           serverMsgs = [];
-          pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; });
-          renderMessages();
-          return;
+          var res2 = await fetch('/api/chat-new', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg }),
+          });
+          if (!res2.ok) {
+            pendingMsgs = pendingMsgs.filter(function (p) { return p !== pending; });
+            renderMessages();
+            return;
+          }
+          var data2 = await res2.json();
+          convId = data2.conversation_id;
+          localStorage.setItem('vr_chat_conv', convId);
+          startPolling();
         }
       }
       // Rafraîchir depuis le serveur pour confirmer
