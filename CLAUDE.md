@@ -103,6 +103,8 @@ Le domaine primaire est **`www.vinyl-run.com`**. Dans chaque fichier HTML :
 
 Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait la page comme doublon et ne l'indexerait pas.
 
+**URLs sans extension `.html`** : `cleanUrls` est actif sur Vercel — les URLs `.html` redirigent en 308 vers les URLs propres. Toute URL publique (canonical, og:url, JSON-LD, sitemap, RSS link/guid, liens internes) doit être **sans `.html`** : `https://www.vinyl-run.com/blog/articles/[slug]`. Un canonical en `.html` pointe vers un redirect → Google marque la page "Autre page avec balise canonique correcte" et ne l'indexe pas (bug GSC corrigé le 2026-06-12). Les liens internes relatifs aussi : `href="nom-article"`, `href="/demande-vinyl"`, `href="/#inventaire"`.
+
 ## Sujets d'articles — À éviter
 
 - **Zouk** — hors scope éditorial de Vinyl Run
@@ -111,8 +113,8 @@ Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait 
 
 Avant tout push d'un nouvel article :
 1. `class="hellobar-off"` sur le `<body>`
-2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...`
+2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...` **sans extension `.html`**
 3. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
-4. Mettre à jour `blog/index.html` (hero + card mosaïque)
+4. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
 5. Mettre à jour `rss.xml`
 6. Mettre à jour `sitemap.xml`
