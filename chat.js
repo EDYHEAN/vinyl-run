@@ -4,7 +4,8 @@
   link.href = '/chat.css';
   document.head.appendChild(link);
 
-  var _siteLang = (typeof localStorage !== 'undefined' && localStorage.getItem('vr_lang')) || 'fr';
+  var _siteLang = (typeof localStorage !== 'undefined' && localStorage.getItem('vr_lang')) ||
+    document.documentElement.lang || 'fr';
   var _isEn = _siteLang === 'en';
 
   document.body.insertAdjacentHTML('beforeend', `

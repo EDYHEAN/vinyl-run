@@ -186,9 +186,9 @@
     return (navigator.language || '').startsWith('fr') ? 'fr' : 'en';
   }
 
-  function applyLang(lang) {
+  function applyLang(lang, persist) {
     if (lang !== 'fr' && lang !== 'en') lang = 'fr';
-    localStorage.setItem('vr_lang', lang);
+    if (persist !== false) localStorage.setItem('vr_lang', lang);
     document.documentElement.lang = lang;
     document.documentElement.classList.toggle('lang-en', lang === 'en');
     if (T[lang]['meta.title']) document.title = T[lang]['meta.title'];
@@ -210,9 +210,10 @@
     });
   }
 
-  // VR_PAGE_LANG : langue imposée par l'URL (/ = fr, /en/ = en) — prioritaire sur la détection
+  // VR_PAGE_LANG : langue imposée par l'URL (/ = fr, /en/ = en) — prioritaire sur la détection,
+  // mais sans écraser la préférence stockée : seul un clic sur le toggle persiste un choix
   var lang = window.VR_PAGE_LANG || getLang();
-  applyLang(lang);
+  applyLang(lang, !window.VR_PAGE_LANG);
 
   window.VR_I18N = { setLang: applyLang, getLang: getLang };
 })();

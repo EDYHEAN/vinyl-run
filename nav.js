@@ -41,8 +41,11 @@
   </div>
 `);
 
-  // Sur /en/, le logo et les ancres home doivent rester sur la version EN
-  if (window.VR_PAGE_LANG === 'en') {
+  // Si la langue effective est EN, le logo et les ancres home pointent vers /en/
+  // (langue de la page si imposée par l'URL, sinon préférence stockée, sinon navigateur)
+  var effLang = window.VR_PAGE_LANG || localStorage.getItem('vr_lang') ||
+    ((navigator.language || '').indexOf('fr') === 0 ? 'fr' : 'en');
+  if (effLang === 'en') {
     document.querySelectorAll('.nav__logo, .nav__links a[href^="/#"], .nav__mobile-links a[href^="/#"]').forEach(function (a) {
       a.setAttribute('href', a.getAttribute('href').replace(/^\//, '/en/'));
     });
