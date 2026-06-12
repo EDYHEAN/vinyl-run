@@ -121,7 +121,8 @@ Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait 
 Avant tout push d'un nouvel article :
 1. `class="hellobar-off"` sur le `<body>`
 2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...` **sans extension `.html`**
-3. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
-4. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
-5. Mettre à jour `rss.xml`
-6. Mettre à jour `sitemap.xml`
+3. Auteur **Person** (E-E-A-T) : JSON-LD `author` = `Person` Christophe (jobTitle "Disquaire — Fondateur de Vinyl Run", url `https://www.vinyl-run.com/#equipe`, worksFor Organization Vinyl Run) ; `publisher` reste Organization. Byline visible : "Christophe · Disquaire depuis 2017 · Vinyl Run, Saint-Pierre". Copier un article existant garantit le pattern.
+4. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
+5. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
+6. Mettre à jour `rss.xml`
+7. Mettre à jour `sitemap.xml`
