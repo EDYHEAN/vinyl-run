@@ -105,6 +105,13 @@ Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait 
 
 **URLs sans extension `.html`** : `cleanUrls` est actif sur Vercel — les URLs `.html` redirigent en 308 vers les URLs propres. Toute URL publique (canonical, og:url, JSON-LD, sitemap, RSS link/guid, liens internes) doit être **sans `.html`** : `https://www.vinyl-run.com/blog/articles/[slug]`. Un canonical en `.html` pointe vers un redirect → Google marque la page "Autre page avec balise canonique correcte" et ne l'indexe pas (bug GSC corrigé le 2026-06-12). Les liens internes relatifs aussi : `href="nom-article"`, `href="/demande-vinyl"`, `href="/#inventaire"`.
 
+## Home EN (`/en/`)
+
+`en/index.html` est une copie statique de `index.html` avec les textes EN bakés (dictionnaire de `i18n.js`).
+- **Ne jamais l'éditer à la main** : après toute modification de `index.html`, régénérer avec `node bake-en.js` et commiter le résultat.
+- Langue déterministe par URL : `window.VR_PAGE_LANG` (`'fr'` sur `/`, `'en'` sur `/en/`) est prioritaire sur la détection navigateur (`i18n.js`). Le toggle FR/EN navigue entre `/` et `/en/` sur les homes (via `window.VR_LANG_URLS` dans `nav.js`) ; sur le blog et demande-vinyl il traduit en place comme avant.
+- hreflang croisés (`fr`, `en`, `x-default`) sur les deux homes. `/en/` est dans le sitemap.
+
 ## Sujets d'articles — À éviter
 
 - **Zouk** — hors scope éditorial de Vinyl Run

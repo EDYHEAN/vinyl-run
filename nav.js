@@ -41,9 +41,23 @@
   </div>
 `);
 
+  // Sur /en/, le logo et les ancres home doivent rester sur la version EN
+  if (window.VR_PAGE_LANG === 'en') {
+    document.querySelectorAll('.nav__logo, .nav__links a[href^="/#"], .nav__mobile-links a[href^="/#"]').forEach(function (a) {
+      a.setAttribute('href', a.getAttribute('href').replace(/^\//, '/en/'));
+    });
+  }
+
   document.querySelectorAll('.lang-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      if (window.VR_I18N) window.VR_I18N.setLang(this.dataset.lang);
+      var target = this.dataset.lang;
+      // Les pages home existent dans les deux langues : on navigue au lieu de traduire en place
+      if (window.VR_LANG_URLS && window.VR_LANG_URLS[target] && window.VR_LANG_URLS[target] !== location.pathname) {
+        localStorage.setItem('vr_lang', target);
+        location.href = window.VR_LANG_URLS[target];
+        return;
+      }
+      if (window.VR_I18N) window.VR_I18N.setLang(target);
     });
   });
 })();

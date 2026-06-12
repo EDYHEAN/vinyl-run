@@ -210,7 +210,8 @@
     });
   }
 
-  var lang = getLang();
+  // VR_PAGE_LANG : langue imposée par l'URL (/ = fr, /en/ = en) — prioritaire sur la détection
+  var lang = window.VR_PAGE_LANG || getLang();
   applyLang(lang);
 
   window.VR_I18N = { setLang: applyLang, getLang: getLang };
