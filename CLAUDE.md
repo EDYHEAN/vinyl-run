@@ -116,6 +116,16 @@ Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait 
 
 - **Zouk** — hors scope éditorial de Vinyl Run
 
+## Style rédactionnel — Règles obligatoires
+
+**Pas de tirets cadratins (—) dans le corps des articles.** Le tiret cadratin est un marqueur stylistique très fréquent dans les textes générés par IA — il rend le discours artificiel et détectable. À remplacer par :
+- une virgule ou deux points selon le sens
+- une parenthèse si c'est une incise
+- un point si c'est une fin de phrase naturelle
+- rien du tout si la construction tient sans
+
+Cette règle s'applique au texte visible (paragraphes, listes, titres de sections). Elle ne concerne pas le code HTML, les attributs ou les valeurs CSS.
+
 ## Checklist publication article
 
 Avant tout push d'un nouvel article :
