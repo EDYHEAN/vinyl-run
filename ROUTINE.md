@@ -44,12 +44,15 @@ place (modèle MFT, sans clé API), elle délègue au runner GitHub qui, lui, a 
    (`/assets/articles/{slug}/hero.webp`, `hero-thumb.webp` pour la carte mosaïque, `fig-1.webp`,
    `fig-2.webp`…). Ces fichiers n'existent pas encore au moment du push (~30-60s d'images
    manquantes, comblées par l'Action).
-2. Elle écrit un récap **`blog/article-images.json`** listant chaque image :
-   `{"slug":"...","images":[{"name":"hero","source":"<URL CDN Unsplash/Pexels pertinente>"},…]}`.
-   Le `name` doit matcher le nom de fichier local (`hero`, `fig-1`…). La routine peut choisir des
-   **IDs frais et pertinents** selon le sujet (sa connaissance suffit) — plus besoin de recycler.
+2. Elle écrit un récap **`blog/article-images.json`** listant chaque image avec une **requête**
+   de recherche (mots-clés EN, spécifiques au sujet) :
+   `{"slug":"...","images":[{"name":"hero","query":"vinyl record gatefold sleeve"},{"name":"fig-1","query":"..."}]}`.
+   Le `name` matche le nom de fichier local (`hero`, `fig-1`…). (Une entrée peut aussi porter
+   `"source":"<URL directe>"` au lieu de `query` si on veut imposer une image précise.)
 3. Le push de `blog/article-images.json` déclenche [.github/workflows/article-images.yml](.github/workflows/article-images.yml) :
-   le runner télécharge chaque `source`, redimensionne et réencode : hero → `hero.webp` (1600,
+   pour chaque `query`, le runner **cherche sur l'API Pexels** et prend le 1er résultat **absent
+   de `blog/used-images.json`** (registre des IDs déjà utilisés → nouveauté garantie, pas de
+   doublon intra-article), puis redimensionne et réencode : hero → `hero.webp` (1600,
    page) + `hero-thumb.webp` (600, carte) + `hero.jpg` (1600, **og:image + enclosure RSS + mail**,
    car le WebP ne s'affiche pas dans Outlook ni chez certains scrapers sociaux) ; figures →
    `fig-N.webp` (1200). Commit dans `assets/articles/{slug}/`.
@@ -87,6 +90,9 @@ et `api/notify.js` compare à `process.env.NOTIFY_SECRET` (Vercel). **Les deux v
 - **`NOTIFY_SECRET`** : même valeur dans Vercel (Environment Variables) **et** GitHub
   (Settings → Secrets → Actions). À faire tourner si la valeur a fuité.
 - **`BREVO_API_KEY`** : variable d'env Vercel (consommée par `api/notify.js`).
+- **`PEXELS_API_KEY`** : GitHub Actions secret = clé API Pexels gratuite (https://www.pexels.com/api/).
+  Consommée par `article-images.yml` pour la recherche d'images. Sans elle, l'Action retombe sur
+  les fallbacks (pas de nouveauté). Quota gratuit largement suffisant (200 req/h).
 - **Déploiement du commit d'images** : aucun secret/hook nécessaire. L'Action `article-images.yml`
   commit en `johan.trigeard@gmail.com` (membre de l'équipe Vercel). Un commit poussé par
   `github-actions[bot]` dont l'auteur n'est PAS membre est **bloqué** par Vercel (images 404 —

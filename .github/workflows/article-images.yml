@@ -1,17 +1,21 @@
 name: Article images
 
-# Déclenché par le push de blog/article-images.json (le récap écrit par la routine).
-# Télécharge les images sources (le runner GitHub a le réseau, contrairement au sandbox
-# cloud de la routine), les redimensionne et les réencode :
-#   - hero       -> hero.webp (1600, page) + hero-thumb.webp (600, carte) + hero.jpg (1600, og/RSS/mail)
-#   - fig-N      -> fig-N.webp (1200, page)
-# WebP pour les images de page (perf). JPEG pour og:image + enclosure RSS car le WebP
-# ne s'affiche pas dans plusieurs clients mail (Outlook) ni chez certains scrapers sociaux.
-# Fallback en cascade si une source échoue : image vinyle réseau éprouvée -> assets/mag03.jpg.
+# Déclenché par le push de blog/article-images.json (récap écrit par la routine).
+# Pour chaque image, le récap fournit soit une "query" (mots-clés -> recherche Pexels API),
+# soit une "source" (URL directe). Le runner GitHub a le réseau (contrairement au sandbox
+# cloud de la routine). Les images choisies sont redimensionnées et réencodées :
+#   - hero  -> hero.webp (1600, page) + hero-thumb.webp (600, carte) + hero.jpg (1600, og/RSS/mail)
+#   - fig-N -> fig-N.webp (1200, page)
+# WebP pour la page (perf) ; JPEG pour og:image/enclosure RSS/mail (le WebP casse sous Outlook
+# et certains scrapers sociaux).
 #
-# IMPORTANT : le commit est authoré johan.trigeard@gmail.com (membre de l'équipe Vercel).
-# Un commit poussé par github-actions[bot] dont l'auteur n'est PAS membre de l'équipe est
-# BLOQUÉ par Vercel (images en 404). Cf. même bug résolu sur MyFrenchTool.
+# NOUVEAUTÉ : blog/used-images.json tient le registre des IDs Pexels déjà utilisés sur le site.
+# L'Action ne choisit que des résultats absents de ce registre (et distincts dans un même article),
+# puis y ajoute les nouveaux IDs. Plus de "déjà-vu" ni de doublon.
+#
+# Fallback en cascade si une source/recherche échoue : Pexels vinyle éprouvé -> assets/mag03.jpg.
+# Auteur du commit = johan.trigeard@gmail.com (membre équipe Vercel) : sinon le push bot est
+# bloqué par Vercel (images 404).
 
 on:
   push:
@@ -33,47 +37,85 @@ jobs:
       - name: Setup Pillow
         run: pip install --quiet Pillow
 
-      - name: Download, resize and reencode article images
+      - name: Search, download, resize and reencode article images
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           python3 - <<'EOF'
-          import json, os, subprocess, urllib.request
+          import json, os, subprocess, urllib.request, urllib.parse
           from io import BytesIO
           from PIL import Image
 
-          RECAP = 'blog/article-images.json'
+          RECAP  = 'blog/article-images.json'
+          LEDGER = 'blog/used-images.json'
+          API_KEY = os.environ.get('PEXELS_API_KEY', '').strip()
 
-          # Largeur cible (px) de l'image principale selon son nom.
           WIDTHS = {'hero': 1600}
           DEFAULT_WIDTH = 1200
-          # Le hero produit aussi une vignette (carte mosaïque) et un JPEG (og/RSS/mail).
-          THUMB = {'hero': ('hero-thumb', 600)}
-          JPEG = {'hero': ('hero', 1600)}
+          THUMB = {'hero': ('hero-thumb', 600)}   # vignette carte mosaïque
+          JPEG  = {'hero': ('hero', 1600)}        # og:image / enclosure RSS / mail
 
-          # Fallback réseau : hero vinyle déjà éprouvé en prod (Pexels 2746823).
           NET_FALLBACK = 'https://images.pexels.com/photos/2746823/pexels-photo-2746823.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop'
-          # Fallback local ultime : photo boutique déjà dans le repo.
           LOCAL_FALLBACK = 'assets/mag03.jpg'
 
-          with open(RECAP, encoding='utf-8') as f:
-              recap = json.load(f)
-          slug = recap['slug']
-          out_dir = os.path.join('assets', 'articles', slug)
-          os.makedirs(out_dir, exist_ok=True)
-
-          def fetch(url):
-              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+          def http_get(url, headers=None):
+              req = urllib.request.Request(url, headers=headers or {'User-Agent': 'Mozilla/5.0'})
               with urllib.request.urlopen(req, timeout=25) as res:
                   return res.read()
 
-          def load_image(im):
-              """Renvoie un objet PIL depuis : source -> fallback réseau -> fallback local."""
-              for src in (im['source'], NET_FALLBACK):
+          # Registre de nouveauté (IDs Pexels déjà utilisés sur le site).
+          used = set()
+          if os.path.exists(LEDGER):
+              try:
+                  used = set(json.load(open(LEDGER, encoding='utf-8')).get('pexels', []))
+              except Exception:
+                  used = set()
+          picked = set()  # IDs choisis pendant ce run (évite les doublons intra-article)
+
+          def pexels_search(query):
+              if not API_KEY:
+                  print("::warning::PEXELS_API_KEY absent — pas de recherche, fallback utilisé.")
+                  return []
+              url = 'https://api.pexels.com/v1/search?' + urllib.parse.urlencode(
+                  {'query': query, 'per_page': 40, 'orientation': 'landscape', 'size': 'large'})
+              try:
+                  return json.loads(http_get(url, {'Authorization': API_KEY})).get('photos', [])
+              except Exception as e:
+                  print(f"::warning::recherche Pexels KO ('{query}') : {e}")
+                  return []
+
+          def resolve(im):
+              """(image PIL, pexels_id|None) : query -> Pexels (1er résultat neuf), sinon source, sinon fallback."""
+              q = im.get('query')
+              if q:
+                  for ph in pexels_search(q):
+                      pid = ph.get('id')
+                      if pid in used or pid in picked:
+                          continue
+                      try:
+                          data = http_get(ph['src']['large2x'])
+                          picked.add(pid)
+                          print(f"{im['name']}: Pexels #{pid} pour '{q}'")
+                          return Image.open(BytesIO(data)).convert('RGB'), pid
+                      except Exception as e:
+                          print(f"::warning::{im['name']}: download #{pid} KO : {e}")
+              src = im.get('source')
+              if src:
                   try:
-                      return Image.open(BytesIO(fetch(src))).convert('RGB'), src
+                      return Image.open(BytesIO(http_get(src))).convert('RGB'), None
                   except Exception as e:
-                      print(f"::warning::{im['name']}: source KO ({src[:70]}) -> {e}")
-              print(f"::warning::{im['name']}: fallback local {LOCAL_FALLBACK}")
-              return Image.open(LOCAL_FALLBACK).convert('RGB'), LOCAL_FALLBACK
+                      print(f"::warning::{im['name']}: source KO : {e}")
+              try:
+                  print(f"::warning::{im['name']}: fallback réseau")
+                  return Image.open(BytesIO(http_get(NET_FALLBACK))).convert('RGB'), None
+              except Exception:
+                  print(f"::warning::{im['name']}: fallback local")
+                  return Image.open(LOCAL_FALLBACK).convert('RGB'), None
+
+          recap = json.load(open(RECAP, encoding='utf-8'))
+          slug = recap['slug']
+          out_dir = os.path.join('assets', 'articles', slug)
+          os.makedirs(out_dir, exist_ok=True)
 
           def resized(img, width):
               if img.width > width:
@@ -92,24 +134,25 @@ jobs:
           changed = []
           for im in recap['images']:
               name = im['name']
-              img, used = load_image(im)
-              print(f"{name}: source utilisée {used[:70]}")
-              dest = os.path.join(out_dir, f'{name}.webp')
-              save_webp(img, WIDTHS.get(name, DEFAULT_WIDTH), dest)
-              changed.append(dest)
+              img, _ = resolve(im)
+              save_webp(img, WIDTHS.get(name, DEFAULT_WIDTH), os.path.join(out_dir, f'{name}.webp'))
+              changed.append(os.path.join(out_dir, f'{name}.webp'))
               if name in THUMB:
-                  tname, twidth = THUMB[name]
-                  tdest = os.path.join(out_dir, f'{tname}.webp')
-                  save_webp(img, twidth, tdest)
-                  changed.append(tdest)
+                  tn, tw = THUMB[name]
+                  save_webp(img, tw, os.path.join(out_dir, f'{tn}.webp'))
+                  changed.append(os.path.join(out_dir, f'{tn}.webp'))
               if name in JPEG:
-                  jname, jwidth = JPEG[name]
-                  jdest = os.path.join(out_dir, f'{jname}.jpg')
-                  save_jpeg(img, jwidth, jdest)
-                  changed.append(jdest)
+                  jn, jw = JPEG[name]
+                  save_jpeg(img, jw, os.path.join(out_dir, f'{jn}.jpg'))
+                  changed.append(os.path.join(out_dir, f'{jn}.jpg'))
+
+          # Met à jour le registre de nouveauté.
+          if picked:
+              all_used = sorted(used | picked)
+              json.dump({'pexels': all_used}, open(LEDGER, 'w', encoding='utf-8'), indent=2)
+              changed.append(LEDGER)
 
           if changed:
-              # Auteur = membre de l'équipe Vercel, sinon le déploiement du commit bot est bloqué.
               subprocess.run(['git', 'config', 'user.name', 'Vinyl Run Agent'], check=True)
               subprocess.run(['git', 'config', 'user.email', 'johan.trigeard@gmail.com'], check=True)
               subprocess.run(['git', 'add'] + changed, check=True)
@@ -118,5 +161,5 @@ jobs:
                   subprocess.run(['git', 'push', 'origin', 'main'], check=True)
                   print('Images committées et poussées.')
               else:
-                  print('Aucun changement d\'image.')
+                  print('Aucun changement.')
           EOF
