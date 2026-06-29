@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   // 2. Build HTML
   const imgBlock = latest.img
-    ? `<img src="${latest.img}" alt="" style="width:100%;max-width:520px;height:220px;object-fit:cover;border-radius:4px;margin-bottom:24px;display:block;" />`
+    ? `<a href="${latest.link}" target="_blank" style="text-decoration:none;border:0;"><img src="${latest.img}" alt="${latest.title}" style="width:100%;max-width:520px;height:220px;object-fit:cover;border-radius:4px;margin-bottom:24px;display:block;border:0;" /></a>`
     : '';
 
   const htmlContent = `<!DOCTYPE html>
