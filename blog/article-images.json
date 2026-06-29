@@ -1,0 +1,9 @@
+{
+  "slug": "pochette-vinyle-oeuvre-art",
+  "images": [
+    { "name": "hero",  "source": "https://images.unsplash.com/photo-1535992165812-68d1861aa71e?w=1600&q=80&fit=crop&auto=format" },
+    { "name": "fig-1", "source": "https://images.pexels.com/photos/908965/pexels-photo-908965.jpeg?auto=compress&cs=tinysrgb&w=1200&fit=crop" },
+    { "name": "fig-2", "source": "https://images.unsplash.com/photo-1624913762055-a0c87bc3912d?w=1200&q=80&fit=crop&auto=format" },
+    { "name": "fig-3", "source": "https://images.pexels.com/photos/8533553/pexels-photo-8533553.jpeg?auto=compress&cs=tinysrgb&w=1200&fit=crop" }
+  ]
+}
