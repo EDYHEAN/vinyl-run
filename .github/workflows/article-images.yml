@@ -79,7 +79,9 @@ jobs:
               url = 'https://api.pexels.com/v1/search?' + urllib.parse.urlencode(
                   {'query': query, 'per_page': 40, 'orientation': 'landscape', 'size': 'large'})
               try:
-                  return json.loads(http_get(url, {'Authorization': API_KEY})).get('photos', [])
+                  # User-Agent navigateur obligatoire : l'API Pexels est derrière Cloudflare,
+                  # qui bloque le User-Agent par défaut de Python (Python-urllib) -> 403.
+                  return json.loads(http_get(url, {'Authorization': API_KEY, 'User-Agent': 'Mozilla/5.0'})).get('photos', [])
               except Exception as e:
                   print(f"::warning::recherche Pexels KO ('{query}') : {e}")
                   return []

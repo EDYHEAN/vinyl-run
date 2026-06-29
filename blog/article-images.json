@@ -1,9 +1,9 @@
 {
   "slug": "pochette-vinyle-oeuvre-art",
   "images": [
-    { "name": "hero",  "query": "vinyl records album cover art display" },
-    { "name": "fig-1", "query": "vinyl record sleeve graphic design close up" },
-    { "name": "fig-2", "query": "open gatefold vinyl album record" },
-    { "name": "fig-3", "query": "person holding vinyl record sleeve" }
+    { "name": "hero",  "query": "vinyl records collection album covers" },
+    { "name": "fig-1", "query": "vinyl record sleeve artwork detail" },
+    { "name": "fig-2", "query": "open gatefold record album" },
+    { "name": "fig-3", "query": "hands browsing vinyl records crate" }
   ]
 }
