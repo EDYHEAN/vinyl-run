@@ -2,9 +2,16 @@ name: Article images
 
 # Déclenché par le push de blog/article-images.json (le récap écrit par la routine).
 # Télécharge les images sources (le runner GitHub a le réseau, contrairement au sandbox
-# cloud de la routine), les redimensionne et les réencode en WebP léger, puis les commit
-# en local dans assets/articles/{slug}/. En cas d'échec d'une source : fallback réseau
-# (image vinyle éprouvée) puis fallback local (assets/mag03.jpg) — jamais d'image manquante.
+# cloud de la routine), les redimensionne et les réencode :
+#   - hero       -> hero.webp (1600, page) + hero-thumb.webp (600, carte) + hero.jpg (1600, og/RSS/mail)
+#   - fig-N      -> fig-N.webp (1200, page)
+# WebP pour les images de page (perf). JPEG pour og:image + enclosure RSS car le WebP
+# ne s'affiche pas dans plusieurs clients mail (Outlook) ni chez certains scrapers sociaux.
+# Fallback en cascade si une source échoue : image vinyle réseau éprouvée -> assets/mag03.jpg.
+#
+# IMPORTANT : le commit est authoré johan.trigeard@gmail.com (membre de l'équipe Vercel).
+# Un commit poussé par github-actions[bot] dont l'auteur n'est PAS membre de l'équipe est
+# BLOQUÉ par Vercel (images en 404). Cf. même bug résolu sur MyFrenchTool.
 
 on:
   push:
@@ -38,8 +45,9 @@ jobs:
           # Largeur cible (px) de l'image principale selon son nom.
           WIDTHS = {'hero': 1600}
           DEFAULT_WIDTH = 1200
-          # Le hero produit aussi une vignette pour la carte mosaïque du blog.
+          # Le hero produit aussi une vignette (carte mosaïque) et un JPEG (og/RSS/mail).
           THUMB = {'hero': ('hero-thumb', 600)}
+          JPEG = {'hero': ('hero', 1600)}
 
           # Fallback réseau : hero vinyle déjà éprouvé en prod (Pexels 2746823).
           NET_FALLBACK = 'https://images.pexels.com/photos/2746823/pexels-photo-2746823.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop'
@@ -67,13 +75,19 @@ jobs:
               print(f"::warning::{im['name']}: fallback local {LOCAL_FALLBACK}")
               return Image.open(LOCAL_FALLBACK).convert('RGB'), LOCAL_FALLBACK
 
-          def save_webp(img, width, dest):
+          def resized(img, width):
               if img.width > width:
                   h = round(img.height * width / img.width)
-                  img = img.resize((width, h), Image.LANCZOS)
-              img.save(dest, 'WEBP', quality=82, method=6)
-              kb = os.path.getsize(dest) // 1024
-              print(f"  -> {dest} ({img.width}px, {kb} Ko)")
+                  return img.resize((width, h), Image.LANCZOS)
+              return img
+
+          def save_webp(img, width, dest):
+              resized(img, width).save(dest, 'WEBP', quality=82, method=6)
+              print(f"  -> {dest} ({os.path.getsize(dest)//1024} Ko)")
+
+          def save_jpeg(img, width, dest):
+              resized(img, width).save(dest, 'JPEG', quality=84, optimize=True, progressive=True)
+              print(f"  -> {dest} ({os.path.getsize(dest)//1024} Ko)")
 
           changed = []
           for im in recap['images']:
@@ -88,10 +102,16 @@ jobs:
                   tdest = os.path.join(out_dir, f'{tname}.webp')
                   save_webp(img, twidth, tdest)
                   changed.append(tdest)
+              if name in JPEG:
+                  jname, jwidth = JPEG[name]
+                  jdest = os.path.join(out_dir, f'{jname}.jpg')
+                  save_jpeg(img, jwidth, jdest)
+                  changed.append(jdest)
 
           if changed:
+              # Auteur = membre de l'équipe Vercel, sinon le déploiement du commit bot est bloqué.
               subprocess.run(['git', 'config', 'user.name', 'Vinyl Run Agent'], check=True)
-              subprocess.run(['git', 'config', 'user.email', 'magazine@vinyl-run.com'], check=True)
+              subprocess.run(['git', 'config', 'user.email', 'johan.trigeard@gmail.com'], check=True)
               subprocess.run(['git', 'add'] + changed, check=True)
               if subprocess.run(['git', 'diff', '--staged', '--quiet']).returncode != 0:
                   subprocess.run(['git', 'commit', '-m', f'feat(blog): images {slug}'], check=True)
@@ -100,17 +120,3 @@ jobs:
               else:
                   print('Aucun changement d\'image.')
           EOF
-
-      # Le push ci-dessus est fait par github-actions[bot] : Vercel n'émet PAS de
-      # déploiement pour ce push. On déclenche donc explicitement un redéploiement
-      # via un Deploy Hook Vercel (sinon les images restent en 404 jusqu'au prochain
-      # push d'un utilisateur réel).
-      - name: Trigger Vercel deploy
-        env:
-          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
-        run: |
-          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
-            curl -s -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null && echo "Déploiement Vercel déclenché."
-          else
-            echo "::warning::VERCEL_DEPLOY_HOOK absent — Vercel ne redéploiera pas tout seul. Crée un Deploy Hook Vercel et ajoute le secret VERCEL_DEPLOY_HOOK."
-          fi

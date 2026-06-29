@@ -49,8 +49,10 @@ place (modèle MFT, sans clé API), elle délègue au runner GitHub qui, lui, a 
    Le `name` doit matcher le nom de fichier local (`hero`, `fig-1`…). La routine peut choisir des
    **IDs frais et pertinents** selon le sujet (sa connaissance suffit) — plus besoin de recycler.
 3. Le push de `blog/article-images.json` déclenche [.github/workflows/article-images.yml](.github/workflows/article-images.yml) :
-   le runner télécharge chaque `source`, redimensionne (hero 1600px + vignette 600px ; figures
-   1200px) et réencode en **WebP** léger (~80-150 Ko), commit dans `assets/articles/{slug}/`.
+   le runner télécharge chaque `source`, redimensionne et réencode : hero → `hero.webp` (1600,
+   page) + `hero-thumb.webp` (600, carte) + `hero.jpg` (1600, **og:image + enclosure RSS + mail**,
+   car le WebP ne s'affiche pas dans Outlook ni chez certains scrapers sociaux) ; figures →
+   `fig-N.webp` (1200). Commit dans `assets/articles/{slug}/`.
    Fallback en cascade si une source échoue : image vinyle réseau éprouvée → `assets/mag03.jpg`
    local. Jamais d'image cassée en prod.
 
@@ -85,11 +87,12 @@ et `api/notify.js` compare à `process.env.NOTIFY_SECRET` (Vercel). **Les deux v
 - **`NOTIFY_SECRET`** : même valeur dans Vercel (Environment Variables) **et** GitHub
   (Settings → Secrets → Actions). À faire tourner si la valeur a fuité.
 - **`BREVO_API_KEY`** : variable d'env Vercel (consommée par `api/notify.js`).
-- **`VERCEL_DEPLOY_HOOK`** : GitHub Actions secret = URL d'un Deploy Hook Vercel (Vercel →
-  Settings → Git → Deploy Hooks, branche `main`). Indispensable : le commit d'images de
-  `article-images.yml` est poussé par `github-actions[bot]`, ce qui **ne déclenche pas** de
-  déploiement Vercel. L'Action appelle ce hook pour forcer le redéploiement, sinon les images
-  restent en 404 jusqu'au prochain push d'un utilisateur réel (incident du 2026-06-29).
+- **Déploiement du commit d'images** : aucun secret/hook nécessaire. L'Action `article-images.yml`
+  commit en `johan.trigeard@gmail.com` (membre de l'équipe Vercel). Un commit poussé par
+  `github-actions[bot]` dont l'auteur n'est PAS membre est **bloqué** par Vercel (images 404 —
+  incident du 2026-06-29, même bug que MFT). Ne jamais repasser l'auteur de cette Action en
+  `magazine@vinyl-run.com` (qui n'est pas un compte Vercel). Débloquage manuel ponctuel si
+  besoin : `git commit --allow-empty` + push depuis un compte réel.
 
 ## Référence
 Les règles éditoriales détaillées (style anti-cadratin, auteur Person E-E-A-T, URLs
