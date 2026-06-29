@@ -2,6 +2,10 @@ name: Newsletter Notification
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'newsletter/last-send.json'
 
 jobs:
   notify:
