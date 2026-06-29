@@ -85,6 +85,11 @@ et `api/notify.js` compare à `process.env.NOTIFY_SECRET` (Vercel). **Les deux v
 - **`NOTIFY_SECRET`** : même valeur dans Vercel (Environment Variables) **et** GitHub
   (Settings → Secrets → Actions). À faire tourner si la valeur a fuité.
 - **`BREVO_API_KEY`** : variable d'env Vercel (consommée par `api/notify.js`).
+- **`VERCEL_DEPLOY_HOOK`** : GitHub Actions secret = URL d'un Deploy Hook Vercel (Vercel →
+  Settings → Git → Deploy Hooks, branche `main`). Indispensable : le commit d'images de
+  `article-images.yml` est poussé par `github-actions[bot]`, ce qui **ne déclenche pas** de
+  déploiement Vercel. L'Action appelle ce hook pour forcer le redéploiement, sinon les images
+  restent en 404 jusqu'au prochain push d'un utilisateur réel (incident du 2026-06-29).
 
 ## Référence
 Les règles éditoriales détaillées (style anti-cadratin, auteur Person E-E-A-T, URLs

@@ -100,3 +100,17 @@ jobs:
               else:
                   print('Aucun changement d\'image.')
           EOF
+
+      # Le push ci-dessus est fait par github-actions[bot] : Vercel n'émet PAS de
+      # déploiement pour ce push. On déclenche donc explicitement un redéploiement
+      # via un Deploy Hook Vercel (sinon les images restent en 404 jusqu'au prochain
+      # push d'un utilisateur réel).
+      - name: Trigger Vercel deploy
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
+            curl -s -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null && echo "Déploiement Vercel déclenché."
+          else
+            echo "::warning::VERCEL_DEPLOY_HOOK absent — Vercel ne redéploiera pas tout seul. Crée un Deploy Hook Vercel et ajoute le secret VERCEL_DEPLOY_HOOK."
+          fi
