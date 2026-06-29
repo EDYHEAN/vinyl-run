@@ -35,12 +35,27 @@ cd /tmp/vinylrun
 et travailler **exclusivement** dans `/tmp/vinylrun`. Si un `git push` renvoie 403 → **s'arrêter
 et le signaler** (l'étape Setup n'a pas été suivie), ne tenter aucun contournement.
 
-### 2. Pas de réseau pour les images
+### 2. Pas de réseau pour les images → délégué à un GitHub Action
 Le sandbox cloud bloque le scraping Unsplash/Pexels (403) et le `curl` des CDN (000). La
-routine ne doit **jamais** faire de WebFetch/curl pour découvrir ou vérifier un ID d'image.
-Méthode autorisée : réutiliser les IDs déjà présents dans les articles en prod (rendu garanti),
-ou un ID connu au **format complet** (`photo-XXXXXXXX-XXXXXXXXXXXX` pour Unsplash). En cas de
-doute sur le rendu → réutiliser un ID déjà en prod.
+routine ne fait donc **jamais** de WebFetch/curl pour télécharger ou vérifier une image. À la
+place (modèle MFT, sans clé API), elle délègue au runner GitHub qui, lui, a le réseau :
+
+1. Dans l'article + og:image + blog/index + RSS, la routine référence des **chemins locaux**
+   (`/assets/articles/{slug}/hero.webp`, `hero-thumb.webp` pour la carte mosaïque, `fig-1.webp`,
+   `fig-2.webp`…). Ces fichiers n'existent pas encore au moment du push (~30-60s d'images
+   manquantes, comblées par l'Action).
+2. Elle écrit un récap **`blog/article-images.json`** listant chaque image :
+   `{"slug":"...","images":[{"name":"hero","source":"<URL CDN Unsplash/Pexels pertinente>"},…]}`.
+   Le `name` doit matcher le nom de fichier local (`hero`, `fig-1`…). La routine peut choisir des
+   **IDs frais et pertinents** selon le sujet (sa connaissance suffit) — plus besoin de recycler.
+3. Le push de `blog/article-images.json` déclenche [.github/workflows/article-images.yml](.github/workflows/article-images.yml) :
+   le runner télécharge chaque `source`, redimensionne (hero 1600px + vignette 600px ; figures
+   1200px) et réencode en **WebP** léger (~80-150 Ko), commit dans `assets/articles/{slug}/`.
+   Fallback en cascade si une source échoue : image vinyle réseau éprouvée → `assets/mag03.jpg`
+   local. Jamais d'image cassée en prod.
+
+Bénéfices : images servies par le domaine (SEO Google Images + perf), poids maîtrisé, `alt`
+descriptif obligatoire écrit par la routine dans le HTML (jamais vide), zéro dépendance hotlink.
 
 ### 3. Auteur des commits
 Les commits de la routine doivent rester **`Vinyl Run Agent <magazine@vinyl-run.com>`**
