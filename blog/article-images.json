@@ -1,9 +1,9 @@
 {
-  "slug": "pochette-vinyle-oeuvre-art",
+  "slug": "maloya-reeditions-vinyle",
   "images": [
-    { "name": "hero",  "query": "vinyl records collection album covers" },
-    { "name": "fig-1", "query": "vinyl record sleeve artwork detail" },
-    { "name": "fig-2", "query": "open gatefold record album" },
-    { "name": "fig-3", "query": "hands browsing vinyl records crate" }
+    { "name": "hero",  "query": "vinyl record turntable warm mood percussion" },
+    { "name": "fig-1", "query": "old worn vinyl records archive dusty crate" },
+    { "name": "fig-2", "query": "vinyl record pressing machine factory workshop" },
+    { "name": "fig-3", "query": "two vinyl records side by side comparison hands" }
   ]
 }
