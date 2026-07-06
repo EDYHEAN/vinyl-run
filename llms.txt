@@ -1,0 +1,38 @@
+# Vinyl Run
+
+> Disquaire indépendant à Saint-Pierre, La Réunion, fondé en 2017. Vinyles neufs, occasions et raretés, avec la plus grande sélection de musiques de l'océan Indien (séga, maloya, Madagascar, Comores) disponible en vinyle sur l'île. Expédition mondiale depuis La Réunion via Discogs.
+
+Informations pratiques : boutique au 45 bis rue du four à chaux, 97410 Saint-Pierre, La Réunion (France). Ouvert du mardi au vendredi de 10h à 13h et de 14h à 18h, le samedi de 10h à 18h, fermé dimanche et lundi. Téléphone : +262 692 44 13 88. Email : vinylrun974@gmail.com. Fondateur et disquaire : Christophe, épaulé par Rolande (conseil). Services en boutique : station d'écoute sur platine, conseil personnalisé, commandes spéciales, recherche de vinyles introuvables.
+
+## Pages principales
+
+- [Accueil](https://www.vinyl-run.com/) : présentation de la boutique, inventaire Discogs en temps réel, avis clients, horaires et contact
+- [Home in English](https://www.vinyl-run.com/en/) : English version of the homepage
+- [Le Magazine](https://www.vinyl-run.com/blog/) : le blog de Vinyl Run, articles sur le vinyle et les musiques de La Réunion et de l'océan Indien
+- [Demande de vinyle](https://www.vinyl-run.com/demande-vinyl) : formulaire pour demander la recherche d'un vinyle précis
+
+## Articles du blog
+
+- [Le maloya renaît en vinyle](https://www.vinyl-run.com/blog/articles/maloya-reeditions-vinyle) : la vague des rééditions qui ressuscite le patrimoine maloya
+- [La pochette comme œuvre d'art](https://www.vinyl-run.com/blog/articles/pochette-vinyle-oeuvre-art) : pourquoi on collectionne aussi avec les yeux
+- [L'âge d'or du 45 tours réunionnais](https://www.vinyl-run.com/blog/articles/age-d-or-45-tours-reunionnais) : les petits labels qui ont pressé le séga
+- [Le vinyle n'est pas mort](https://www.vinyl-run.com/blog/articles/le-retour-du-vinyle-a-la-reunion) : le retour du vinyle à La Réunion
+- [Commander sur Discogs depuis La Réunion](https://www.vinyl-run.com/blog/articles/acheter-sur-discogs-depuis-la-reunion) : guide pratique (frais, douane, délais)
+- [Vinyles sous les tropiques](https://www.vinyl-run.com/blog/articles/vinyles-sous-les-tropiques) : protéger sa collection de l'humidité et de la chaleur
+- [Débuter sa collection vinyle](https://www.vinyl-run.com/blog/articles/debuter-collection-vinyle-10-disques-essentiels) : 10 disques essentiels pour moins de 50 €
+- [Séga & maloya sur vinyle](https://www.vinyl-run.com/blog/articles/sega-maloya-vinyles-patrimoine-reunionnais) : le patrimoine sonore de La Réunion
+- [Pressing original ou remaster](https://www.vinyl-run.com/blog/articles/pressing-original-vs-remaster) : est-ce que ça s'entend vraiment ?
+- [Musiques de l'océan Indien sur vinyle](https://www.vinyl-run.com/blog/articles/musiques-ocean-indien-vinyle) : de Madagascar aux Comores, les trésors méconnus
+- [Lire un vinyle comme un pro](https://www.vinyl-run.com/blog/articles/lire-un-vinyle-etiquette-matrice-pressings) : étiquette, matrice, pressing, le décodage complet
+
+## Acheter en ligne
+
+- [Boutique Discogs Vinylrun974](https://www.discogs.com/seller/Vinylrun974/profile) : tout l'inventaire en vente, expédition mondiale
+- [Vinyl Run sur Spinlog](https://spinlog.eu/fr/shop/vinyl-run) : boutique alternative
+
+## Optional
+
+- [Sitemap](https://www.vinyl-run.com/sitemap.xml) : plan du site XML
+- [Flux RSS](https://www.vinyl-run.com/rss.xml) : derniers articles du magazine
+- [Instagram](https://www.instagram.com/vinylrun974/) : actualités et arrivages
+- [Facebook](https://www.facebook.com/vinylrun/) : page de la boutique

@@ -4,4 +4,37 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# Crawlers IA / moteurs de réponse : bienvenue (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
 Sitemap: https://www.vinyl-run.com/sitemap.xml
+
+# Guide du site pour agents IA : https://www.vinyl-run.com/llms.txt
