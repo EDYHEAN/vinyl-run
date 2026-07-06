@@ -105,6 +105,16 @@ Ne jamais utiliser `https://vinyl-run.com/...` (sans www) — Google marquerait 
 
 **URLs sans extension `.html`** : `cleanUrls` est actif sur Vercel — les URLs `.html` redirigent en 308 vers les URLs propres. Toute URL publique (canonical, og:url, JSON-LD, sitemap, RSS link/guid, liens internes) doit être **sans `.html`** : `https://www.vinyl-run.com/blog/articles/[slug]`. Un canonical en `.html` pointe vers un redirect → Google marque la page "Autre page avec balise canonique correcte" et ne l'indexe pas (bug GSC corrigé le 2026-06-12). Les liens internes relatifs aussi : `href="nom-article"`, `href="/demande-vinyl"`, `href="/#inventaire"`.
 
+## SEO — Title & meta description (longueurs obligatoires)
+
+Google tronque au-delà de ces limites, donc pour **chaque page et chaque nouvel article** :
+- `<title>` : **≤ 62 caractères**, suffixe ` — Vinyl Run` compris. Sujet/mot-clé en premier, pas de sous-titre. Le H1 de la page peut rester long, seul le `<title>` est contraint.
+- `<meta name="description">` : **120 à 160 caractères**. Une promesse claire, pas de troncature à la découpe.
+- `og:title` / `og:description` / JSON-LD `headline` peuvent être plus longs (pas de limite SERP), inutile de les raccourcir.
+- Vérification rapide : `node -e "console.log('LE TITLE'.length)"`
+
+Passe faite le 2026-07-06 sur toutes les pages existantes : ne pas ré-allonger.
+
 ## Home EN (`/en/`)
 
 `en/index.html` est une copie statique de `index.html` avec les textes EN bakés (dictionnaire de `i18n.js`).
@@ -136,3 +146,5 @@ Avant tout push d'un nouvel article :
 5. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
 6. Mettre à jour `rss.xml`
 7. Mettre à jour `sitemap.xml`
+8. `<title>` ≤ 62 caractères (` — Vinyl Run` compris) + meta description 120–160 caractères (cf. section "SEO — Title & meta description")
+9. Ajouter l'article dans `llms.txt` (section "Articles du blog", format `- [Titre](url) : description courte`)
