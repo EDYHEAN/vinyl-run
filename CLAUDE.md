@@ -148,3 +148,4 @@ Avant tout push d'un nouvel article :
 7. Mettre à jour `sitemap.xml`
 8. `<title>` ≤ 62 caractères (` — Vinyl Run` compris) + meta description 120–160 caractères (cf. section "SEO — Title & meta description")
 9. Ajouter l'article dans `llms.txt` (section "Articles du blog", format `- [Titre](url) : description courte`)
+10. Lancer `node update-home-latest.js` — injecte les 3 derniers articles (lus dans `rss.xml`) dans le bloc "Derniers articles" de la home et regénère `en/index.html`. À lancer **après** l'étape 6, commiter `index.html` + `en/index.html` avec le reste.
