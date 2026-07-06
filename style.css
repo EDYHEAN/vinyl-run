@@ -8,7 +8,7 @@
   --bg-2:        #191816;
   --bg-warm:     #1c1710;
   --ink:         #f0ede6;
-  --ink-muted:   rgba(240,237,230,0.42);
+  --ink-muted:   rgba(240,237,230,0.55); /* 0.42 → 0.55 pour passer le contraste AA */
   --ink-faint:   rgba(240,237,230,0.12);
   --accent:      #EDF10C;
   --accent-dim:  rgba(237,241,12,0.15);
@@ -1584,4 +1584,18 @@ a    { text-decoration: none; color: inherit; }
     font-size: 16px; /* évite le zoom auto iOS sur focus */
   }
   .newsletter-section__btn { border-radius: 0 0 2px 2px; padding: 14px 22px; }
+}
+
+/* ═══════════════════════════════════════════
+   MOTION RÉDUIT — respecte le réglage système
+   (accessibilité + allège le thread principal)
+═══════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .hero__deco { will-change: auto; }
 }

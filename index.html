@@ -89,8 +89,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Police chargée en async pour ne pas bloquer le rendu (FCP/LCP) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="style.css" />
+  <!-- Préchargement du logo hero (élément LCP) -->
+  <link rel="preload" as="image" href="assets/logo.svg" fetchpriority="high" />
   <!-- Supprime les click IDs plateformes (fbclid, gclid…) sans toucher aux UTM -->
   <script>(function(){var p=new URLSearchParams(location.search),dirty=['fbclid','gclid','msclkid','twclid'],c=false;dirty.forEach(function(k){if(p.has(k)){p.delete(k);c=true;}});if(c){var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);}})();</script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -112,13 +117,15 @@
 
   <script src="/nav.js"></script>
 
+  <main id="main">
+
   <!-- ══════════════════════════════════════
        HERO
   ══════════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero__left">
       <p class="hero__eyebrow" data-i18n="hero.eyebrow">Disquaire indépendant · Saint-Pierre, La Réunion</p>
-      <img src="assets/logo.svg" alt="Vinyl Run" class="hero__logo" />
+      <img src="assets/logo.svg" alt="Vinyl Run" class="hero__logo" width="280" height="280" fetchpriority="high" />
       <p class="hero__sub" data-i18n-html="hero.sub">Vinyles neufs, occasions &amp; raretés.<br>Une sélection à la main depuis 2017.</p>
       <div class="hero__actions">
         <a href="#inventaire" class="btn btn--fill" data-i18n="hero.cta.shop">Explorer le shop</a>
@@ -130,25 +137,25 @@
       <svg class="hero__deco" viewBox="0 0 1205 1074" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible" aria-hidden="true">
         <defs>
           <filter id="filter0_g_57_161" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
-            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="3" seed="2">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="2">
               <animate attributeName="baseFrequency" values="0.008 0.012; 0.012 0.008; 0.006 0.015; 0.010 0.010; 0.008 0.012" dur="6s" repeatCount="indefinite"/>
             </feTurbulence>
             <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
           </filter>
           <filter id="filter-ring2" x="-15%" y="-15%" width="130%" height="130%" filterUnits="userSpaceOnUse">
-            <feTurbulence type="fractalNoise" baseFrequency="0.007 0.011" numOctaves="3" seed="7">
+            <feTurbulence type="fractalNoise" baseFrequency="0.007 0.011" numOctaves="2" seed="7">
               <animate attributeName="baseFrequency" values="0.007 0.011; 0.011 0.007; 0.009 0.013; 0.007 0.011" dur="9s" repeatCount="indefinite"/>
             </feTurbulence>
             <feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/>
           </filter>
           <filter id="filter-ring3" x="-22%" y="-22%" width="144%" height="144%" filterUnits="userSpaceOnUse">
-            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="3" seed="13">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="2" seed="13">
               <animate attributeName="baseFrequency" values="0.010 0.006; 0.006 0.012; 0.008 0.008; 0.010 0.006" dur="12s" repeatCount="indefinite"/>
             </feTurbulence>
             <feDisplacementMap in="SourceGraphic" scale="36" xChannelSelector="R" yChannelSelector="G"/>
           </filter>
           <filter id="filter-ring4" x="-30%" y="-30%" width="160%" height="160%" filterUnits="userSpaceOnUse">
-            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="3" seed="21">
+            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="2" seed="21">
               <animate attributeName="baseFrequency" values="0.009 0.005; 0.005 0.011; 0.007 0.009; 0.009 0.005" dur="15s" repeatCount="indefinite"/>
             </feTurbulence>
             <feDisplacementMap in="SourceGraphic" scale="48" xChannelSelector="R" yChannelSelector="G"/>
@@ -241,7 +248,7 @@
     <div class="categories" data-reveal-group>
       <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
-          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" width="348" height="349" loading="lazy" decoding="async" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">01</span>
@@ -252,7 +259,7 @@
       </div>
       <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
-          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" width="348" height="349" loading="lazy" decoding="async" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">02</span>
@@ -263,7 +270,7 @@
       </div>
       <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
-          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" width="348" height="349" loading="lazy" decoding="async" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">03</span>
@@ -274,7 +281,7 @@
       </div>
       <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
-          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" width="348" height="349" loading="lazy" decoding="async" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">04</span>
@@ -285,7 +292,7 @@
       </div>
       <div class="cat-card-wrap" data-reveal>
         <div class="cat-vinyl-slider">
-          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img class="cat-vinyl" src="assets/vinyl-record.png" alt="" aria-hidden="true" width="348" height="349" loading="lazy" decoding="async" />
         </div>
         <div class="cat-card">
           <span class="cat-card__num">05</span>
@@ -303,13 +310,13 @@
   <section class="boutique" id="la-boutique">
     <div class="slideshow" id="slideshow">
       <div class="slideshow__track" id="slideshowTrack">
-        <div class="slide"><img src="assets/mag01.jpg" alt="Vinyl Run — la boutique" loading="eager" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag02.jpg" alt="Vinyl Run — ambiance" loading="lazy" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag03.jpg" alt="Vinyl Run — vinyles" loading="lazy" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag04.jpg" alt="Vinyl Run — bacs" loading="lazy" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag05.jpg" alt="Vinyl Run — sélection" loading="lazy" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag06.jpg" alt="Vinyl Run — disques" loading="lazy" decoding="async" /></div>
-        <div class="slide"><img src="assets/mag07.jpg" alt="Vinyl Run — boutique" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag01.jpg" alt="Vinyl Run — la boutique" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag02.jpg" alt="Vinyl Run — ambiance" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag03.jpg" alt="Vinyl Run — vinyles" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag04.jpg" alt="Vinyl Run — bacs" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag05.jpg" alt="Vinyl Run — sélection" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag06.jpg" alt="Vinyl Run — disques" width="1400" height="1867" loading="lazy" decoding="async" /></div>
+        <div class="slide"><img src="assets/mag07.jpg" alt="Vinyl Run — boutique" width="1400" height="1867" loading="lazy" decoding="async" /></div>
       </div>
 
       <button class="slideshow__arrow slideshow__arrow--prev" id="slidePrev" aria-label="Précédent">
@@ -426,7 +433,7 @@
 
       <div class="equipe-card" data-reveal>
         <div class="equipe-card__photo">
-          <img src="assets/titote.jpg" alt="Christophe" loading="lazy" decoding="async" />
+          <img src="assets/titote.jpg" alt="Christophe" width="700" height="933" loading="lazy" decoding="async" />
           <div class="equipe-card__overlay"></div>
         </div>
         <div class="equipe-card__info">
@@ -440,7 +447,7 @@
 
       <div class="equipe-card" data-reveal>
         <div class="equipe-card__photo">
-          <img src="assets/rolande.jpg" alt="Rolande" loading="lazy" decoding="async" />
+          <img src="assets/rolande.jpg" alt="Rolande" width="700" height="933" loading="lazy" decoding="async" />
           <div class="equipe-card__overlay"></div>
         </div>
         <div class="equipe-card__info">
@@ -529,6 +536,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ══════════════════════════════════════
        FOOTER
   ══════════════════════════════════════ -->
@@ -604,7 +613,7 @@
       </div>
       <div class="player__progress-row">
         <span class="player__time" id="timeElapsed">0:00</span>
-        <div class="player__bar" id="playerBar" role="slider" aria-label="Progression">
+        <div class="player__bar" id="playerBar" role="slider" aria-label="Progression" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
           <div class="player__bar-fill" id="playerFill"></div>
         </div>
         <span class="player__time" id="timeDuration">0:00</span>
@@ -645,6 +654,7 @@
         burger.classList.remove('open');
         burger.setAttribute('aria-expanded', 'false');
         mobile.setAttribute('aria-hidden', 'true');
+        mobile.inert = true;
         document.body.style.overflow = '';
       }
       burger.addEventListener('click', () => {
@@ -652,6 +662,7 @@
         burger.classList.toggle('open', isOpen);
         burger.setAttribute('aria-expanded', isOpen);
         mobile.setAttribute('aria-hidden', !isOpen);
+        mobile.inert = !isOpen;
         document.body.style.overflow = isOpen ? 'hidden' : '';
         if (isOpen && window.vrChat) window.vrChat.close();
       });
@@ -663,12 +674,19 @@
     // ── NAV scroll + parallax île ────────────────────────────────
     const nav = document.getElementById('nav');
     const heroDeco = document.querySelector('.hero__deco');
+    let navTicking = false;
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', scrollY > 40);
-      if (heroDeco) {
-        heroDeco.style.transform = `translateY(${scrollY * 0.12}px)`;
-      }
-    });
+      if (navTicking) return;
+      navTicking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        nav.classList.toggle('scrolled', y > 40);
+        if (heroDeco) {
+          heroDeco.style.transform = `translateY(${y * 0.12}px)`;
+        }
+        navTicking = false;
+      });
+    }, { passive: true });
 
     // ── Draw de l'île ────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
@@ -687,6 +705,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       const path = document.querySelector('.island-draw');
       if (!path) return;
+      // Île masquée sur mobile ou motion réduit : on n'anime pas (économie thread principal)
+      const heroRight = document.querySelector('.hero__right');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || (heroRight && getComputedStyle(heroRight).display === 'none')) return;
       setTimeout(() => {
         const svgNS = 'http://www.w3.org/2000/svg';
         const TRAIL = 10;
@@ -778,9 +800,19 @@
     // ── Scroll progress bar ──────────────────────────────────────
     (function () {
       const bar = document.getElementById('scroll-progress');
+      // max mis en cache pour éviter un reflow (lecture scrollHeight) à chaque scroll
+      let max = 0, ticking = false;
+      function recalc() { max = document.documentElement.scrollHeight - window.innerHeight; }
+      recalc();
+      window.addEventListener('resize', recalc, { passive: true });
+      window.addEventListener('load', recalc);
       window.addEventListener('scroll', () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        bar.style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          bar.style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+          ticking = false;
+        });
       }, { passive: true });
     })();
 
