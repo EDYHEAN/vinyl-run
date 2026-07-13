@@ -125,6 +125,8 @@ Passe faite le 2026-07-06 sur toutes les pages existantes : ne pas ré-allonger.
 ## Sujets d'articles — À éviter
 
 - **Zouk** — hors scope éditorial de Vinyl Run
+- **Choisir sa première platine** — déjà proposé, ne plus resuggérer
+- **Chiner des vinyles à La Réunion** — déjà proposé, ne plus resuggérer
 
 ## Style rédactionnel — Règles obligatoires
 
