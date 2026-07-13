@@ -1,9 +1,9 @@
 {
-  "slug": "maloya-reeditions-vinyle",
+  "slug": "alain-peters-tresor-cache-vinyle-reunionnais",
   "images": [
-    { "name": "hero",  "query": "vinyl record turntable warm mood percussion" },
-    { "name": "fig-1", "query": "old worn vinyl records archive dusty crate" },
-    { "name": "fig-2", "query": "vinyl record pressing machine factory workshop" },
-    { "name": "fig-3", "query": "two vinyl records side by side comparison hands" }
+    { "name": "hero",  "query": "acoustic guitar musician tropical island sunset silhouette warm" },
+    { "name": "fig-1", "query": "black and white portrait bearded musician vintage moody" },
+    { "name": "fig-2", "query": "hands playing acoustic guitar close up warm light" },
+    { "name": "fig-3", "query": "hands crate digging rare vinyl records collection" }
   ]
 }
