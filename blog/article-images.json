@@ -1,9 +1,6 @@
 {
   "slug": "alain-peters-tresor-cache-vinyle-reunionnais",
   "images": [
-    { "name": "hero",  "query": "acoustic guitar musician tropical island sunset silhouette warm" },
-    { "name": "fig-1", "query": "black and white portrait bearded musician vintage moody" },
-    { "name": "fig-2", "query": "hands playing acoustic guitar close up warm light" },
-    { "name": "fig-3", "query": "hands crate digging rare vinyl records collection" }
+    { "name": "fig-1", "query": "live concert stage lights crowd silhouette music atmosphere" }
   ]
 }
