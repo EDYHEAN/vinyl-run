@@ -17,7 +17,10 @@ name: Article images
 # Auteur du commit = johan.trigeard@gmail.com (membre équipe Vercel) : sinon le push bot est
 # bloqué par Vercel (images 404).
 
+# workflow_dispatch : declenche par publish-routine.yml apres le squash-merge
+# d'une branche claude/* (le push main du GITHUB_TOKEN ne declenche pas on:push).
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:

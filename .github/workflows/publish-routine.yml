@@ -1,0 +1,62 @@
+name: Publication routine
+
+# La routine cloud (claude.ai) ne peut pousser que sur des branches claude/*
+# (proxy git de la plateforme — plus AUCUN PAT dans ses instructions depuis le
+# 14/07/2026, l'ancien token en clair a ete revoque). Ce workflow publie ses
+# branches sur main : squash-merge re-authore en johan.trigeard@gmail.com
+# (contrainte Vercel, cf. commentaire d'article-images.yml), suppression de la
+# branche, puis dispatch du workflow aval concerne. Le dispatch est necessaire
+# car un push fait avec GITHUB_TOKEN ne declenche pas les workflows on:push
+# (workflow_dispatch, lui, reste permis).
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+    paths:
+      - 'blog/article-images.json'
+      - 'newsletter/last-send.json'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Squash-merge sur main puis dispatch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          CHANGED=$(git diff --name-only "origin/main" "origin/$BRANCH")
+          if [ -z "$CHANGED" ]; then
+            echo "Branche identique a main : rien a publier."
+            exit 1
+          fi
+          git config user.name "Vinyl Run Agent"
+          git config user.email "johan.trigeard@gmail.com"
+          git checkout -B main origin/main
+          git merge --squash "origin/$BRANCH"
+          if echo "$CHANGED" | grep -qx 'newsletter/last-send.json'; then
+            SLUG=$(python3 -c "import json; print(json.load(open('newsletter/last-send.json', encoding='utf-8'))['slug'])")
+            MSG="chore: envoi newsletter - $SLUG (routine)"
+          else
+            SLUG=$(python3 -c "import json; print(json.load(open('blog/article-images.json', encoding='utf-8'))['slug'])")
+            MSG="feat: nouvel article - $SLUG (routine)"
+          fi
+          git commit -m "$MSG"
+          git push origin main
+          git push origin --delete "$BRANCH" || true
+          if echo "$CHANGED" | grep -qx 'blog/article-images.json'; then
+            gh workflow run article-images.yml --ref main
+          fi
+          if echo "$CHANGED" | grep -qx 'newsletter/last-send.json'; then
+            gh workflow run notify.yml --ref main
+          fi
