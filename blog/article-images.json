@@ -1,6 +1,10 @@
 {
-  "slug": "alain-peters-tresor-cache-vinyle-reunionnais",
+  "slug": "organiser-classer-collection-vinyle",
   "images": [
-    { "name": "fig-1", "query": "live concert stage lights crowd silhouette music atmosphere" }
+    { "name": "hero",  "query": "vinyl records collection stored vertically wooden shelves" },
+    { "name": "fig-1", "query": "vinyl records standing upright packed on shelf" },
+    { "name": "fig-2", "query": "person flipping through vinyl records crate by genre" },
+    { "name": "fig-3", "query": "hand holding smartphone cataloging vinyl record collection" },
+    { "name": "fig-4", "query": "wooden cube shelf storage unit filled with vinyl records" }
   ]
 }
