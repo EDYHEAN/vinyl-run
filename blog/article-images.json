@@ -1,10 +1,10 @@
 {
-  "slug": "organiser-classer-collection-vinyle",
+  "slug": "comment-fabrique-un-vinyle-pressage",
   "images": [
-    { "name": "hero",  "query": "vinyl records collection stored vertically wooden shelves" },
-    { "name": "fig-1", "query": "vinyl records standing upright packed on shelf" },
-    { "name": "fig-2", "query": "person flipping through vinyl records crate by genre" },
-    { "name": "fig-3", "query": "hand holding smartphone cataloging vinyl record collection" },
-    { "name": "fig-4", "query": "wooden cube shelf storage unit filled with vinyl records" }
+    { "name": "hero",  "query": "black vinyl record pressing plant factory manufacturing" },
+    { "name": "fig-1", "query": "vinyl lacquer cutting lathe mastering studio engineer" },
+    { "name": "fig-2", "query": "metal nickel stamper vinyl record manufacturing plate" },
+    { "name": "fig-3", "query": "hydraulic vinyl record press machine hot pvc puck" },
+    { "name": "fig-4", "query": "white label test pressing vinyl record handwritten" }
   ]
 }
