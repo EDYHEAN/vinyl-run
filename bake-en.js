@@ -33,7 +33,9 @@ html = html.replace(/(<meta name="description" content=")[^"]*(")/,
 // Le hreflang est déjà présent dans la source FR — on ne bascule que le canonical
 html = html.replace('<link rel="canonical" href="https://www.vinyl-run.com" />',
   '<link rel="canonical" href="https://www.vinyl-run.com/en/" />');
-html = html.replace('content="https://www.vinyl-run.com" />\n  <meta property="og:title"', 'content="https://www.vinyl-run.com/en/" />\n  <meta property="og:title"');
+// \s* et pas \n : la source peut être en CRLF selon la machine
+html = html.replace(/content="https:\/\/www\.vinyl-run\.com" \/>(\s*)<meta property="og:title"/,
+  'content="https://www.vinyl-run.com/en/" />$1<meta property="og:title"');
 html = html.replace(/(<meta property="og:title"\s+content=")[^"]*(")/, '$1VINYL RUN — Independent Record Shop · Saint-Pierre, Réunion$2');
 html = html.replace(/(<meta property="og:description" content=")[^"]*(")/, '$1New, used and rare vinyl since 2017. The independent record shop of Saint-Pierre, Réunion Island. Listening station, personal advice, worldwide shipping.$2');
 html = html.replace('content="fr_FR"', 'content="en_US"');
