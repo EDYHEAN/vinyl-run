@@ -115,6 +115,29 @@ Google tronque au-delà de ces limites, donc pour **chaque page et chaque nouvel
 
 Passe faite le 2026-07-06 sur toutes les pages existantes : ne pas ré-allonger.
 
+## SEO — Favicon (règle des 48px)
+
+Google n'accepte un favicon que si son côté est un **multiple de 48px** (48, 96, 144…). En dessous il rejette le fichier et affiche le globe générique dans les résultats de recherche, même si un SVG valide est déclaré à côté : `/favicon.ico` à la racine est récupéré en priorité et Google ne retombe pas sur le SVG. Bug corrigé le 2026-08-02, l'ICO ne contenait que du 16 et du 32.
+
+Fichiers servis, tous générés depuis le même design :
+- `favicon.svg` — source du design, utilisé par les navigateurs
+- `favicon.ico` — 16 + 32 + **48**
+- `favicon-96.png` + `favicon-192.png` — candidats conformes explicites pour Google
+
+**Ne jamais éditer l'ICO ni les PNG à la main.** Après toute retouche du logo : modifier `sample()` dans `make-favicon.js`, répercuter la même géométrie dans `favicon.svg`, puis lancer `node make-favicon.js`. Le script est sans dépendance (rastérisation + encodage PNG/ICO en Node pur).
+
+Les 4 balises `<link rel="icon">` doivent être présentes sur **toutes** les pages publiques (18 fichiers, admin exclu) :
+```html
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+```
+
+Contrainte de contraste : le disque `--bg` (#111110) disparaît sur fond sombre (SERP Google en dark mode, onglets sombres). D'où le liseré `--accent` sur le bord, qui définit la silhouette. Ne pas le retirer.
+
+Après mise en production d'un changement de favicon, Google ne le reprend qu'au recrawl de la home : forcer via Search Console → Inspection d'URL → Demander l'indexation.
+
 ## Home EN (`/en/`)
 
 `en/index.html` est une copie statique de `index.html` avec les textes EN bakés (dictionnaire de `i18n.js`).
