@@ -1,10 +1,10 @@
 {
-  "slug": "comment-fabrique-un-vinyle-pressage",
+  "slug": "vinyles-colores-picture-discs-editions-limitees",
   "images": [
-    { "name": "hero",  "query": "black vinyl record pressing plant factory manufacturing" },
-    { "name": "fig-1", "query": "vinyl lacquer cutting lathe mastering studio engineer" },
-    { "name": "fig-2", "query": "metal nickel stamper vinyl record manufacturing plate" },
-    { "name": "fig-3", "query": "hydraulic vinyl record press machine hot pvc puck" },
-    { "name": "fig-4", "query": "white label test pressing vinyl record handwritten" }
+    { "name": "hero",  "query": "colored translucent vinyl record on turntable close up" },
+    { "name": "fig-1", "query": "stack of colored vinyl records red blue yellow translucent" },
+    { "name": "fig-2", "query": "picture disc vinyl record with printed artwork on surface" },
+    { "name": "fig-3", "query": "hands holding numbered limited edition vinyl record sleeve" },
+    { "name": "fig-4", "query": "splatter colored vinyl record out of sleeve on turntable" }
   ]
 }
