@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.vinyl-run.com/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -14,9 +14,15 @@
   </url>
   <url>
     <loc>https://www.vinyl-run.com/blog/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vinyl-run.com/blog/articles/vitesses-vinyle-33-45-78-tours</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.vinyl-run.com/blog/articles/nettoyer-vinyle-occasion-methode-complete</loc>
