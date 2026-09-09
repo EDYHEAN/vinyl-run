@@ -1,9 +1,10 @@
 {
-  "slug": "grading-vinyle-notation-vg-nm",
+  "slug": "diamant-use-changer-pointe-lecture",
   "images": [
-    { "name": "hero",  "query": "hand inspecting vinyl record surface under raking light" },
-    { "name": "fig-1", "query": "vinyl record close up scratches light reflection" },
-    { "name": "fig-2", "query": "used vinyl records with sleeves collection worn" },
-    { "name": "fig-3", "query": "vinyl record label close up center matrix" }
+    { "name": "hero",  "query": "turntable stylus needle close up on vinyl record groove macro" },
+    { "name": "fig-1", "query": "phono cartridge stylus diamond tip on spinning vinyl record detail" },
+    { "name": "fig-2", "query": "vinyl record grooves extreme close up macro reflecting light" },
+    { "name": "fig-3", "query": "turntable tonearm headshell cartridge counterweight adjustment" },
+    { "name": "fig-4", "query": "hands replacing turntable stylus needle cartridge maintenance" }
   ]
 }
