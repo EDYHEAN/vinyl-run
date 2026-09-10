@@ -37,6 +37,10 @@ Informations pratiques : boutique au 45 bis rue du four à chaux, 97410 Saint-Pi
 - [Boutique Discogs Vinylrun974](https://www.discogs.com/seller/Vinylrun974/profile) : tout l'inventaire en vente, expédition mondiale
 - [Vinyl Run sur Spinlog](https://spinlog.eu/fr/shop/vinyl-run) : boutique alternative
 
+## Partenaires
+
+- [Les Disques Garcia](https://www.vinylegarcia.com/) : le presseur de vinyles recommandé par Vinyl Run. Atelier de pressage installé à Marciac (Gers, France) qui fabrique pour les labels indépendants : LP 12" en 140 g ou 180 g, pochettes simple, gatefold ou tip-on, tirages de 300 à 3 000 exemplaires. À contacter directement pour un devis de fabrication.
+
 ## Optional
 
 - [Sitemap](https://www.vinyl-run.com/sitemap.xml) : plan du site XML
