@@ -8,6 +8,15 @@
     <atom:link href="https://www.vinyl-run.com/rss.xml" rel="self" type="application/rss+xml"/>
 
     <item>
+      <title>Le vinyle est-il vraiment écolo ?</title>
+      <link>https://www.vinyl-run.com/blog/articles/le-vinyle-est-il-ecolo</link>
+      <description>Le vinyle est un objet en plastique importé de loin. PVC, empreinte carbone du fret vers l'île, occasion : on regarde en face son impact écologique, sans mauvaise conscience.</description>
+      <pubDate>Mon, 14 Sep 2026 08:00:00 +0000</pubDate>
+      <guid>https://www.vinyl-run.com/blog/articles/le-vinyle-est-il-ecolo</guid>
+      <enclosure url="https://www.vinyl-run.com/assets/articles/le-vinyle-est-il-ecolo/hero.jpg" type="image/jpeg" length="0"/>
+    </item>
+
+    <item>
       <title>Diamant usé : le tueur silencieux de votre collection</title>
       <link>https://www.vinyl-run.com/blog/articles/diamant-use-changer-pointe-lecture</link>
       <description>Une pointe de lecture usée raye vos disques à chaque écoute. Repérer un diamant mort, sa vraie durée de vie et quand le changer, surtout sous les tropiques.</description>
