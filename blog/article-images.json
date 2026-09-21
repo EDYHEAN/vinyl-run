@@ -1,9 +1,9 @@
 {
-  "slug": "le-vinyle-est-il-ecolo",
+  "slug": "bandes-originales-films-vinyle",
   "images": [
-    { "name": "hero",  "query": "stack of black vinyl records glossy plastic" },
-    { "name": "fig-1", "query": "PVC plastic pellets granules raw material industrial" },
-    { "name": "fig-2", "query": "container cargo ship ocean freight shipping" },
-    { "name": "fig-3", "query": "second hand vinyl records crate flea market digging" }
+    { "name": "hero",  "query": "film soundtrack vinyl record gatefold sleeve on turntable" },
+    { "name": "fig-1", "query": "symphony orchestra film score recording session studio" },
+    { "name": "fig-2", "query": "vintage cinema film reel old movie projector" },
+    { "name": "fig-3", "query": "colored marbled vinyl record pulled from illustrated gatefold sleeve" }
   ]
 }
