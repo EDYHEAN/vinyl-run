@@ -41,6 +41,13 @@
   </div>
 `);
 
+  // inert suit l'état ouvert/fermé du menu, quelle que soit la page qui le pilote
+  // (seule la home gérait inert ; ailleurs le menu restait inert donc non cliquable)
+  var navMobile = document.getElementById('navMobile');
+  new MutationObserver(function () {
+    navMobile.inert = !navMobile.classList.contains('open');
+  }).observe(navMobile, { attributes: true, attributeFilter: ['class'] });
+
   // Si la langue effective est EN, le logo et les ancres home pointent vers /en/
   // (langue de la page si imposée par l'URL, sinon préférence stockée, sinon navigateur)
   var effLang = window.VR_PAGE_LANG || localStorage.getItem('vr_lang') ||
