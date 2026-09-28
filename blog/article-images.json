@@ -1,6 +1,7 @@
 {
   "slug": "regler-platine-contrepoids-antiskating",
   "images": [
-    { "name": "hero", "query": "vinyl record player tonearm needle stylus macro close up" }
+    { "name": "hero",  "source": "https://images.pexels.com/photos/28572392/pexels-photo-28572392.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
+    { "name": "fig-2", "source": "https://images.pexels.com/photos/26315453/pexels-photo-26315453.jpeg?auto=compress&cs=tinysrgb&w=1200&fit=crop" }
   ]
 }
