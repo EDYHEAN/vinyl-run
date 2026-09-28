@@ -1,9 +1,6 @@
 {
   "slug": "regler-platine-contrepoids-antiskating",
   "images": [
-    { "name": "hero",  "query": "turntable tonearm cartridge stylus close up adjustment" },
-    { "name": "fig-1", "query": "vinyl record groove macro stylus needle in groove" },
-    { "name": "fig-2", "query": "hand adjusting turntable tonearm counterweight rear" },
-    { "name": "fig-3", "query": "turntable record player open dust cover bright interior" }
+    { "name": "hero", "query": "vinyl record player tonearm needle stylus macro close up" }
   ]
 }
