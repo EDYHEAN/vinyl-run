@@ -1,7 +1,10 @@
 {
-  "slug": "regler-platine-contrepoids-antiskating",
+  "slug": "ramener-vinyles-avion-paris-reunion",
   "images": [
-    { "name": "hero",  "source": "https://images.pexels.com/photos/28572392/pexels-photo-28572392.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
-    { "name": "fig-2", "source": "https://images.pexels.com/photos/26315453/pexels-photo-26315453.jpeg?auto=compress&cs=tinysrgb&w=1200&fit=crop" }
+    { "name": "hero",  "query": "vinyl records packed in open suitcase travel" },
+    { "name": "fig-1", "query": "carry on luggage backpack airport terminal" },
+    { "name": "fig-2", "query": "vinyl records packed upright in cardboard shipping box" },
+    { "name": "fig-3", "query": "airport baggage claim carousel travelers suitcases" },
+    { "name": "fig-4", "query": "vinyl record on turntable close up needle" }
   ]
 }
