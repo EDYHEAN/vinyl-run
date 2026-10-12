@@ -1,10 +1,10 @@
 {
-  "slug": "ramener-vinyles-avion-paris-reunion",
+  "slug": "reggae-reunionnais-maloggae-vinyle",
   "images": [
-    { "name": "hero",  "query": "vinyl records packed in open suitcase travel" },
-    { "name": "fig-1", "query": "carry on luggage backpack airport terminal" },
-    { "name": "fig-2", "query": "vinyl records packed upright in cardboard shipping box" },
-    { "name": "fig-3", "query": "airport baggage claim carousel travelers suitcases" },
-    { "name": "fig-4", "query": "vinyl record on turntable close up needle" }
+    { "name": "hero",  "query": "reggae vinyl records stack next to turntable" },
+    { "name": "fig-1", "query": "vintage radio receiver retro 1980s" },
+    { "name": "fig-2", "query": "reggae band live concert percussion drums outdoor" },
+    { "name": "fig-3", "query": "vintage 7 inch vinyl singles record store crate" },
+    { "name": "fig-4", "query": "sound system speaker stack outdoor party" }
   ]
 }
