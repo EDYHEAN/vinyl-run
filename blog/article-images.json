@@ -1,10 +1,10 @@
 {
-  "slug": "reggae-reunionnais-maloggae-vinyle",
+  "slug": "jazz-vinyle-blue-note-verve-impulse-ecm",
   "images": [
-    { "name": "hero",  "query": "reggae vinyl records stack next to turntable" },
-    { "name": "fig-1", "query": "vintage radio receiver retro 1980s" },
-    { "name": "fig-2", "query": "reggae band live concert percussion drums outdoor" },
-    { "name": "fig-3", "query": "vintage 7 inch vinyl singles record store crate" },
-    { "name": "fig-4", "query": "sound system speaker stack outdoor party" }
+    { "name": "hero",  "query": "jazz vinyl records collection album covers" },
+    { "name": "fig-1", "query": "jazz saxophone player club black and white" },
+    { "name": "fig-2", "query": "hands flipping through used vinyl records crate" },
+    { "name": "fig-3", "query": "jazz pianist grand piano concert stage" },
+    { "name": "fig-4", "query": "turntable stylus on vinyl record close up" }
   ]
 }
