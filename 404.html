@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable — Vinyl Run</title>
+  <meta name="description" content="Cette page n'existe pas ou a changé d'adresse. Retrouvez l'inventaire, le Magazine et la boutique Vinyl Run, disquaire à Saint-Pierre, La Réunion." />
+  <meta name="robots" content="noindex, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/blog/blog.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <style>
+    .notfound {
+      min-height: 78vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 1.5rem;
+      padding: 9rem 1.5rem 5rem;
+    }
+    .notfound__disc {
+      width: 132px; height: 132px; border-radius: 50%;
+      background:
+        radial-gradient(circle, var(--bg) 0 5%, var(--accent) 5% 24%, transparent 24%),
+        repeating-radial-gradient(circle, #1d1d1b 0 2px, #131312 2px 4px);
+      box-shadow: 0 0 0 1px rgba(237, 241, 12, 0.5);
+      animation: notfound-spin 6s linear infinite;
+    }
+    @keyframes notfound-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .notfound__disc { animation: none; } }
+    .notfound__code {
+      font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent);
+    }
+    .notfound__title {
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; color: var(--ink);
+    }
+    .notfound__sub { max-width: 460px; font-size: 15px; line-height: 1.7; color: var(--ink-muted); }
+    .notfound__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 0.5rem; }
+  </style>
+</head>
+<body class="hellobar-off">
+
+  <script src="/nav.js"></script>
+
+  <main class="notfound">
+    <div class="notfound__disc" aria-hidden="true"></div>
+    <p class="notfound__code">Erreur 404 · Face introuvable</p>
+    <h1 class="notfound__title">Ce disque n'est plus dans le bac.</h1>
+    <p class="notfound__sub">
+      La page que vous cherchez n'existe pas, ou elle a changé d'adresse.
+      Les bonnes trouvailles sont juste à côté.
+    </p>
+    <div class="notfound__actions">
+      <a href="/#inventaire" class="btn btn--fill">Voir l'inventaire</a>
+      <a href="/blog/" class="btn btn--ghost">Lire le Magazine</a>
+      <a href="/demande-vinyl" class="btn btn--ghost">Chercher un disque précis</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span class="footer__logo">VINYL RUN</span>
+    <p>© 2026 Vinyl Run · Saint-Pierre, La Réunion</p>
+    <p class="footer__signature">Made by the son the father made</p>
+    <div class="footer__socials">
+      <a href="https://www.instagram.com/vinylrun974/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/vinylrun/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.discogs.com/seller/Vinylrun974/profile" target="_blank" rel="noopener">Discogs</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const nav = document.getElementById('nav');
+      window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+
+      const burger = document.getElementById('navBurger');
+      const mobile = document.getElementById('navMobile');
+      if (!burger || !mobile) return;
+      function close() { mobile.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); mobile.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+      burger.addEventListener('click', () => { const o=mobile.classList.toggle('open'); burger.classList.toggle('open',o); burger.setAttribute('aria-expanded',o); mobile.setAttribute('aria-hidden',!o); document.body.style.overflow=o?'hidden':''; });
+      mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+      mobile.querySelector('.nav__mobile-close')?.addEventListener('click',close);
+      document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+    })();
+  </script>
+</body>
+</html>

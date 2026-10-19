@@ -1,4 +1,18 @@
 {
   "cleanUrls": true,
-  "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in claude/*) exit 0 ;; *) exit 1 ;; esac"
+  "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in claude/*) exit 0 ;; *) exit 1 ;; esac",
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }
+      ]
+    },
+    {
+      "source": "/favicon(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
 }

@@ -126,7 +126,7 @@ Fichiers servis, tous générés depuis le même design :
 
 **Ne jamais éditer l'ICO ni les PNG à la main.** Après toute retouche du logo : modifier `sample()` dans `make-favicon.js`, répercuter la même géométrie dans `favicon.svg`, puis lancer `node make-favicon.js`. Le script est sans dépendance (rastérisation + encodage PNG/ICO en Node pur).
 
-Les 4 balises `<link rel="icon">` doivent être présentes sur **toutes** les pages publiques (18 fichiers, admin exclu) :
+Les 4 balises `<link rel="icon">` doivent être présentes sur **toutes** les pages publiques (admin exclu, `404.html` compris) :
 ```html
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
@@ -166,7 +166,7 @@ Cette règle s'applique au texte visible (paragraphes, listes, titres de section
 Avant tout push d'un nouvel article :
 1. `class="hellobar-off"` sur le `<body>`
 2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...` **sans extension `.html`**
-3. Auteur **Person** (E-E-A-T) : JSON-LD `author` = `Person` Christophe (jobTitle "Disquaire — Fondateur de Vinyl Run", url `https://www.vinyl-run.com/#equipe`, worksFor Organization Vinyl Run) ; `publisher` reste Organization. Byline visible : "Christophe · Disquaire depuis 2017 · Vinyl Run, Saint-Pierre". Copier un article existant garantit le pattern.
+3. Auteur **Person** (E-E-A-T) : JSON-LD `author` = `Person` Christophe (jobTitle "Disquaire — Fondateur de Vinyl Run", url `https://www.vinyl-run.com/#equipe`, worksFor Organization Vinyl Run) ; `publisher` reste Organization. Byline visible : "Christophe · Disquaire depuis 2017 · Vinyl Run, Saint-Pierre". Copier un article existant garantit le pattern, y compris : 2e JSON-LD `BreadcrumbList` (Vinyl Run › Le Magazine › headline), `<meta name="twitter:card">`, bloc `.blog-newsletter--article` juste après `</article>` et `<script src="/newsletter-form.js" defer>` avant `</body>`.
 4. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
 5. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
 6. Mettre à jour `rss.xml`
