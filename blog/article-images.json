@@ -1,10 +1,9 @@
 {
-  "slug": "jazz-vinyle-blue-note-verve-impulse-ecm",
+  "slug": "sega-maloya-vinyles-patrimoine-reunionnais",
   "images": [
-    { "name": "hero",  "query": "jazz vinyl records collection album covers" },
-    { "name": "fig-1", "query": "jazz saxophone player club black and white" },
-    { "name": "fig-2", "query": "hands flipping through used vinyl records crate" },
-    { "name": "fig-3", "query": "jazz pianist grand piano concert stage" },
-    { "name": "fig-4", "query": "turntable stylus on vinyl record close up" }
+    { "name": "hero",  "query": "hands playing traditional hand drum percussion" },
+    { "name": "fig-1", "source": "https://images.pexels.com/photos/3391920/pexels-photo-3391920.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
+    { "name": "fig-2", "source": "https://images.pexels.com/photos/2746823/pexels-photo-2746823.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
+    { "name": "fig-3", "source": "https://images.pexels.com/photos/31267559/pexels-photo-31267559.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" }
   ]
 }

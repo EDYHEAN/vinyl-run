@@ -95,7 +95,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="/style.css" />
   <!-- Préchargement du logo hero (élément LCP) -->
-  <link rel="preload" as="image" href="assets/logo.svg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/logo.svg" fetchpriority="high" />
   <!-- Supprime les click IDs plateformes (fbclid, gclid…) sans toucher aux UTM -->
   <script>(function(){var p=new URLSearchParams(location.search),dirty=['fbclid','gclid','msclkid','twclid'],c=false;dirty.forEach(function(k){if(p.has(k)){p.delete(k);c=true;}});if(c){var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);}})();</script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -127,7 +127,7 @@
   ══════════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero__left">
-      <p class="hero__eyebrow" data-i18n="hero.eyebrow">Independent record shop · Saint-Pierre, Réunion</p>
+      <h1 class="hero__eyebrow" data-i18n="hero.eyebrow">Independent record shop · Saint-Pierre, Réunion</h1>
       <img src="/assets/logo.svg" alt="Vinyl Run" class="hero__logo" width="280" height="280" fetchpriority="high" />
       <p class="hero__sub" data-i18n-html="hero.sub">New, used &amp; rare vinyl.<br>Handpicked since 2017.</p>
       <div class="hero__actions">
