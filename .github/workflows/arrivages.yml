@@ -1,0 +1,42 @@
+name: Arrivages Discogs
+
+# Chaque lundi 01:00 UTC (5h à La Réunion), avant le réveil de la routine article (4h UTC) :
+# récupère les annonces Discogs des 7 derniers jours dans newsletter/arrivages.json.
+# La routine n'a pas le réseau : elle lit ce fichier pour choisir les 10 nouveautés du mail
+# (newsletter-build.js). Auteur johan.trigeard@gmail.com : contrainte Vercel (cf. article-images.yml).
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Récupérer les annonces de la semaine
+        run: node fetch-arrivages.js 7
+
+      - name: Commit
+        run: |
+          git config user.name "Vinyl Run Agent"
+          git config user.email "johan.trigeard@gmail.com"
+          git add newsletter/arrivages.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          COUNT=$(node -p "require('./newsletter/arrivages.json').count")
+          git commit -m "chore: arrivages Discogs de la semaine ($COUNT annonces)"
+          git push origin main

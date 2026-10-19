@@ -2,14 +2,8 @@ function decodeXml(s) {
   return (s || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
-
-  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-  if (!process.env.NOTIFY_SECRET || body?.secret !== process.env.NOTIFY_SECRET) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
+// Repli : mail "article seul" construit depuis le dernier item de rss.xml
+async function buildFromRss() {
   // 1. Fetch latest article from RSS
   let latest = null;
   try {
@@ -22,7 +16,7 @@ export default async function handler(req, res) {
     if (title && link) latest = { title, link, desc: desc || '', img: img || '', cat: cat || 'Le Magazine' };
   } catch (_) {}
 
-  if (!latest) return res.status(500).json({ error: 'RSS unavailable' });
+  if (!latest) return null;
 
   // 2. Build HTML
   const imgBlock = latest.img
@@ -59,6 +53,31 @@ export default async function handler(req, res) {
 
   const textContent = `VINYL RUN — Le Magazine\n\n${latest.cat}\n\n${latest.title}\n\n${latest.desc}\n\nLire l'article : ${latest.link}\n\n---\nVinyl Run · Saint-Pierre, La Réunion\nhttps://www.vinyl-run.com/blog/`;
 
+  return { subject: latest.title, htmlContent, textContent };
+}
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).end();
+
+  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  if (!process.env.NOTIFY_SECRET || body?.secret !== process.env.NOTIFY_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  // Mail validé par Johan (newsletter/mail.html, envoyé tel quel par notify.yml), sinon repli RSS
+  let mail;
+  if (typeof body.html === 'string' && body.html.trim()) {
+    if (body.html.length > 300000) return res.status(413).json({ error: 'HTML trop lourd' });
+    mail = {
+      subject:     String(body.subject || '').trim().slice(0, 200) || 'Vinyl Run · Le Magazine',
+      htmlContent: body.html,
+      textContent: typeof body.text === 'string' ? body.text : undefined,
+    };
+  } else {
+    mail = await buildFromRss();
+    if (!mail) return res.status(500).json({ error: 'RSS unavailable' });
+  }
+
   // 3. Create campaign
   const createRes = await fetch('https://api.brevo.com/v3/emailCampaigns', {
     method: 'POST',
@@ -67,13 +86,13 @@ export default async function handler(req, res) {
       'api-key': process.env.BREVO_API_KEY,
     },
     body: JSON.stringify({
-      name: `Magazine — ${latest.title}`,
-      subject: latest.title,
+      name: `Magazine — ${mail.subject}`,
+      subject: mail.subject,
       sender: { name: 'Vinyl Run', email: 'magazine@vinyl-run.com' },
       replyTo: 'vinylrun974@gmail.com',
       recipients: { listIds: [4] },
-      htmlContent,
-      textContent,
+      htmlContent: mail.htmlContent,
+      textContent: mail.textContent,
     }),
   });
 
@@ -95,5 +114,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: err.message || 'Send failed', campaignId: id });
   }
 
-  return res.status(200).json({ ok: true, campaignId: id, article: latest.title });
+  return res.status(200).json({ ok: true, campaignId: id, subject: mail.subject });
 }

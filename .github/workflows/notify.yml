@@ -1,5 +1,10 @@
 name: Newsletter Notification
 
+# Envoie la newsletter hebdo. Si newsletter/mail.html a été construit pour l'article de
+# newsletter/last-send.json (meta vr-slug identique), c'est CE HTML, validé par Johan via
+# l'aperçu https://www.vinyl-run.com/newsletter/mail, qui part tel quel (article + nouveautés).
+# Sinon, repli sur l'ancien mail "article seul" construit par api/notify.js depuis rss.xml.
+
 on:
   workflow_dispatch:
   push:
@@ -11,8 +16,30 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Send newsletter notification
+        env:
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
         run: |
-          curl -s -X POST https://www.vinyl-run.com/api/notify \
+          node -e '
+            const fs = require("fs");
+            const slug = JSON.parse(fs.readFileSync("newsletter/last-send.json", "utf8")).slug;
+            const payload = { secret: process.env.NOTIFY_SECRET };
+            let html = "";
+            try { html = fs.readFileSync("newsletter/mail.html", "utf8"); } catch (_) {}
+            const built = (html.match(/<meta name="vr-slug" content="([^"]+)"/) || [])[1];
+            if (html && built === slug) {
+              payload.html    = html;
+              payload.text    = fs.readFileSync("newsletter/mail.txt", "utf8");
+              payload.subject = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1]
+                .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"");
+              console.log("Envoi du mail validé (" + slug + ")");
+            } else {
+              console.log("::warning::mail.html absent ou construit pour un autre article (" + built + " != " + slug + ") : repli article seul");
+            }
+            fs.writeFileSync("/tmp/payload.json", JSON.stringify(payload));
+          '
+          curl -sS --fail-with-body -X POST https://www.vinyl-run.com/api/notify \
             -H "Content-Type: application/json" \
-            -d '{"secret":"${{ secrets.NOTIFY_SECRET }}"}'
+            --data-binary @/tmp/payload.json

@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+# Aperçu du mail hebdo (newsletter/mail.html) et données de travail : pas à indexer
+Disallow: /newsletter/
 
 User-agent: facebookexternalhit
 Allow: /

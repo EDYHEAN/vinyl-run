@@ -16,6 +16,7 @@ on:
     paths:
       - 'blog/article-images.json'
       - 'newsletter/last-send.json'
+      - 'newsletter/mail.json'
 
 jobs:
   publish:
@@ -47,9 +48,13 @@ jobs:
           if echo "$CHANGED" | grep -qx 'newsletter/last-send.json'; then
             SLUG=$(python3 -c "import json; print(json.load(open('newsletter/last-send.json', encoding='utf-8'))['slug'])")
             MSG="chore: envoi newsletter - $SLUG (routine)"
-          else
+          elif echo "$CHANGED" | grep -qx 'blog/article-images.json'; then
             SLUG=$(python3 -c "import json; print(json.load(open('blog/article-images.json', encoding='utf-8'))['slug'])")
             MSG="feat: nouvel article - $SLUG (routine)"
+          else
+            # Correction de l'aperçu du mail seule (newsletter/mail.json + mail.html regénérés)
+            SLUG=$(python3 -c "import json; print(json.load(open('newsletter/mail.json', encoding='utf-8'))['slug'])")
+            MSG="chore: apercu newsletter - $SLUG (routine)"
           fi
           git commit -m "$MSG"
           git push origin main
