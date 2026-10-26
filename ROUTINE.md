@@ -78,14 +78,14 @@ images 404 : incident du 2026-06-29). `publish-routine.yml`, `article-images.yml
 
 Un seul mail par semaine, le lundi matin (promesse des formulaires : « une fois par semaine,
 pas plus »). Il contient l'article de la semaine et, si la semaine a eu **au moins 2
-nouveautés** sur Discogs, un bloc de **10 nouveautés maximum** (toutes si moins de 10) choisies par la routine.
+nouveautés** sur Discogs, un bloc de **4 nouveautés maximum** (toutes si moins de 4) choisies par la routine.
 
 1. **Construction** (Étape 4, dans la même branche que l'article, **après** la mise à jour de
-   `rss.xml`) : la routine lit `newsletter/arrivages.json`, choisit 10 annonces (variété de
+   `rss.xml`) : la routine lit `newsletter/arrivages.json`, choisit jusqu'à 4 annonces (variété de
    formats et de prix, en priorité les disques péi / Océan Indien et les raretés), écrit
    `newsletter/mail.json` :
    ```json
-   { "slug": "<slug-article>", "intro": "<une phrase sur l'arrivage>", "arrivages": [<10 ids Discogs>] }
+   { "slug": "<slug-article>", "intro": "<une phrase sur l'arrivage>", "arrivages": [<jusqu'à 4 ids Discogs>] }
    ```
    puis lance `node newsletter-build.js`, qui produit `newsletter/mail.html` + `mail.txt` à
    partir d'un gabarit fixe (la routine n'écrit jamais le HTML à la main). Règles appliquées par
@@ -94,7 +94,7 @@ nouveautés** sur Discogs, un bloc de **10 nouveautés maximum** (toutes si moin
    (pas de tiret cadratin).
 2. **Aperçu** : après le merge et le déploiement, la routine donne le lien
    **https://www.vinyl-run.com/newsletter/mail** (rendu exact du mail, `noindex`) et colle la
-   sortie de `newsletter-build.js` (objet + liste des 10 disques). Si Johan demande une
+   sortie de `newsletter-build.js` (objet + liste des disques). Si Johan demande une
    correction : modifier `mail.json`, relancer le script, pousser une branche
    `claude/newsletter-preview-{slug}` (le changement de `mail.json` suffit à déclencher le merge).
 3. **Envoi** (Étape 5, « Go pour le mail ») : la routine écrit `newsletter/last-send.json`
