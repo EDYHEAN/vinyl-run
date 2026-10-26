@@ -1,9 +1,10 @@
 {
-  "slug": "sega-maloya-vinyles-patrimoine-reunionnais",
+  "slug": "maxi-45-tours-12-pouces-clubs",
   "images": [
-    { "name": "hero",  "query": "hands playing traditional hand drum percussion" },
-    { "name": "fig-1", "source": "https://images.pexels.com/photos/3391920/pexels-photo-3391920.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
-    { "name": "fig-2", "source": "https://images.pexels.com/photos/2746823/pexels-photo-2746823.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" },
-    { "name": "fig-3", "source": "https://images.pexels.com/photos/31267559/pexels-photo-31267559.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop" }
+    { "name": "hero",  "query": "dj turntable twelve inch vinyl record nightclub" },
+    { "name": "fig-1", "query": "disco ball dance floor seventies lights" },
+    { "name": "fig-2", "query": "vinyl record grooves stylus close up macro" },
+    { "name": "fig-3", "query": "dj mixing vinyl records two turntables mixer" },
+    { "name": "fig-4", "query": "record store crate twelve inch vinyl singles" }
   ]
 }
