@@ -77,8 +77,8 @@ images 404 : incident du 2026-06-29). `publish-routine.yml`, `article-images.yml
 ## Newsletter hebdo — article + nouveautés en bac
 
 Un seul mail par semaine, le lundi matin (promesse des formulaires : « une fois par semaine,
-pas plus »). Il contient l'article de la semaine et, si la semaine a eu **au moins 10
-nouveautés** sur Discogs, un bloc de **10 nouveautés** choisies par la routine.
+pas plus »). Il contient l'article de la semaine et, si la semaine a eu **au moins 2
+nouveautés** sur Discogs, un bloc de **10 nouveautés maximum** (toutes si moins de 10) choisies par la routine.
 
 1. **Construction** (Étape 4, dans la même branche que l'article, **après** la mise à jour de
    `rss.xml`) : la routine lit `newsletter/arrivages.json`, choisit 10 annonces (variété de
@@ -89,7 +89,7 @@ nouveautés** sur Discogs, un bloc de **10 nouveautés** choisies par la routine
    ```
    puis lance `node newsletter-build.js`, qui produit `newsletter/mail.html` + `mail.txt` à
    partir d'un gabarit fixe (la routine n'écrit jamais le HTML à la main). Règles appliquées par
-   le script : bloc omis si moins de 10 nouveautés ou si `arrivages.json` date de plus de 8
+   le script : bloc omis si moins de 2 nouveautés ou si `arrivages.json` date de plus de 8
    jours ; sélection complétée par les plus chères si des ids manquent. `intro` est facultatif
    (pas de tiret cadratin).
 2. **Aperçu** : après le merge et le déploiement, la routine donne le lien

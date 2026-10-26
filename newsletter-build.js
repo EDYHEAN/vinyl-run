@@ -13,7 +13,7 @@
 const fs   = require('fs');
 const path = require('path');
 
-const MIN  = 10;
+const MIN  = 2;
 const SHOW = 10;
 const MAX_AGE_DAYS = 8;   // au-delà, arrivages.json est jugé périmé : bloc omis
 const SELLER_URL   = 'https://www.discogs.com/seller/Vinylrun974/profile?sort=listed%2Cdesc';
