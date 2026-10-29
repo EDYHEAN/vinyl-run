@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "ignoreCommand": "case \"$VERCEL_GIT_COMMIT_REF\" in claude/*) exit 0 ;; *) exit 1 ;; esac",
   "crons": [
-    { "path": "/api/supabase-keepalive", "schedule": "17 4 * * *" }
+    { "path": "/api/chat-typing-status?conversation_id=00000000-0000-0000-0000-000000000000", "schedule": "17 4 * * *" }
   ],
   "headers": [
     {
