@@ -514,6 +514,21 @@ a    { text-decoration: none; color: inherit; }
   gap: 1.5rem;
 }
 
+.avis__cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+.avis__cta a {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 4px;
+  transition: color 0.2s;
+}
+.avis__cta a:hover { color: var(--accent); }
+
 .avis-card {
   background: var(--bg-2);
   border: 1px solid var(--border);

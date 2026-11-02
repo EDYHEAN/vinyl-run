@@ -1,7 +1,7 @@
 // Génère en/index.html depuis index.html + dictionnaire EN de i18n.js (one-shot, pas un build)
 const fs = require('fs');
 
-const i18nSrc = fs.readFileSync('i18n.js', 'utf8');
+const i18nSrc = fs.readFileSync('i18n.js', 'utf8').replace(/\r\n/g, '\n'); // checkout Windows (autocrlf)
 const m = i18nSrc.match(/en: \{([\s\S]*?)\n    \}\n  \};/);
 if (!m) { console.error('dict EN introuvable'); process.exit(1); }
 const EN = eval('({' + m[1] + '})');
