@@ -12,7 +12,7 @@
   <meta property="og:url"         content="https://www.vinyl-run.com/blog/articles/musiques-ocean-indien-vinyle" />
   <meta property="og:title"       content="Musiques de l'Océan Indien sur vinyle : de Madagascar aux Comores, les trésors méconnus" />
   <meta property="og:description" content="Salegy malgache, twarab comorien, séga mauricien : les pressings vinyle de l'Océan Indien sont parmi les plus rares et méconnus au monde." />
-  <meta property="og:image"       content="https://images.pexels.com/photos/8533553/pexels-photo-8533553.jpeg?auto=compress&cs=tinysrgb&w=1400&fit=crop" />
+  <meta property="og:image"       content="https://www.vinyl-run.com/assets/articles/musiques-ocean-indien-vinyle/hero.jpg" />
   <meta property="og:locale"      content="fr_FR" />
   <meta property="og:site_name"   content="Vinyl Run" />
   <meta name="twitter:card"     content="summary_large_image" />
@@ -23,6 +23,7 @@
     "@type": "Article",
     "headline": "Musiques de l'Océan Indien sur vinyle : de Madagascar aux Comores, les trésors méconnus",
     "description": "Salegy malgache, twarab comorien, séga mauricien : les pressings vinyle de l'Océan Indien sont parmi les plus rares et méconnus au monde. Guide pour les identifier et les trouver.",
+    "image": "https://www.vinyl-run.com/assets/articles/musiques-ocean-indien-vinyle/hero.jpg",
     "author": {
       "@type": "Person",
       "name": "Christophe",
@@ -41,7 +42,6 @@
     "datePublished": "2026-06-08",
     "dateModified": "2026-10-19",
     "url": "https://www.vinyl-run.com/blog/articles/musiques-ocean-indien-vinyle",
-    "image": "https://images.pexels.com/photos/8533553/pexels-photo-8533553.jpeg?auto=compress&cs=tinysrgb&w=1400&fit=crop",
     "inLanguage": "fr-FR"
   }
   </script>
@@ -75,7 +75,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript></noscript>
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../blog.css" />
   <script defer src="/_vercel/insights/script.js"></script>
@@ -122,7 +126,7 @@
 
   <!-- Hero image -->
   <div class="article-hero-img">
-    <img
+    <img fetchpriority="high"
       src="https://images.pexels.com/photos/8533553/pexels-photo-8533553.jpeg?auto=compress&cs=tinysrgb&w=1400&fit=crop"
       alt="Bacs de vinyles colorés dans un disquaire indépendant"
       loading="eager"

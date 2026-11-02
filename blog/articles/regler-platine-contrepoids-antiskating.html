@@ -23,6 +23,7 @@
     "@type": "Article",
     "headline": "Régler sa platine : contrepoids, antiskating et alignement de cellule",
     "description": "Le geste que personne n'explique quand on achète une platine d'occasion : la régler correctement pour mieux écouter et protéger ses disques.",
+    "image": "https://www.vinyl-run.com/assets/articles/regler-platine-contrepoids-antiskating/hero.jpg",
     "author": {
       "@type": "Person",
       "name": "Christophe",
@@ -74,7 +75,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript></noscript>
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../blog.css" />
   <script defer src="/_vercel/insights/script.js"></script>
@@ -121,7 +126,7 @@
 
   <!-- Hero image -->
   <div class="article-hero-img">
-    <img
+    <img fetchpriority="high"
       src="/assets/articles/regler-platine-contrepoids-antiskating/hero.webp"
       alt="Bras de lecture et cellule d'une platine vinyle en gros plan pendant le réglage"
       loading="eager"

@@ -40,4 +40,10 @@ html = html.replace(re, '$1\n' + block + '\n        $2');
 fs.writeFileSync('index.html', html, 'utf8');
 console.log('home-latest : ' + latest.map(i => frDate(i.pubDate)).join(' | '));
 
+// Les deux homes changent à chaque article : on aligne leur lastmod dans le sitemap
+const today = new Date().toISOString().slice(0, 10);
+let sm = fs.readFileSync('sitemap.xml', 'utf8');
+sm = sm.replace(/(<loc>https:\/\/www\.vinyl-run\.com\/(?:en\/)?<\/loc>\s*<lastmod>)[^<]*/g, '$1' + today);
+fs.writeFileSync('sitemap.xml', sm, 'utf8');
+
 execSync('node bake-en.js', { stdio: 'inherit' });

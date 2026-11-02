@@ -12,7 +12,7 @@
   <meta property="og:url"         content="https://www.vinyl-run.com/blog/articles/debuter-collection-vinyle-10-disques-essentiels" />
   <meta property="og:title"       content="Débuter sa collection vinyle : 10 disques essentiels pour moins de 50 €" />
   <meta property="og:description" content="Par où commencer ? Soul, jazz, rock, afrobeat : une sélection de 10 vinyles indispensables, tous trouvables en occasion pour moins de 50 € au total." />
-  <meta property="og:image"       content="https://www.vinyl-run.com/assets/mag03.jpg" />
+  <meta property="og:image"       content="https://www.vinyl-run.com/assets/articles/debuter-collection-vinyle-10-disques-essentiels/hero.jpg" />
   <meta property="og:locale"      content="fr_FR" />
   <meta property="og:site_name"   content="Vinyl Run" />
   <meta name="twitter:card"     content="summary_large_image" />
@@ -23,6 +23,7 @@
     "@type": "Article",
     "headline": "Débuter sa collection vinyle : 10 disques essentiels pour moins de 50 €",
     "description": "Par où commencer ? Soul, jazz, rock, afrobeat : une sélection de 10 vinyles indispensables, tous trouvables en occasion pour moins de 50 € au total.",
+    "image": "https://www.vinyl-run.com/assets/articles/debuter-collection-vinyle-10-disques-essentiels/hero.jpg",
     "author": {
       "@type": "Person",
       "name": "Christophe",
@@ -74,7 +75,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript></noscript>
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../blog.css" />
   <script defer src="/_vercel/insights/script.js"></script>
@@ -121,7 +126,7 @@
 
   <!-- Hero image -->
   <div class="article-hero-img">
-    <img
+    <img fetchpriority="high"
       src="https://images.unsplash.com/photo-1535992165812-68d1861aa71e?w=1400&auto=format&fit=crop&q=80"
       alt="Main tenant une pochette de vinyle colorée : commencer une collection de disques"
       loading="eager"

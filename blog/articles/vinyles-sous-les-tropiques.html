@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vinyle et chaleur : comment protéger ses disques — Vinyl Run</title>
-  <meta name="description" content="Un vinyle craint-il la chaleur ? Dès 40 °C il se déforme. Canicule, humidité, voiture au soleil : les bons gestes pour protéger sa collection." />
+  <meta name="description" content="Un vinyle se déforme dès 40 °C environ. Voiture au soleil, canicule, humidité : les seuils à connaître et les bons gestes pour protéger sa collection." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.vinyl-run.com/blog/articles/vinyles-sous-les-tropiques" />
 
@@ -12,7 +12,7 @@
   <meta property="og:url"         content="https://www.vinyl-run.com/blog/articles/vinyles-sous-les-tropiques" />
   <meta property="og:title"       content="Vinyles sous les tropiques : protéger sa collection de l'humidité et de la chaleur" />
   <meta property="og:description" content="Chaleur, humidité, hivernage : à La Réunion, les vinyles affrontent un climat qui leur est hostile. Guide pratique pour conserver sa collection dans les meilleures conditions." />
-  <meta property="og:image"       content="https://www.vinyl-run.com/assets/mag03.jpg" />
+  <meta property="og:image"       content="https://www.vinyl-run.com/assets/articles/vinyles-sous-les-tropiques/hero.jpg" />
   <meta property="og:locale"      content="fr_FR" />
   <meta property="og:site_name"   content="Vinyl Run" />
   <meta name="twitter:card"     content="summary_large_image" />
@@ -23,6 +23,7 @@
     "@type": "Article",
     "headline": "Vinyles sous les tropiques : protéger sa collection de l'humidité et de la chaleur",
     "description": "Chaleur, humidité, hivernage : à La Réunion, les vinyles affrontent un climat qui leur est hostile. Guide pratique pour conserver sa collection dans les meilleures conditions.",
+    "image": "https://www.vinyl-run.com/assets/articles/vinyles-sous-les-tropiques/hero.jpg",
     "author": {
       "@type": "Person",
       "name": "Christophe",
@@ -74,7 +75,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" /></noscript></noscript>
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../blog.css" />
   <script defer src="/_vercel/insights/script.js"></script>
@@ -121,7 +126,7 @@
 
   <!-- Hero image -->
   <div class="article-hero-img">
-    <img
+    <img fetchpriority="high"
       src="https://images.unsplash.com/photo-1537829382363-dfe2e5e72d36?w=1400&auto=format&fit=crop&q=80"
       alt="Gouttelettes sur un disque vinyle : l'humidité, premier ennemi de la collection"
       loading="eager"

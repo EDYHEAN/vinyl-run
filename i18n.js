@@ -1,7 +1,6 @@
 (function () {
   var T = {
     fr: {
-      'meta.title': 'VINYL RUN — Disquaire indépendant · Saint-Pierre, La Réunion',
       'nav.inventaire': 'Inventaire',
       'nav.magazine': 'Le Magazine',
       'nav.avis': 'Avis',
@@ -219,7 +218,6 @@
     if (persist !== false) localStorage.setItem('vr_lang', lang);
     document.documentElement.lang = lang;
     document.documentElement.classList.toggle('lang-en', lang === 'en');
-    if (T[lang]['meta.title']) document.title = T[lang]['meta.title'];
 
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var k = el.getAttribute('data-i18n');

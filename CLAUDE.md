@@ -173,5 +173,5 @@ Avant tout push d'un nouvel article :
 7. Mettre à jour `sitemap.xml`
 8. `<title>` ≤ 62 caractères (` — Vinyl Run` compris) + meta description 120–160 caractères (cf. section "SEO — Title & meta description")
 9. Ajouter l'article dans `llms.txt` (section "Articles du blog", format `- [Titre](url) : description courte`)
-10. Lancer `node update-home-latest.js` — injecte les 3 derniers articles (lus dans `rss.xml`) dans le bloc "Derniers articles" de la home et regénère `en/index.html`. À lancer **après** l'étape 6, commiter `index.html` + `en/index.html` avec le reste.
+10. Lancer `node update-home-latest.js` — injecte les 3 derniers articles (lus dans `rss.xml`) dans le bloc "Derniers articles" de la home et regénère `en/index.html`. À lancer **après** l'étape 6, commiter `index.html` + `en/index.html` + `sitemap.xml` (lastmod des deux homes mis à jour par le script) avec le reste.
 11. Construire le mail hebdo : écrire `newsletter/mail.json` (slug + intro + jusqu'à 4 ids choisis dans `newsletter/arrivages.json`, bloc nouveautés dès 2 annonces), lancer `node newsletter-build.js`, commiter `mail.json` + `mail.html` + `mail.txt` avec l'article. Détail et règles dans [ROUTINE.md](ROUTINE.md) (section "Newsletter hebdo").
