@@ -1,72 +1,7 @@
 {
-  "generatedAt": "2026-10-26T05:41:06.886Z",
-  "since": "2026-10-19T05:41:06.886Z",
+  "generatedAt": "2026-11-02T07:02:38.314Z",
+  "since": "2026-10-26T07:02:38.314Z",
   "days": 7,
-  "count": 4,
-  "listings": [
-    {
-      "id": 4426685472,
-      "uri": "https://www.discogs.com/sell/item/4426685472",
-      "posted": "2026-10-23T03:56:51-07:00",
-      "artist": "René Paul Amoro",
-      "title": "Cadence Tropicale",
-      "format": "Cass, Album",
-      "year": null,
-      "label": "Not On Label",
-      "condition": "Mint (M)",
-      "sleeve": "Mint (M)",
-      "price": 4,
-      "currency": "EUR",
-      "comments": "sealed",
-      "image": "https://i.discogs.com/_dmP26v9c4Vsz8uUecLi-iwBuVsdBGqzK8_uG98Q5MM/rs:fit/g:sm/q:90/h:640/w:480/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwMjIx/NTM2LTE0OTM2NDE2/NTUtNjY3Ny5qcGVn.jpeg"
-    },
-    {
-      "id": 4426684824,
-      "uri": "https://www.discogs.com/sell/item/4426684824",
-      "posted": "2026-10-23T03:55:25-07:00",
-      "artist": "Maxime Le Forestier",
-      "title": "Sagesse Du Fou",
-      "format": "Cass, Album",
-      "year": 1991,
-      "label": "Polydor",
-      "condition": "Mint (M)",
-      "sleeve": "Mint (M)",
-      "price": 5,
-      "currency": "EUR",
-      "comments": "sealed",
-      "image": "https://i.discogs.com/jeP5LdTQDK0iDZIMMbj0dz_ao3F--c8KvHhjDHOmMAY/rs:fit/g:sm/q:90/h:438/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTk4MTQ1/NDgtMTQ4Njc0Nzkz/OS00NzQ1LmpwZWc.jpeg"
-    },
-    {
-      "id": 4424853345,
-      "uri": "https://www.discogs.com/sell/item/4424853345",
-      "posted": "2026-10-21T22:29:24-07:00",
-      "artist": "Christian Poulot, Sandrine (35)",
-      "title": "Oh L'Ami",
-      "format": "7\", Single",
-      "year": 1988,
-      "label": "Not On Label (Christian Poulot Self-released)",
-      "condition": "Very Good Plus (VG+)",
-      "sleeve": "Very Good Plus (VG+)",
-      "price": 5,
-      "currency": "EUR",
-      "comments": "",
-      "image": "https://i.discogs.com/K7U8bGU121VI-d6zTHfHATRyO3ti6Nig1nES5LN50Z4/rs:fit/g:sm/q:90/h:606/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTgwMzA4/NTEtMTQ1MzgwOTUy/NS0zMDgwLmpwZWc.jpeg"
-    },
-    {
-      "id": 4419553368,
-      "uri": "https://www.discogs.com/sell/item/4419553368",
-      "posted": "2026-10-19T23:50:10-07:00",
-      "artist": "Maxence Emprin",
-      "title": "M.E.G.A. (Maxence Emprin Groove Adventures) Réunion Folie",
-      "format": "LP",
-      "year": 2026,
-      "label": "Not On Label",
-      "condition": "Mint (M)",
-      "sleeve": "Mint (M)",
-      "price": 22,
-      "currency": "EUR",
-      "comments": "sealed22",
-      "image": "https://i.discogs.com/3BEyGI-5BIO_iyygqbBmKfcnaV_BksquvosIs3mDobY/rs:fit/g:sm/q:90/h:613/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM4Nzcz/MzExLTE3OTI0NzYx/ODctMzY3My5qcGVn.jpeg"
-    }
-  ]
+  "count": 0,
+  "listings": []
 }
