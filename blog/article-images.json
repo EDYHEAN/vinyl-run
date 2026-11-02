@@ -1,10 +1,10 @@
 {
-  "slug": "maxi-45-tours-12-pouces-clubs",
+  "slug": "soul-funk-vinyle-motown-stax",
   "images": [
-    { "name": "hero",  "query": "dj turntable twelve inch vinyl record nightclub" },
-    { "name": "fig-1", "query": "disco ball dance floor seventies lights" },
-    { "name": "fig-2", "query": "vinyl record grooves stylus close up macro" },
-    { "name": "fig-3", "query": "dj mixing vinyl records two turntables mixer" },
-    { "name": "fig-4", "query": "record store crate twelve inch vinyl singles" }
+    { "name": "hero",  "query": "vintage soul funk vinyl records turntable seventies" },
+    { "name": "fig-1", "query": "soul singer vintage microphone stage warm light" },
+    { "name": "fig-2", "query": "funk band horn section saxophone trumpet live" },
+    { "name": "fig-3", "query": "stack vintage 45 rpm seven inch vinyl singles" },
+    { "name": "fig-4", "query": "couple dancing retro party seventies disco" }
   ]
 }
