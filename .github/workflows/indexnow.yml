@@ -1,0 +1,23 @@
+name: IndexNow
+
+# Signale à Bing (et aux autres moteurs IndexNow) les pages dont le lastmod du sitemap
+# date de moins de 2 jours. Ping sortant depuis GitHub : aucune fonction Vercel appelée.
+# Déclenché par les pushes manuels sur main qui touchent le sitemap, et dispatché par
+# publish-routine.yml après un nouvel article (un push fait avec GITHUB_TOKEN ne
+# déclenche pas on:push).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'sitemap.xml'
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ping IndexNow
+        run: node indexnow.js

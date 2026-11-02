@@ -61,6 +61,7 @@ jobs:
           git push origin --delete "$BRANCH" || true
           if echo "$CHANGED" | grep -qx 'blog/article-images.json'; then
             gh workflow run article-images.yml --ref main
+            gh workflow run indexnow.yml --ref main
           fi
           if echo "$CHANGED" | grep -qx 'newsletter/last-send.json'; then
             gh workflow run notify.yml --ref main

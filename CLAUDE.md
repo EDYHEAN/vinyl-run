@@ -18,6 +18,7 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 - Repo GitHub : https://github.com/EDYHEAN/vinyl-run
 - **Chaque push sur `main` = mise à jour immédiate en production**
 - Travailler depuis plusieurs machines → toujours faire un `git pull` avant de commencer
+- **IndexNow** (Bing, Yandex…) : clé publique `/341fd2752dbd000be1f301cd5270e35d.txt` à la racine (ne pas supprimer). [indexnow.yml](.github/workflows/indexnow.yml) lance `node indexnow.js` (URLs du sitemap au lastmod < 2 jours) à chaque push manuel touchant `sitemap.xml` et après chaque article de la routine. Ne jamais lancer `--all` en routine.
 
 ## Design system
 - Thème dark, ambiance "Sonic Volcano"
