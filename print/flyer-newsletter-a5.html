@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flyer newsletter A5 — Vinyl Run</title>
+  <!-- Support imprimé (caisse). Ouvrir dans Chrome, Ctrl+P, format A5, marges : aucune, graphiques d'arrière-plan : oui.
+       Variante claire (imprimante maison) : ?v=clair. Le QR pointe vers /club?src=caisse -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    @page { size: A5 portrait; margin: 0; }
+
+    :root {
+      --bg: #111110;
+      --ink: #f0ede6;
+      --muted: rgba(240,237,230,0.62);
+      --groove: rgba(240,237,230,0.06);
+      --accent: #EDF10C;
+      --hl: #EDF10C;
+      --logo-filter: brightness(0) invert(1);
+    }
+    /* Variante claire : fond papier, le jaune ne sert plus que de fond au QR (lisible sur blanc) */
+    .clair {
+      --bg: #ffffff;
+      --ink: #111110;
+      --muted: rgba(17,17,16,0.66);
+      --groove: rgba(17,17,16,0.05);
+      --hl: #111110;
+      --logo-filter: brightness(0);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body {
+      background: #5a5955;
+      font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+      color: var(--ink);
+    }
+
+    .sheet {
+      width: 148mm;
+      height: 210mm;
+      margin: 10mm auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      padding: 13mm 13mm 11mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.35);
+    }
+    /* Disque en fond, coin haut droit */
+    .sheet::before {
+      content: '';
+      position: absolute;
+      width: 170mm; height: 170mm;
+      right: -78mm; top: -72mm;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0 2.2mm, var(--groove) 2.2mm 2.45mm);
+    }
+    .sheet::after {
+      content: '';
+      position: absolute;
+      width: 36mm; height: 36mm;
+      right: -11mm; top: -5mm; /* concentrique au disque */
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--bg) 0 1.8mm, var(--accent) 1.8mm);
+    }
+    .sheet > * { position: relative; z-index: 1; }
+
+    .top {
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 3.5mm;
+      text-align: left;
+    }
+    .top img { width: 13mm; height: 13mm; filter: var(--logo-filter); }
+    .brand {
+      font-size: 10.5pt; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+
+    .label {
+      margin-top: 16mm;
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--hl);
+    }
+    h1 {
+      margin-top: 3mm;
+      font-family: 'Bodoni Moda', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 40pt;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+    }
+    h1 em { color: var(--hl); }
+    .clair h1 em { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2.4mm; text-underline-offset: -0.6mm; text-decoration-skip-ink: none; }
+    .sub {
+      margin-top: 4mm;
+      font-size: 13pt;
+      color: var(--muted);
+    }
+
+    .qr {
+      margin: auto 0;
+      width: 80mm;
+      background: var(--accent);
+      border-radius: 3mm;
+      padding: 2.5mm 2.5mm 4mm;
+    }
+    .qr img { width: 100%; display: block; }
+    .qr span {
+      display: block;
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #111110;
+    }
+
+    .foot {
+      font-size: 9pt;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .foot strong { color: var(--ink); font-weight: 500; }
+
+    /* Barre d'outils écran uniquement */
+    .tools {
+      position: fixed; top: 12px; right: 12px;
+      display: flex; gap: 8px;
+      font: 500 13px 'Space Grotesk', sans-serif;
+      z-index: 10;
+    }
+    .tools a, .tools button {
+      padding: 9px 14px;
+      border-radius: 4px;
+      border: 0;
+      background: #f0ede6;
+      color: #111110;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+    .tools button { background: #EDF10C; }
+
+    @media print {
+      body { background: none; }
+      .sheet { margin: 0; box-shadow: none; }
+      .tools { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tools">
+    <a href="?v=sombre">Sombre</a>
+    <a href="?v=clair">Clair</a>
+    <button onclick="print()">Imprimer</button>
+  </div>
+
+  <div class="sheet">
+    <div class="top">
+      <img src="../assets/logo.svg" alt="" />
+      <span class="brand">Vinyl Run</span>
+    </div>
+
+    <p class="label">La newsletter</p>
+    <h1>Le lundi, c'est <em>vinyle</em>.</h1>
+    <p class="sub">Nouveautés, raretés et articles,<br>direct dans ta boîte mail.</p>
+
+    <div class="qr">
+      <img src="../assets/qr-newsletter.svg" alt="QR code vers vinyl-run.com/club" />
+      <span>Scanne-moi</span>
+    </div>
+
+    <p class="foot">Gratuit · <strong>vinyl-run.com/club</strong></p>
+  </div>
+
+  <script>
+    if (new URLSearchParams(location.search).get('v') === 'clair') document.body.classList.add('clair');
+  </script>
+</body>
+</html>

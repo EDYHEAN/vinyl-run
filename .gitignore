@@ -3,3 +3,6 @@ assets/photos/
 
 # Claude Code — config locale
 .claude/settings.local.json
+
+# Flyers imprimables : PDF générés localement depuis print/*.html, hors repo
+print/*.pdf
