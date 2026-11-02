@@ -167,7 +167,7 @@ Cette règle s'applique au texte visible (paragraphes, listes, titres de section
 Avant tout push d'un nouvel article :
 1. `class="hellobar-off"` sur le `<body>`
 2. Canonical + og:url + og:image + JSON-LD → tous en `https://www.vinyl-run.com/...` **sans extension `.html`**
-3. Auteur **Person** (E-E-A-T) : JSON-LD `author` = `Person` Christophe (jobTitle "Disquaire — Fondateur de Vinyl Run", url `https://www.vinyl-run.com/#equipe`, worksFor Organization Vinyl Run) ; `publisher` reste Organization. Byline visible : "Christophe · Disquaire depuis 2017 · Vinyl Run, Saint-Pierre". Copier un article existant garantit le pattern, y compris : 2e JSON-LD `BreadcrumbList` (Vinyl Run › Le Magazine › headline), `<meta name="twitter:card">`, bloc `.blog-newsletter--article` juste après `</article>` et `<script src="/newsletter-form.js" defer>` avant `</body>`.
+3. Auteur **Person** (E-E-A-T) : JSON-LD `author` = `Person` Christophe (jobTitle "Disquaire — Fondateur de Vinyl Run", url `https://www.vinyl-run.com/#equipe`, worksFor Organization Vinyl Run) ; `publisher` reste Organization. Byline visible : "Christophe · Disquaire depuis 2017 · Vinyl Run, Saint-Pierre". Copier un article existant garantit le pattern, y compris : 2e JSON-LD `BreadcrumbList` (Vinyl Run › Le Magazine › headline), `<meta name="twitter:card">`, encart newsletter `.article-nl` dans `.article-body` juste avant le H2 du milieu, bloc `.blog-newsletter--article` juste après `</article>` et `<script src="/newsletter-form.js" defer>` avant `</body>`.
 4. IDs Unsplash complets (format `photo-XXXXXXXX-XXXXXXXXXXXX`)
 5. Mettre à jour `blog/index.html` (hero + card mosaïque en premier dans la grille, liens sans `.html`)
 6. Mettre à jour `rss.xml`
