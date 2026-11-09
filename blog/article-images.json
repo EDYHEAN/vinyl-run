@@ -1,10 +1,10 @@
 {
-  "slug": "soul-funk-vinyle-motown-stax",
+  "slug": "maloya-electronique-vinyle-nouvelle-scene",
   "images": [
-    { "name": "hero",  "query": "vintage soul funk vinyl records turntable seventies" },
-    { "name": "fig-1", "query": "soul singer vintage microphone stage warm light" },
-    { "name": "fig-2", "query": "funk band horn section saxophone trumpet live" },
-    { "name": "fig-3", "query": "stack vintage 45 rpm seven inch vinyl singles" },
-    { "name": "fig-4", "query": "couple dancing retro party seventies disco" }
+    { "name": "hero",  "query": "dj turntables mixer vinyl club dark neon lights" },
+    { "name": "fig-1", "query": "traditional hand drum percussion ceremony african rhythm" },
+    { "name": "fig-2", "query": "modular synthesizer patch cables electronic music" },
+    { "name": "fig-3", "query": "dj mixing twelve inch vinyl records club night" },
+    { "name": "fig-4", "query": "electronic music vinyl records crate record shop" }
   ]
 }
