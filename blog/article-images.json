@@ -1,10 +1,10 @@
 {
-  "slug": "maloya-electronique-vinyle-nouvelle-scene",
+  "slug": "sampling-hip-hop-digging-vinyle",
   "images": [
-    { "name": "hero",  "query": "dj turntables mixer vinyl club dark neon lights" },
-    { "name": "fig-1", "query": "traditional hand drum percussion ceremony african rhythm" },
-    { "name": "fig-2", "query": "modular synthesizer patch cables electronic music" },
-    { "name": "fig-3", "query": "dj mixing twelve inch vinyl records club night" },
-    { "name": "fig-4", "query": "electronic music vinyl records crate record shop" }
+    { "name": "hero",  "query": "hands digging through crate of used vinyl records in record store" },
+    { "name": "fig-1", "query": "hip hop DJ scratching vinyl turntable mixer" },
+    { "name": "fig-2", "query": "vintage drum kit studio close up" },
+    { "name": "fig-3", "query": "record store shelves used vinyl records rows" },
+    { "name": "fig-4", "query": "young man listening vinyl record headphones record shop" }
   ]
 }
