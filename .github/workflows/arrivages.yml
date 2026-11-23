@@ -39,4 +39,4 @@ jobs:
           fi
           COUNT=$(node -p "require('./newsletter/arrivages.json').count")
           git commit -m "chore: arrivages Discogs de la semaine ($COUNT annonces)"
-          git push origin main
+          git push origin main || (git pull --rebase origin main && git push origin main)

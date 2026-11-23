@@ -57,7 +57,8 @@ jobs:
             MSG="chore: apercu newsletter - $SLUG (routine)"
           fi
           git commit -m "$MSG"
-          git push origin main
+          # main a pu bouger entre le checkout et le push (rapport hebdo, arrivages) : fichiers disjoints, on rebase
+          git push origin main || (git pull --rebase origin main && git push origin main)
           git push origin --delete "$BRANCH" || true
           if echo "$CHANGED" | grep -qx 'blog/article-images.json'; then
             gh workflow run article-images.yml --ref main
