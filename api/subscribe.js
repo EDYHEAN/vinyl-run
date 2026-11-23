@@ -12,15 +12,27 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email invalide' });
   }
 
-  // 1. Ajouter le contact à la liste Brevo
-  const r = await fetch('https://api.brevo.com/v3/contacts', {
+  // 1. Ajouter le contact à la liste Brevo, avec la source de l'inscription (attribut VR_SOURCE, compté par
+  //    le rapport hebdo : api/notify.js action "stats"). Si Brevo refuse l'attribut (pas encore créé), on le
+  //    crée et on réessaie, puis en dernier recours on inscrit sans source : l'inscription passe toujours.
+  const source = sourceOf(body);
+  const addContact = (withSource) => fetch('https://api.brevo.com/v3/contacts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'api-key': process.env.BREVO_API_KEY,
     },
-    body: JSON.stringify({ email, listIds: [4], updateEnabled: true }),
+    body: JSON.stringify({
+      email, listIds: [4], updateEnabled: true,
+      ...(withSource ? { attributes: { VR_SOURCE: source } } : {}),
+    }),
   });
+  let r = await addContact(true);
+  if (r.status === 400) {
+    await ensureSourceAttribute();
+    r = await addContact(true);
+    if (r.status === 400) r = await addContact(false);
+  }
 
   // 201 = nouveau contact, 204 = déjà existant
   if (r.status !== 201 && r.status !== 204) {
@@ -88,4 +100,31 @@ export default async function handler(req, res) {
   } catch (_) {}
 
   return res.status(200).json({ ok: true });
+}
+
+// Source d'une inscription, lisible dans le rapport hebdo : "home", "home-en", "blog",
+// "article:<slug>#milieu|fin" (encart au milieu du texte ou bloc de fin), "club?caisse" (QR du flyer)…
+// Le client envoie page (location.pathname), pos (formulaire d'article) et src (?src= ou ?utm_source=).
+export function sourceOf(body) {
+  const page = String(body?.page || '').replace(/\.html$/, '').slice(0, 120);
+  const pos = body?.pos === 'milieu' || body?.pos === 'fin' ? `#${body.pos}` : '';
+  const src = String(body?.src || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 30);
+  let label;
+  if (page === '/' || page === '') label = page ? 'home' : 'inconnu';
+  else if (/^\/en\/?$/.test(page)) label = 'home-en';
+  else if (/^\/blog\/?$/.test(page)) label = 'blog';
+  else if (/^\/blog\/articles\//.test(page)) label = `article:${page.replace(/^\/blog\/articles\//, '').replace(/[^a-z0-9-]/gi, '').slice(0, 80)}${pos}`;
+  else if (/^\/club\/?$/.test(page)) label = 'club';
+  else label = `autre:${page.replace(/[^A-Za-z0-9/_-]/g, '').slice(0, 60)}`;
+  return src ? `${label}?${src}` : label;
+}
+
+async function ensureSourceAttribute() {
+  try {
+    await fetch('https://api.brevo.com/v3/contacts/attributes/normal/VR_SOURCE', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'api-key': process.env.BREVO_API_KEY },
+      body: JSON.stringify({ type: 'text' }),
+    });
+  } catch (_) {}
 }

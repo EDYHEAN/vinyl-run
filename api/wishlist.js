@@ -58,6 +58,7 @@ export default async function handler(req, res) {
       replyTo: email ? { email, name: nom } : { email: 'magazine@vinyl-run.com' },
       subject: `Demande vinyle — ${artiste}${album ? ' / ' + album : ''}`,
       htmlContent,
+      tags: ['demande-vinyl'], // compté par le rapport hebdo (api/notify.js action "stats")
     }),
   });
 

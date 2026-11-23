@@ -20,6 +20,13 @@ Boutique externe : https://www.discogs.com/seller/Vinylrun974/profile
 - Travailler depuis plusieurs machines → toujours faire un `git pull` avant de commencer
 - **IndexNow** (Bing, Yandex…) : clé publique `/341fd2752dbd000be1f301cd5270e35d.txt` à la racine (ne pas supprimer). [indexnow.yml](.github/workflows/indexnow.yml) lance `node indexnow.js` (URLs du sitemap au lastmod < 2 jours) à chaque push manuel touchant `sitemap.xml` et après chaque article de la routine. Ne jamais lancer `--all` en routine.
 
+## Rapport hebdo (lundi)
+
+Mail interne chaque lundi à Johan + vinylrun974@gmail.com (Christophe le lit : pas de jargon). Chaîne et procédure : [reports/README.md](reports/README.md). Dimanche soir, [weekly-stats.yml](.github/workflows/weekly-stats.yml) écrit `reports/data/<date>.json` (newsletter, demandes, chat via `/api/notify` action `stats` ; GSC ; Bing ; Discogs) ; la routine Claude du lundi pousse `reports/<date>.md` + `.html` sur `claude/report-<date>` ; [weekly-report.yml](.github/workflows/weekly-report.yml) publie et envoie.
+- `api/notify.js` porte les actions `stats` et `report` (plafond de 12 fonctions Vercel atteint) : toute action répond et s'arrête, jamais de repli vers l'envoi de la newsletter. Les scripts sondent `GET /api/notify` avant d'envoyer.
+- Source des inscriptions newsletter : attribut Brevo `VR_SOURCE` (`home`, `blog`, `article:<slug>#milieu|fin`, `club?caisse`…), calculé par `sourceOf()` dans `api/subscribe.js`. Tout nouveau formulaire d'inscription envoie `page: location.pathname` + `src`.
+- Dépôt public : `reports/` ne contient que des comptes (jamais d'email ni de CA) et est exclu du site par `.vercelignore`.
+
 ## Design system
 - Thème dark, ambiance "Sonic Volcano"
 - Couleurs CSS variables dans `:root` (style.css)

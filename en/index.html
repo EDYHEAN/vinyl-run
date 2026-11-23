@@ -1550,7 +1550,7 @@
           const r = await fetch('/api/subscribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: val }),
+            body: JSON.stringify({ email: val, page: location.pathname, src: (location.search.match(/[?&](?:src|utm_source)=([A-Za-z0-9_-]+)/) || [])[1] || '' }),
           });
           if (r.ok) {
             form.style.display = 'none';

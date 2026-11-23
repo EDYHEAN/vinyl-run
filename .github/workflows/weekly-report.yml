@@ -1,0 +1,71 @@
+# Le rapport hebdo : la routine Claude du lundi pousse reports/<date>.md + <date>.html sur la branche
+# claude/report-<date> (elle ne peut pousser que sur claude/*). Ce workflow recopie les fichiers sur main
+# (auteur Johan, contrainte Vercel), supprime la branche, puis envoie le mail à Johan et à la boutique
+# (weekly-report-send.mjs → /api/notify action "report").
+# Lancement à la main (renvoyer le dernier rapport de main) : « Actions » > « Rapport hebdo » > « Run workflow ».
+name: Rapport hebdo
+
+on:
+  push:
+    branches:
+      - 'claude/report-**'
+    paths:
+      - 'reports/20*.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# deux pushs rapprochés de la routine (rapport puis retouche) : un seul run à la fois
+concurrency:
+  group: weekly-report
+  cancel-in-progress: false
+
+jobs:
+  rapport:
+    name: Publier et envoyer le rapport
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Pas de squash-merge : la branche ne touche que reports/, on recopie ces fichiers sur main (une retouche
+      # du même rapport ne crée jamais de conflit, incident MFT du 05/11). Le mail ne part que si le .html est
+      # NOUVEAU sur main : une retouche ne renvoie pas de doublon.
+      - name: Publier la branche routine sur main
+        id: publish
+        if: github.ref_name != 'main'
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          git config user.name "Johan TRIGEARD"
+          git config user.email "johan.trigeard@gmail.com"
+          OUTSIDE=$(git diff --name-only "origin/main...origin/$BRANCH" -- . ':(exclude)reports' | head -5)
+          if [ -n "$OUTSIDE" ]; then
+            echo "La branche touche des fichiers hors reports/ : $OUTSIDE"
+            exit 1
+          fi
+          DATE="${BRANCH#claude/report-}"
+          git checkout -B main origin/main
+          if git cat-file -e "origin/main:reports/$DATE.html" 2>/dev/null; then NEW=0; else NEW=1; fi
+          git checkout "origin/$BRANCH" -- reports
+          git add reports
+          if ! git diff --cached --quiet; then
+            git commit -m "docs(report): rapport hebdo $DATE (routine)"
+            git push origin main || (git pull --rebase origin main && git push origin main)
+          fi
+          git push origin --delete "$BRANCH" || true
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          echo "file=reports/$DATE.html" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: github.ref_name == 'main' || steps.publish.outputs.new == '1'
+        with:
+          node-version: 22
+
+      - name: Envoyer le mail
+        if: github.ref_name == 'main' || steps.publish.outputs.new == '1'
+        env:
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
+        run: node weekly-report-send.mjs ${{ steps.publish.outputs.file }}

@@ -1,0 +1,50 @@
+# Chaque dimanche soir : les chiffres de la semaine Vinyl Run (newsletter, demandes, chat via /api/notify ;
+# Search Console ; Bing ; inventaire Discogs) dans reports/data/<date>.json, sur main. La routine Claude du lundi
+# les lit et écrit le rapport (reports/README.md).
+# Secrets : NOTIFY_SECRET (déjà là), GSC_SERVICE_ACCOUNT (clé JSON du compte de service, la même que NookDex),
+# BING_API_KEY. Une source absente = bloc { error }, le relevé passe quand même.
+# Lancement à la main : onglet « Actions » > « Chiffres de la semaine » > « Run workflow ».
+name: Chiffres de la semaine
+
+on:
+  schedule:
+    # dimanche 20 h 17 UTC (lundi 0 h 17 à La Réunion) : GitHub retarde ses tâches programmées de plusieurs
+    # heures, on garde de la marge avant la routine du rapport (leçon NookDex du 26/10)
+    - cron: "17 20 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-stats
+  cancel-in-progress: false
+
+jobs:
+  chiffres:
+    name: Relever les chiffres
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Relever
+        env:
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
+          GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+        run: node weekly-stats.mjs
+
+      # Auteur johan.trigeard@gmail.com : contrainte Vercel (cf. article-images.yml)
+      - name: Commit
+        run: |
+          git config user.name "Vinyl Run Agent"
+          git config user.email "johan.trigeard@gmail.com"
+          git add reports/data
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data(report): chiffres de la semaine"
+          git push || (git pull --rebase origin main && git push)

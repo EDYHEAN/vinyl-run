@@ -20,7 +20,7 @@
         const r = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, page: location.pathname, pos: block.classList.contains('article-nl') ? 'milieu' : 'fin', src: (location.search.match(/[?&](?:src|utm_source)=([A-Za-z0-9_-]+)/) || [])[1] || '' }),
         });
         if (!r.ok) throw new Error();
         // Inscrit : on masque les deux formulaires de la page, pas seulement celui utilisé
