@@ -1,10 +1,10 @@
 {
-  "slug": "sampling-hip-hop-digging-vinyle",
+  "slug": "disque-live-albums-concert-vinyle",
   "images": [
-    { "name": "hero",  "query": "hands digging through crate of used vinyl records in record store" },
-    { "name": "fig-1", "query": "hip hop DJ scratching vinyl turntable mixer" },
-    { "name": "fig-2", "query": "vintage drum kit studio close up" },
-    { "name": "fig-3", "query": "record store shelves used vinyl records rows" },
-    { "name": "fig-4", "query": "young man listening vinyl record headphones record shop" }
+    { "name": "hero",  "query": "concert crowd stage lights live music audience" },
+    { "name": "fig-1", "query": "sound engineer mixing console live concert" },
+    { "name": "fig-2", "query": "singer microphone stage spotlight live performance" },
+    { "name": "fig-3", "query": "hand drum percussionist night outdoor festival" },
+    { "name": "fig-4", "query": "double vinyl album gatefold sleeve turntable" }
   ]
 }
