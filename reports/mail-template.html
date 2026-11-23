@@ -2,132 +2,156 @@
 <!--
   Le mail du rapport hebdo Vinyl Run. La routine du lundi le remplit et l'enregistre en reports/<YYYY-MM-DD>.html ;
   weekly-report.yml l'envoie à Johan et à la boutique (vinylrun974@gmail.com). HTML mail : tables + styles inline,
-  pas de script, pas de CSS externe, 600 px. Remplir CHAQUE champ entre doubles accolades (le mail ne part pas s'il
-  en reste un), répéter les lignes marquées « répéter » autant que nécessaire, supprimer un bloc qui n'a rien à dire.
-  Le <title> = l'objet du mail. Lu aussi par Christophe (le disquaire) : phrases simples, pas de jargon SEO non
-  expliqué. Jamais de tiret cadratin dans le texte.
+  pas de script, pas de CSS externe. Remplir CHAQUE champ entre doubles accolades (le mail ne part pas s'il en reste
+  un), répéter les lignes marquées « répéter » autant que nécessaire, supprimer un bloc qui n'a rien à dire.
+  Le <title> = l'objet du mail. Lu surtout sur téléphone, aussi par Christophe (le disquaire) : phrases courtes, pas
+  de jargon SEO non expliqué. Jamais de tiret cadratin dans le texte.
+  Mobile : KPI en grille 2 × 2, tableaux à 2 ou 3 colonnes (la position va sous le libellé), marges réduites par la
+  media query (classes .wrap .card .s .h1 .kpi .btn). Ne pas ajouter de 4e colonne aux tableaux.
 -->
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <title>Vinyl Run · semaine du {{DATE_COURTE}} · {{ACCROCHE_OBJET}}</title>
+<style>
+  @media only screen and (max-width: 520px) {
+    .wrap { padding: 0 !important; }
+    .card { border-radius: 0 !important; }
+    .s { padding-left: 18px !important; padding-right: 18px !important; }
+    .k { padding-left: 12px !important; padding-right: 12px !important; }
+    .h1 { font-size: 24px !important; }
+    .kpi { font-size: 26px !important; }
+    .btn a { display: block !important; text-align: center !important; }
+  }
+</style>
 </head>
-<body style="margin:0;padding:0;background:#111110;">
+<body style="margin:0;padding:0;background:#111110;-webkit-text-size-adjust:100%;">
+<!-- aperçu affiché dans la boîte de réception, sous l'objet : une phrase, 90 caractères max -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#111110;">{{APERCU_BOITE_DE_RECEPTION}}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111110;">
-<tr><td align="center" style="padding:24px 12px;">
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#1b1b19;border-radius:14px;font-family:Helvetica,Arial,sans-serif;color:#f0ede6;">
+<tr><td class="wrap" align="center" style="padding:20px 10px;">
+<table class="card" role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#1b1b19;border-radius:14px;font-family:Helvetica,Arial,sans-serif;color:#f0ede6;">
 
   <!-- en-tête -->
-  <tr><td style="padding:26px 28px 6px;">
-    <div style="font-size:12px;letter-spacing:3px;color:#EDF10C;text-transform:uppercase;font-weight:bold;">Vinyl Run · rapport de la semaine</div>
-    <div style="font-family:Georgia,serif;font-style:italic;font-size:26px;margin-top:8px;">Semaine du {{DATE_LONGUE}}</div>
-    <div style="font-size:15px;color:#c9c5bc;margin-top:8px;line-height:1.55;">{{UNE_PHRASE_QUI_RESUME_LA_SEMAINE}}</div>
+  <tr><td class="s" style="padding:28px 28px 6px;">
+    <div style="font-size:11px;letter-spacing:3px;color:#EDF10C;text-transform:uppercase;font-weight:bold;">Vinyl Run · rapport de la semaine</div>
+    <div class="h1" style="font-family:Georgia,serif;font-style:italic;font-size:28px;line-height:1.2;margin-top:10px;">Semaine du {{DATE_LONGUE}}</div>
+    <div style="font-size:16px;color:#d6d2c8;margin-top:12px;line-height:1.55;">{{UNE_PHRASE_QUI_RESUME_LA_SEMAINE}}</div>
   </td></tr>
 
-  <!-- 4 KPI. DELTA court (« ▲ +12 % », « ▼ −4 », « = ») : vert #5fd38d si ça monte, rouge #ff7b6b si ça baisse, gris #8a867d si stable -->
-  <tr><td style="padding:12px 22px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td width="25%" style="padding:4px;"><div style="background:#262623;border-radius:10px;padding:14px 6px;text-align:center;">
-        <div style="font-size:24px;font-weight:bold;color:#EDF10C;">{{CLICS_GOOGLE}}</div>
-        <div style="font-size:11px;color:#a8a49b;">visites Google</div>
-        <div style="font-size:12px;font-weight:bold;color:{{COULEUR_DELTA_1}};margin-top:4px;">{{DELTA_1}}</div>
-      </div></td>
-      <td width="25%" style="padding:4px;"><div style="background:#262623;border-radius:10px;padding:14px 6px;text-align:center;">
-        <div style="font-size:24px;font-weight:bold;color:#EDF10C;">{{NOUVEAUX_INSCRITS}}</div>
-        <div style="font-size:11px;color:#a8a49b;">inscrits newsletter</div>
-        <div style="font-size:12px;font-weight:bold;color:{{COULEUR_DELTA_2}};margin-top:4px;">{{TOTAL_INSCRITS}}</div>
-      </div></td>
-      <td width="25%" style="padding:4px;"><div style="background:#262623;border-radius:10px;padding:14px 6px;text-align:center;">
-        <div style="font-size:24px;font-weight:bold;color:#EDF10C;">{{DEMANDES_VINYLE}}</div>
-        <div style="font-size:11px;color:#a8a49b;">demandes de disques</div>
-        <div style="font-size:12px;font-weight:bold;color:{{COULEUR_DELTA_3}};margin-top:4px;">{{DELTA_3}}</div>
-      </div></td>
-      <td width="25%" style="padding:4px;"><div style="background:#262623;border-radius:10px;padding:14px 6px;text-align:center;">
-        <div style="font-size:24px;font-weight:bold;color:#EDF10C;">{{MISES_EN_LIGNE}}</div>
-        <div style="font-size:11px;color:#a8a49b;">disques mis en ligne</div>
-        <div style="font-size:12px;font-weight:bold;color:#a8a49b;margin-top:4px;">{{INVENTAIRE}}</div>
-      </div></td>
-    </tr></table>
+  <!-- 4 KPI en 2 × 2. DELTA court (« ▲ +12 % », « ▼ −4 », « = ») : vert #5fd38d si ça monte, rouge #ff7b6b si ça
+       baisse ou si c'est un problème, gris #a8a49b si stable ou neutre -->
+  <tr><td class="k" style="padding:14px 22px 6px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="50%" style="padding:5px;"><div style="background:#262623;border-radius:12px;padding:16px 8px;text-align:center;">
+          <div class="kpi" style="font-size:28px;font-weight:bold;color:#EDF10C;line-height:1.1;">{{KPI_1}}</div>
+          <div style="font-size:13px;color:#c9c5bc;margin-top:4px;">{{KPI_1_LIBELLE}}</div>
+          <div style="font-size:13px;font-weight:bold;color:{{KPI_1_COULEUR}};margin-top:6px;">{{KPI_1_DELTA}}</div>
+        </div></td>
+        <td width="50%" style="padding:5px;"><div style="background:#262623;border-radius:12px;padding:16px 8px;text-align:center;">
+          <div class="kpi" style="font-size:28px;font-weight:bold;color:#EDF10C;line-height:1.1;">{{KPI_2}}</div>
+          <div style="font-size:13px;color:#c9c5bc;margin-top:4px;">{{KPI_2_LIBELLE}}</div>
+          <div style="font-size:13px;font-weight:bold;color:{{KPI_2_COULEUR}};margin-top:6px;">{{KPI_2_DELTA}}</div>
+        </div></td>
+      </tr>
+      <tr>
+        <td width="50%" style="padding:5px;"><div style="background:#262623;border-radius:12px;padding:16px 8px;text-align:center;">
+          <div class="kpi" style="font-size:28px;font-weight:bold;color:#EDF10C;line-height:1.1;">{{KPI_3}}</div>
+          <div style="font-size:13px;color:#c9c5bc;margin-top:4px;">{{KPI_3_LIBELLE}}</div>
+          <div style="font-size:13px;font-weight:bold;color:{{KPI_3_COULEUR}};margin-top:6px;">{{KPI_3_DELTA}}</div>
+        </div></td>
+        <td width="50%" style="padding:5px;"><div style="background:#262623;border-radius:12px;padding:16px 8px;text-align:center;">
+          <div class="kpi" style="font-size:28px;font-weight:bold;color:#EDF10C;line-height:1.1;">{{KPI_4}}</div>
+          <div style="font-size:13px;color:#c9c5bc;margin-top:4px;">{{KPI_4_LIBELLE}}</div>
+          <div style="font-size:13px;font-weight:bold;color:{{KPI_4_COULEUR}};margin-top:6px;">{{KPI_4_DELTA}}</div>
+        </div></td>
+      </tr>
+    </table>
+    <!-- KPI conseillés : visites Google (delta vs semaine d'avant), nouveaux inscrits newsletter (« 32 au total »),
+         demandes de disques ou conversations chat (le plus parlant de la semaine), disques mis en ligne (« 2 752 en ligne ») -->
   </td></tr>
 
-  <!-- en bref : 3 à 5 puces, chiffres précis, ce qui a changé et pourquoi -->
-  <tr><td style="padding:10px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">En bref</div>
-    <ul style="margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.6;color:#f0ede6;">
-      <li style="margin-bottom:4px;">{{PUCE}}</li><!-- répéter -->
-    </ul>
-  </td></tr>
-
-  <!-- les actions : LE cœur du mail. 3 max, triées par impact. QUI = « Christophe » (boutique), « Johan » (site,
-       comptes) ou « Claude » (code, contenu). Badge Christophe : fond #EDF10C texte #111110. Johan : fond #f0ede6
-       texte #111110. Claude : fond #3a3a36 texte #f0ede6. -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Les 3 actions de la semaine</div>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;">
+  <!-- les actions : LE cœur du mail, placées tout de suite après les KPI. 3 max, triées par impact.
+       QUI = « Christophe » (boutique), « Johan » (site, comptes) ou « Claude » (code, contenu).
+       Badge Christophe : fond #EDF10C texte #111110. Johan : fond #f0ede6 texte #111110. Claude : fond #3a3a36 texte #f0ede6. -->
+  <tr><td class="s" style="padding:22px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">À faire cette semaine</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;">
       <!-- répéter -->
-      <tr><td style="padding:12px 14px;background:#262623;border-radius:10px;font-size:14px;line-height:1.5;">
-        <span style="display:inline-block;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:10px;background:{{FOND_BADGE}};color:{{TEXTE_BADGE}};">{{QUI}}</span>
-        <b style="margin-left:6px;">{{TITRE_ACTION}}</b><br>
-        <span style="color:#c9c5bc;">{{POURQUOI_CHIFFRE_ET_COMMENT}}</span>
+      <tr><td style="padding:14px 16px;background:#262623;border-radius:12px;border-left:3px solid {{FOND_BADGE}};">
+        <span style="display:inline-block;font-size:12px;font-weight:bold;padding:3px 10px;border-radius:10px;background:{{FOND_BADGE}};color:{{TEXTE_BADGE}};">{{QUI}}</span>
+        <div style="font-size:16px;font-weight:bold;line-height:1.4;margin-top:8px;">{{TITRE_ACTION}}</div>
+        <div style="font-size:15px;line-height:1.55;color:#c9c5bc;margin-top:4px;">{{POURQUOI_CHIFFRE_ET_COMMENT}}</div>
       </td></tr>
-      <tr><td style="height:8px;line-height:8px;font-size:0;">&nbsp;</td></tr>
+      <tr><td style="height:10px;line-height:10px;font-size:0;">&nbsp;</td></tr>
       <!-- /répéter -->
     </table>
   </td></tr>
 
-  <!-- bilan des actions de la semaine dernière (supprimer au 1er rapport) -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Ce que la semaine dernière a donné</div>
-    <ul style="margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.6;">
-      <li style="margin-bottom:4px;">{{ACTION_PRECEDENTE_ET_EFFET_MESURE}}</li><!-- répéter -->
+  <!-- en bref : 3 à 5 puces courtes, chiffres précis -->
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">En bref</div>
+    <ul style="margin:10px 0 0;padding-left:20px;font-size:15px;line-height:1.6;color:#f0ede6;">
+      <li style="margin-bottom:8px;">{{PUCE}}</li><!-- répéter -->
     </ul>
   </td></tr>
 
-  <!-- newsletter : d'où viennent les inscrits, désinscriptions, dernière campagne -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Newsletter</div>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;font-size:13px;border-collapse:collapse;">
-      <tr style="color:#8a867d;"><td style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Inscrit depuis</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Cette semaine</td></tr>
-      <tr><td style="padding:6px 4px;border-bottom:1px solid #262623;">{{SOURCE_LIBELLE}}</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #262623;">{{SOURCE_NOMBRE}}</td></tr><!-- répéter -->
-    </table>
-    <div style="font-size:13px;color:#c9c5bc;margin-top:8px;line-height:1.55;">{{LECTURE_NEWSLETTER}}</div>
+  <!-- bilan des actions de la semaine dernière (supprimer au 1er rapport) -->
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">La semaine dernière</div>
+    <ul style="margin:10px 0 0;padding-left:20px;font-size:15px;line-height:1.6;">
+      <li style="margin-bottom:8px;">{{ACTION_PRECEDENTE_ET_EFFET_MESURE}}</li><!-- répéter -->
+    </ul>
   </td></tr>
 
-  <!-- Google : pages et requêtes qui bougent -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Google</div>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;font-size:13px;border-collapse:collapse;">
-      <tr style="color:#8a867d;"><td style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Page ou recherche</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Visites</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Vues</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #3a3a36;">Pos.</td></tr>
-      <tr><td style="padding:6px 4px;border-bottom:1px solid #262623;">{{LIGNE_LIBELLE}}</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #262623;">{{LIGNE_CLICS}}</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #262623;">{{LIGNE_IMPR}}</td><td align="right" style="padding:6px 4px;border-bottom:1px solid #262623;">{{LIGNE_POS}}</td></tr><!-- répéter, 8 lignes max -->
+  <!-- newsletter : d'où viennent les inscrits (libellés lisibles), puis la lecture -->
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">Newsletter</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;font-size:15px;border-collapse:collapse;">
+      <tr style="color:#8a867d;font-size:12px;text-transform:uppercase;letter-spacing:1px;"><td style="padding:6px 0;border-bottom:1px solid #3a3a36;">Inscrits depuis</td><td align="right" style="padding:6px 0;border-bottom:1px solid #3a3a36;white-space:nowrap;">Semaine</td></tr>
+      <tr><td style="padding:10px 10px 10px 0;border-bottom:1px solid #2c2c29;line-height:1.4;">{{SOURCE_LIBELLE}}</td><td align="right" style="padding:10px 0;border-bottom:1px solid #2c2c29;font-weight:bold;white-space:nowrap;">{{SOURCE_NOMBRE}}</td></tr><!-- répéter -->
     </table>
-    <div style="font-size:13px;color:#c9c5bc;margin-top:8px;line-height:1.55;">{{LECTURE_GOOGLE}}</div>
+    <div style="font-size:15px;color:#c9c5bc;margin-top:10px;line-height:1.6;">{{LECTURE_NEWSLETTER}}</div>
+  </td></tr>
+
+  <!-- Google : 8 lignes max. Libellé lisible + sous-ligne grise (position, ce qui bouge) -->
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">Google</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;font-size:15px;border-collapse:collapse;">
+      <tr style="color:#8a867d;font-size:12px;text-transform:uppercase;letter-spacing:1px;"><td style="padding:6px 0;border-bottom:1px solid #3a3a36;">Page</td><td align="right" style="padding:6px 0 6px 8px;border-bottom:1px solid #3a3a36;white-space:nowrap;">Visites</td><td align="right" style="padding:6px 0 6px 8px;border-bottom:1px solid #3a3a36;white-space:nowrap;">Vues</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #2c2c29;line-height:1.35;">{{LIGNE_LIBELLE}}<br><span style="font-size:12px;color:#8a867d;">{{LIGNE_DETAIL}}</span></td><td align="right" style="padding:10px 0 10px 8px;border-bottom:1px solid #2c2c29;font-weight:bold;white-space:nowrap;">{{LIGNE_CLICS}}</td><td align="right" style="padding:10px 0 10px 8px;border-bottom:1px solid #2c2c29;color:#c9c5bc;white-space:nowrap;">{{LIGNE_IMPR}}</td></tr><!-- répéter, LIGNE_DETAIL = « 3e place · vues ×2 » -->
+    </table>
+    <div style="font-size:15px;color:#c9c5bc;margin-top:10px;line-height:1.6;">{{LECTURE_GOOGLE}}</div>
   </td></tr>
 
   <!-- boutique : Discogs (mises en ligne, disques sortis), demandes de disques, chat -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Boutique</div>
-    <div style="font-size:14px;line-height:1.6;margin-top:6px;">{{BOUTIQUE}}</div>
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">Boutique</div>
+    <div style="font-size:15px;line-height:1.6;margin-top:8px;">{{BOUTIQUE}}</div>
   </td></tr>
 
   <!-- Bing et IA -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Bing et IA</div>
-    <div style="font-size:14px;line-height:1.6;margin-top:6px;">{{BING_IA}}</div>
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">Bing et IA</div>
+    <div style="font-size:15px;line-height:1.6;margin-top:8px;">{{BING_IA}}</div>
   </td></tr>
 
-  <!-- ce qui a été publié / livré cette semaine (git log main) -->
-  <tr><td style="padding:18px 28px 4px;">
-    <div style="font-size:16px;font-weight:bold;color:#EDF10C;">Publié cette semaine</div>
-    <div style="font-size:14px;line-height:1.6;margin-top:6px;">{{LIVRE}}</div>
+  <!-- ce qui a été publié cette semaine (git log main) -->
+  <tr><td class="s" style="padding:18px 28px 4px;">
+    <div style="font-size:18px;font-weight:bold;color:#EDF10C;">Publié cette semaine</div>
+    <div style="font-size:15px;line-height:1.6;margin-top:8px;">{{LIVRE}}</div>
   </td></tr>
 
   <!-- pied -->
-  <tr><td style="padding:22px 28px 26px;">
-    <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#EDF10C;border-radius:3px;">
-      <a href="https://www.vinyl-run.com/blog/" style="display:inline-block;padding:12px 20px;font-size:13px;font-weight:bold;color:#111110;text-decoration:none;letter-spacing:0.04em;">Voir le Magazine</a>
+  <tr><td class="s" style="padding:24px 28px 28px;">
+    <table class="btn" role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td>
+      <a href="https://www.vinyl-run.com/admin/chat" style="display:inline-block;padding:14px 22px;background:#EDF10C;border-radius:4px;font-size:14px;font-weight:bold;color:#111110;text-decoration:none;">Ouvrir le chat</a>
     </td></tr></table>
-    <div style="font-size:12px;color:#8a867d;margin-top:14px;line-height:1.55;">{{PERIODES_ET_SOURCES}}<br>Rapport complet : github.com/EDYHEAN/vinyl-run/blob/main/reports/{{DATE_ISO}}.md</div>
+    <div style="font-size:12px;color:#8a867d;margin-top:18px;line-height:1.6;">{{PERIODES_ET_SOURCES}}<br>Rapport complet : github.com/EDYHEAN/vinyl-run/blob/main/reports/{{DATE_ISO}}.md</div>
   </td></tr>
 
 </table>

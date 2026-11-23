@@ -116,8 +116,10 @@ chat = 7 derniers jours ; comparé au relevé du <date du relevé d'avant>. Sour
 
 **`reports/<date>.html`**, le mail : copier `reports/mail-template.html` et remplir TOUS les champs `{{…}}` (le
 script refuse d'envoyer s'il en reste un, commentaires HTML compris : les retirer ou les laisser sans accolades).
-Version courte du `.md` : les 4 KPI, 3-5 puces, les 3 actions, les sources d'inscription, 8 lignes Google max, un
-paragraphe par section. Le `<title>` est l'objet du mail : court et parlant (« Vinyl Run · semaine du 23 nov. ·
+Version courte du `.md` : les 4 KPI, les 3 actions, 3-5 puces, les sources d'inscription, 8 lignes Google max, un
+paragraphe par section. **Lu surtout sur téléphone** : garder la structure du gabarit (KPI en 2 × 2, actions juste
+après les KPI, tableau Google en 3 colonnes avec la position dans la sous-ligne grise `LIGNE_DETAIL`), phrases
+courtes, et remplir `APERCU_BOITE_DE_RECEPTION` (la phrase affichée sous l'objet dans la boîte de réception). Le `<title>` est l'objet du mail : court et parlant (« Vinyl Run · semaine du 23 nov. ·
 6 inscrits, Google +27 % »). Supprimer un bloc qui n'a rien à dire (et le bloc « semaine dernière » au 1er rapport).
 Libellés lisibles pour Christophe : « Encart au milieu de l'article Maloya électronique » plutôt que
 `article:maloya-electronique-vinyle-nouvelle-scene#milieu`, « visites » pour les clics, « vues » pour les impressions.
